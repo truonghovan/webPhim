@@ -1,0 +1,67 @@
+.container_channel{
+    background-color: black;
+}
+.container_author{
+    background-color: #191A1D;
+    padding: 30px;
+}
+
+.container_listtab{
+    margin: 30px 0;
+    background-color: #191A1D;
+}
+.img_info_author{
+    border: 2px solid #DE0404;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px;
+}
+.info_author{
+    display: flex;
+}
+.author_name{
+    display: grid;
+    align-items: center;
+}
+.row_container{
+    display: flex;
+    align-items: center;
+}
+.subscribe_container{
+    margin-right: 10px;
+}
+.button_sub{
+    display: flex;
+    align-items: center;
+}
+.container_listtab .mySwiperChannel{
+    padding:10px 50px !important;
+}
+.slider_tab{
+    height: 25vh !important;
+    padding: 30px;
+    background-color: #191A1D;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #282828;
+}
+.icon_tab{
+    height: 43px;
+    width: 43px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    background-color: #3C3F46;
+    border-radius: 50%;
+}
+.quantity_item_per_page{
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+}
+.container_filter{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}

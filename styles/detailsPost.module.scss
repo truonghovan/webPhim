@@ -1,0 +1,249 @@
+.icon_element{
+    display: flex;
+    align-items : center;
+    margin-right: 20px;
+}
+.icon_element_icon{
+    display: flex;
+    align-items : center;
+    margin-right: 5px;
+}
+.icon_video{
+    display: flex;
+    align-items: center;
+}
+.icon_video_icon{
+    margin-right: 10px;
+    height: 36px;
+    width: 36px;
+    background-color: #3C3F46;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+}
+.container_video{
+    padding: 30px;
+}
+.img_info_author{
+    border: 2px solid #DE0404;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.info_author{
+    display: flex;
+}
+.author_name{
+    margin-left: 20px;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+.author_name_name{
+    display: flex;
+    align-items: center;
+
+}
+.author_name_sub{
+    display: flex;
+    align-items: center;
+   
+}
+.button_sub{
+    display: flex;
+    align-items: center;
+    width: fit-content;
+}
+.subscribe_container{
+    display: flex;
+    align-items: center;
+}
+.gift_container{
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+.container_review{
+    background-color: #191A1D;
+    padding-top: 40px;
+}
+.container_review{
+    padding: 30px;
+    margin-top: 30px;
+    border-radius: 5px;
+}
+.overview_review{
+    margin-top: 20px;
+}
+.casts_review{
+    margin:30px 0;
+}
+.crews_review{
+    margin:30px 0;
+}
+.icon_review{
+    border: 2px solid #DDDDDD;
+    background-color: #DE0404;
+    width: 44px;
+    line-height: 18px;
+    height: 44px;
+    display: flex;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+}
+.container_logo_title{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.icon_title{
+    padding-left: 20px;
+}
+.image_casts{
+    width: 88px; 
+    margin-right: 20px;
+}
+.image_casts img{
+    border-radius: 5px;
+}
+.container_casts_item{
+    display: flex;
+    align-items: center;
+}
+.name_casts{
+    color: white;
+    font-weight: bold;
+}
+.reaction_casts_listicon{
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+.reaction_casts {
+    display: flex;
+}
+.reaction_casts span{
+    color: white;
+}
+.list_tag{
+    margin-top: 20px;
+}
+.container_nextvideo{
+    background-color: #191A1D;
+    padding-top: 40px;
+    padding: 30px;
+    margin-top: 30px;
+    border-radius: 5px;
+}
+.container_pre_video{
+    display: flex;
+    align-items: center;
+}
+.container_next_video{
+    justify-content: flex-end;
+    display: flex;
+    align-items: center;
+}
+.content_next_video{
+    display: flex;
+    align-items: center;
+}
+.container_pre_video:hover .icon_prev{
+    color: #DE0404 !important;
+}
+.container_pre_video:hover .titlePrev{
+    color: #DE0404 !important;
+}
+.container_next_video:hover .icon_next{
+    color: #DE0404 !important;
+}
+.container_next_video:hover .titlePrev{
+    color: #DE0404 !important;
+}
+.container_nextvideo{
+    display: flex;
+    justify-content: space-between;
+}
+.thumb_video_prev{
+    height: 69px;
+    width: 69px;
+    margin-right: 10px;
+}
+.thumb_video_next{
+    height: 69px;
+    width: 69px;
+    margin-left: 10px;
+}
+.content_prev_video{
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+.thumb_video_next{
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+.icon_next{
+    margin-left: 15px;
+}
+.title_video{
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: white;
+}
+.title_video:hover{
+    color: #DE0404 !important;
+}
+.container_relatedpost{
+    margin: 30px 0;
+}
+.button_loadmore_butotn{
+    background-color: #DE0404;
+    color: white;
+    border: unset;
+    font-weight: bold;
+}
+.button_loadmore{
+    display: flex;
+    margin-top: 30px;
+    align-items: center;
+    justify-content: center;
+}
+.comment{
+    background-color: #191A1D;
+    padding-top: 40px;
+    padding: 30px;
+    margin-top: 30px;
+    border-radius: 5px;
+}
+.container_highest,.container_most_like_video,.container_new_playlist,.container_best_tvshow{
+    background-color: #191A1D;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+.info_author_user{
+    display: flex;
+    margin-bottom: 20px;
+    align-items: center;
+}
+.img_info_author_user{
+    border: 2px solid;
+    border-radius: 50%;
+    overflow: hidden;
+    height: 36px;
+    width: 36px;
+    margin-right: 10px;
+}
+.user_score_author_name{
+    justify-content: center;
+}
+.highest_title{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.info_bottom{
+    margin-top: 10px;
+}
