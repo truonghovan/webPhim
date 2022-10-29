@@ -42,7 +42,7 @@ const EmblaCarousel = ({ slides }) => {
   return (
     <div>
       <div className="embla">
-        <div className="embla__viewport" ref={mainViewportRef}>
+        <div className="embla__viewport">
           <div className="embla__container">
             {slides.map((index) => (
               <div className="embla__slide" key={index}>
@@ -58,7 +58,6 @@ const EmblaCarousel = ({ slides }) => {
                       alignItems: "center",
                       display: "flex",
                     }}
-                    // bac={mediaByIndex(index).src}
                     alt="A cool cat."
                   >
                     <div className="container-content-image">

@@ -37,14 +37,36 @@
 .container_listtab .mySwiperChannel{
     padding:10px 50px !important;
 }
-.slider_tab{
-    height: 25vh !important;
+.slider_tab,.slider_tab-active{
+    height: 15vh !important;
+    min-height: 120px;
+    
     padding: 30px;
     background-color: #191A1D;
     display: grid;
     justify-content: center;
     align-items: center;
     border: 1px solid #282828;
+}
+.slider_tab:hover{
+    cursor: pointer;
+    
+}
+.slider_tab:hover span{
+    color: #DE0404 !important;
+    
+}
+.slider_tab:hover .icon_tab{
+    background-color: #DE0404 !important;
+    
+}
+.slider_tab-active span{
+    color: #DE0404 !important;
+    
+}
+.slider_tab-active .icon_tab{
+    background-color: #DE0404 !important;
+    
 }
 .icon_tab{
     height: 43px;

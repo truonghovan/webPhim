@@ -1,72 +1,31 @@
-import { Card } from "antd";
-import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/pagination";
-import { FreeMode, Pagination } from "swiper";
-import { Tag } from "antd";
 import {
   CrownOutlined,
   LineChartOutlined,
   ThunderboltOutlined,
 } from "@ant-design/icons";
-import { Progress } from "antd";
-import { Row } from "antd";
 import { Col } from "antd";
+import { Progress } from "antd";
+import { Tag } from "antd";
+import { Row } from "antd";
 import Link from "next/link";
-import { AiFillEye, AiFillHeart } from "react-icons/ai";
-export default function NewAudios({ data, title, category, icon }) {
+import React from "react";
+import { AiFillCheckCircle, AiFillEye, AiFillHeart } from "react-icons/ai";
+import { SwiperSlide } from "swiper/react";
+
+export default function AudiosChannel({ data }) {
   return (
-    <div style={{ margin: "0 40px" }}>
-      <div
-        className="top_title"
-        style={{
-          display: "flex",
-          paddingTop: "30px",
-          paddingBottom: "30px",
-        }}
-      >
-        <div
-          className="icon_top_title"
-          style={{
-            marginRight: "20px",
-            width: "50px",
-            display: "flex",
-            height: "50px",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "red",
-            borderRadius: "15px",
-          }}
-        >
-          {icon}
-        </div>
-        <div style={{ display: "grid" }}>
-          <span style={{ color: "white" }}>{title}</span>
-          <span
-            style={{ fontSize: "22px", fontWeight: "bold", color: "white" }}
-          >
-            {category}
-          </span>
-        </div>
-      </div>
-      <div className="list_card_movie">
-        <Swiper
-          slidesPerView={6}
-          spaceBetween={30}
-          freeMode={true}
-          modules={[FreeMode, Pagination]}
-          className="mySwiper"
-        >
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+    <div>
+      {" "}
+      <Row gutter={[24, 24]}>
+        {data.map((item) => (
+          <Col md={6} key={item}>
             <SwiperSlide
               key={item}
               style={{
-                maxHeight: "500px",
+                maxHeight: "400px",
                 borderRadius: "10px",
                 height: "50vh",
-                minHeight: "400px",
+                minHeight: "350px",
                 display: "block",
                 backgroundColor: "#191A1D",
               }}
@@ -79,13 +38,17 @@ export default function NewAudios({ data, title, category, icon }) {
                   alignItems: "center",
                   backgroundSize: "cover",
                   position: "relative",
-                  height: "70%",
+                  height: "65%",
                   width: "100%",
                 }}
               >
                 <div
                   className="icon_top"
-                  style={{ position: "absolute", top: "10px", left: "20px" }}
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    left: "20px",
+                  }}
                 >
                   <Row>
                     <Col>
@@ -112,7 +75,11 @@ export default function NewAudios({ data, title, category, icon }) {
                 </div>
                 <div
                   className="icon_center"
-                  style={{ position: "absolute", bottom: "70px", left: "20px" }}
+                  style={{
+                    position: "absolute",
+                    bottom: "70px",
+                    left: "20px",
+                  }}
                 >
                   <Progress
                     type="circle"
@@ -130,7 +97,11 @@ export default function NewAudios({ data, title, category, icon }) {
                 </div>
                 <div
                   className="name_movie"
-                  style={{ position: "absolute", bottom: "35px", left: "20px" }}
+                  style={{
+                    position: "absolute",
+                    bottom: "35px",
+                    left: "20px",
+                  }}
                 >
                   <span
                     style={{
@@ -147,20 +118,20 @@ export default function NewAudios({ data, title, category, icon }) {
                 <div
                   style={{
                     display: "grid",
-                    textAlign: "start",
-                    paddingLeft: "20px",
+                    textAlign: "center",
                     paddingTop: "10px",
+                    paddingBottom: "10px",
                   }}
                 >
                   <Link href={"/"}>
                     <a
                       style={{
-                        color: "#ff9f0a",
+                        color: "#0D8B08",
                         fontWeight: "bold",
                         fontSize: "13px",
                       }}
                     >
-                      Music
+                      Gaming
                     </a>
                   </Link>
                   <Link href={"/"}>
@@ -175,16 +146,50 @@ export default function NewAudios({ data, title, category, icon }) {
                     </a>
                   </Link>
                 </div>
+                <div className="author">
+                  <div
+                    className="name_author"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <AiFillCheckCircle color="#6AC46D" />
+                    <span
+                      style={{
+                        color: "white",
+                        fontWeight: "bold",
+                        fontSize: "12px",
+                        marginRight: "5px",
+                      }}
+                    >
+                      Nicolas
+                    </span>{" "}
+                    <span
+                      style={{
+                        color: "#818182",
+                        fontWeight: "bold",
+                        fontSize: "12px",
+                      }}
+                    >
+                      - 11 Months Ago
+                    </span>
+                  </div>
+                </div>
                 <div
                   className="icon_info_bottom"
                   style={{
                     display: "flex",
-                    justifyContent: "space-between",
+                    justifyContent: "center",
                     marginTop: "10px",
                     padding: "0 20px",
                   }}
                 >
-                  <div className="icon_heart" style={{ display: "flex" }}>
+                  <div
+                    className="icon_heart"
+                    style={{ display: "flex", marginRight: "20px" }}
+                  >
                     {/* <HeartIcon /> */}
                     <AiFillHeart
                       size={25}
@@ -226,9 +231,9 @@ export default function NewAudios({ data, title, category, icon }) {
                 </div>
               </div>
             </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
+          </Col>
+        ))}
+      </Row>
     </div>
   );
 }

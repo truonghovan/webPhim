@@ -34,60 +34,64 @@ import { Tooltip } from "antd";
 import "../styles/embla.css";
 import FooterLayout from "../component/Footer";
 const { Header, Sider, Content } = Layout;
-const menu = (
-  <Menu
-    items={[
-      {
-        key: "1",
-        label: "Group title",
-        children: [
-          {
-            key: "1-1",
-            label: "1st menu item",
-          },
-          {
-            key: "1-2",
-            label: "2nd menu item",
-          },
-        ],
-      },
-      {
-        key: "2",
-        label: "sub menu",
-        children: [
-          {
-            key: "21",
-            label: "3rd menu item",
-          },
-          {
-            key: "22",
-            label: "4th menu item",
-          },
-        ],
-      },
-      {
-        key: "3",
-        label: "disabled sub menu",
-        disabled: true,
-        children: [
-          {
-            key: "3-1",
-            label: "5d menu item",
-          },
-          {
-            key: "3-2",
-            label: "6th menu item",
-          },
-        ],
-      },
-    ]}
-  />
-);
+
 function MyApp({ Component, pageProps }) {
   const [keyIndex, setKeyIndex] = useState("");
   const [collapsed, setCollapsed] = useState(false);
   const router = useRouter();
   const [path, setPath] = useState(router.asPath.slice(1));
+  const menu = (
+    <Menu
+      onClick={({ item, key, keyPath, domEvent }) => {
+        router.push(`/${key}`);
+      }}
+      items={[
+        {
+          key: "1",
+          label: "Group title",
+          children: [
+            {
+              key: "1-1",
+              label: "1st menu item",
+            },
+            {
+              key: "1-2",
+              label: "2nd menu item",
+            },
+          ],
+        },
+        {
+          key: "2",
+          label: "sub menu",
+          children: [
+            {
+              key: "21",
+              label: "3rd menu item",
+            },
+            {
+              key: "22",
+              label: "4th menu item",
+            },
+          ],
+        },
+        {
+          key: "3",
+          label: "disabled sub menu",
+          disabled: true,
+          children: [
+            {
+              key: "3-1",
+              label: "5d menu item",
+            },
+            {
+              key: "3-2",
+              label: "6th menu item",
+            },
+          ],
+        },
+      ]}
+    />
+  );
   const category = [
     { key: "cate1", label: "Home" },
     {
@@ -298,15 +302,17 @@ function MyApp({ Component, pageProps }) {
                     return (
                       <Dropdown
                         overlay={
-                          <Menu
-                            items={item.children}
-                            expandIcon={
-                              <CaretRightOutlined className="icon-menu" />
-                            }
-                          />
-                        }
-                        trigger={
-                          item.children === undefined ? ["click"] : ["hover"]
+                          item.children === undefined ? (
+                            <Menu items={[{ label: "Không có dữ liệu" }]} />
+                          ) : (
+                            <Menu
+                              items={item.children}
+                              onClick={(e) => router.push(`/${e.key}`)}
+                              expandIcon={
+                                <CaretRightOutlined className="icon-menu" />
+                              }
+                            />
+                          )
                         }
                         key={index}
                         arrow={true}
@@ -314,12 +320,14 @@ function MyApp({ Component, pageProps }) {
                         autoFocus={true}
                       >
                         <a onClick={(e) => e.preventDefault()}>
-                          <Space>
-                            {item.label}
-                            {item.children === undefined ? null : (
-                              <CaretDownOutlined />
-                            )}
-                          </Space>
+                          <Link key={index} href={`/${item.key}`}>
+                            <Space>
+                              {item.label}
+                              {item.children === undefined ? null : (
+                                <CaretDownOutlined />
+                              )}
+                            </Space>
+                          </Link>
                         </a>
                       </Dropdown>
                     );

@@ -24,10 +24,62 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "swiper/css/bundle";
-import { FaFunnelDollar } from "react-icons/fa";
+import {
+  FaFunnelDollar,
+  FaVideo,
+  FaMusic,
+  FaList,
+  FaBlog,
+  FaHeart,
+  FaClock,
+  FaBell,
+  FaHistory,
+  FaStarHalfAlt,
+  FaThumbsUp,
+  FaScroll,
+  FaComments,
+} from "react-icons/fa";
 import { Pagination, Navigation } from "swiper";
 import { Select } from "antd";
-export default function ChannelTabPage() {
+import { useRouter } from "next/router";
+import VideosChannel from "../../../component/ChannelTab/Videos";
+import AudiosChannel from "../../../component/ChannelTab/Audios";
+import PlaylistsChannel from "../../../component/ChannelTab/Playlists";
+import TransferHistory from "../../../component/ChannelTab/TransferHistory";
+import WatchLater from "../../../component/ChannelTab/WatchLater";
+const listTab = [
+  { link: "videos", title: "Videos", icon: <FaVideo color="white" /> },
+  { link: "audios", title: "Audios", icon: <FaMusic color="white" /> },
+  { link: "playlists", title: "Playlists", icon: <FaList color="white" /> },
+  { link: "posts", title: "Posts", icon: <FaBlog color="white" /> },
+  {
+    link: "transferhistory",
+    title: "Transfer History",
+    icon: <FaFunnelDollar color="white" />,
+  },
+  {
+    link: "subscriptions",
+    title: "Subscriptions",
+    icon: <FaHeart color="white" />,
+  },
+  { link: "watchlater", title: "Watch Later", icon: <FaClock color="white" /> },
+  {
+    link: "notifications",
+    title: "Notifications",
+    icon: <FaBell color="white" />,
+  },
+  { link: "history", title: "History", icon: <FaHistory color="white" /> },
+  { link: "rated", title: "Rated", icon: <FaStarHalfAlt color="white" /> },
+  { link: "reacted", title: "Reacted", icon: <FaThumbsUp color="white" /> },
+  { link: "about", title: "About", icon: <FaScroll color="white" /> },
+  {
+    link: "discussion",
+    title: "Discussion",
+    icon: <FaComments color="white" />,
+  },
+];
+export default function ChannelTabPage({ tab }) {
+  console.log(tab);
   const provinceData = ["Zhejiang", "Jiangsu"];
   const cityData = {
     Zhejiang: ["Hangzhou", "Ningbo", "Wenzhou"],
@@ -39,6 +91,7 @@ export default function ChannelTabPage() {
   const onSecondCityChange = (value) => {
     setSecondCity(value);
   };
+  const router = useRouter();
   return (
     <div className={styles["container_channel"]}>
       <div style={{ margin: "30px 10%" }}>
@@ -130,20 +183,32 @@ export default function ChannelTabPage() {
             modules={[Pagination, Navigation]}
             className="mySwiperChannel"
           >
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
-              <SwiperSlide key={item} className={styles["slider_tab"]}>
-                <div className={styles["icon_tab"]}>
-                  <FaFunnelDollar color="white" />
-                </div>
-                <span
-                  style={{
-                    fontSize: "1rem",
-                    fontWeight: "bold",
-                    color: "white",
-                  }}
-                >
-                  Video
-                </span>
+            {listTab.map((item, index) => (
+              <SwiperSlide
+                key={index}
+                className={
+                  tab === item.link
+                    ? styles["slider_tab-active"]
+                    : styles["slider_tab"]
+                }
+                onClick={() => router.push(`/channel/1/${item.link}`)}
+              >
+                <Link href={`/channel/1/${item.link}`}>
+                  <div className={styles["container_slider_tab"]}>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <div className={styles["icon_tab"]}>{item.icon}</div>
+                    </div>
+                    <span
+                      style={{
+                        fontSize: "1rem",
+                        fontWeight: "bold",
+                        color: "white",
+                      }}
+                    >
+                      {item.title}
+                    </span>
+                  </div>
+                </Link>
               </SwiperSlide>
             ))}
           </Swiper>
@@ -169,227 +234,23 @@ export default function ChannelTabPage() {
             </div>
           </div>
           <div className={styles["listpostbytag"]}>
-            <Row gutter={[24, 24]}>
-              {videoByTag.map((item) => (
-                <Col md={6} key={item}>
-                  <SwiperSlide
-                    key={item}
-                    style={{
-                      maxHeight: "400px",
-                      borderRadius: "10px",
-                      height: "50vh",
-                      minHeight: "350px",
-                      display: "block",
-                      backgroundColor: "#191A1D",
-                    }}
-                  >
-                    <div
-                      style={{
-                        backgroundImage: `url("https://vm.beeteam368.net/wp-content/uploads/2021/11/bruno-aguirre-EHAbTS3lnr4-unsplash-234x351.jpg")`,
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "center center",
-                        alignItems: "center",
-                        backgroundSize: "cover",
-                        position: "relative",
-                        height: "65%",
-                        width: "100%",
-                      }}
-                    >
-                      <div
-                        className="icon_top"
-                        style={{
-                          position: "absolute",
-                          top: "10px",
-                          left: "20px",
-                        }}
-                      >
-                        <Row>
-                          <Col>
-                            <Tag color="#108ee9" icon={<ThunderboltOutlined />}>
-                              #1
-                            </Tag>
-                          </Col>
-                          <Col>
-                            <Tag color="#FEDC56">
-                              <span style={{ color: "black" }}>02:45</span>
-                            </Tag>
-                          </Col>
-                          <Col>
-                            <Tag color="#FEDC56">
-                              <span style={{ color: "black" }}>HD</span>
-                            </Tag>
-                          </Col>
-                          <Col>
-                            <Tag color="#8C36E0" icon={<CrownOutlined />}>
-                              Platinum Elite
-                            </Tag>
-                          </Col>
-                        </Row>
-                      </div>
-                      <div
-                        className="icon_center"
-                        style={{
-                          position: "absolute",
-                          bottom: "70px",
-                          left: "20px",
-                        }}
-                      >
-                        <Progress
-                          type="circle"
-                          percent={70}
-                          width={35}
-                          success={{ percent: 70 }}
-                        />
-                        <Tag
-                          color="#0E0806"
-                          icon={<LineChartOutlined />}
-                          style={{ marginLeft: "10px" }}
-                        >
-                          1
-                        </Tag>
-                      </div>
-                      <div
-                        className="name_movie"
-                        style={{
-                          position: "absolute",
-                          bottom: "35px",
-                          left: "20px",
-                        }}
-                      >
-                        <span
-                          style={{
-                            fontSize: "20px",
-                            fontWeight: "bold",
-                            color: "white",
-                          }}
-                        >
-                          Có phim hay nè
-                        </span>
-                      </div>
-                    </div>
-                    <div className="info_bottom">
-                      <div
-                        style={{
-                          display: "grid",
-                          textAlign: "center",
-                          paddingTop: "10px",
-                          paddingBottom: "10px",
-                        }}
-                      >
-                        <Link href={"/"}>
-                          <a
-                            style={{
-                              color: "#0D8B08",
-                              fontWeight: "bold",
-                              fontSize: "13px",
-                            }}
-                          >
-                            Gaming
-                          </a>
-                        </Link>
-                        <Link href={"/"}>
-                          <a
-                            style={{
-                              color: "white",
-                              fontSize: "16px",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            Ở đây có nhạc hay
-                          </a>
-                        </Link>
-                      </div>
-                      <div className="author">
-                        <div
-                          className="name_author"
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                        >
-                          <AiFillCheckCircle color="#6AC46D" />
-                          <span
-                            style={{
-                              color: "white",
-                              fontWeight: "bold",
-                              fontSize: "12px",
-                              marginRight: "5px",
-                            }}
-                          >
-                            Nicolas
-                          </span>{" "}
-                          <span
-                            style={{
-                              color: "#818182",
-                              fontWeight: "bold",
-                              fontSize: "12px",
-                            }}
-                          >
-                            - 11 Months Ago
-                          </span>
-                        </div>
-                      </div>
-                      <div
-                        className="icon_info_bottom"
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          marginTop: "10px",
-                          padding: "0 20px",
-                        }}
-                      >
-                        <div
-                          className="icon_heart"
-                          style={{ display: "flex", marginRight: "20px" }}
-                        >
-                          {/* <HeartIcon /> */}
-                          <AiFillHeart
-                            size={25}
-                            style={{
-                              color: "#FF375F",
-                              marginRight: "5px",
-                            }}
-                          />
-                          <span
-                            style={{
-                              color: "white",
-                              fontSize: "15px",
-                              alignItems: "center",
-                              display: "flex",
-                            }}
-                          >
-                            46
-                          </span>
-                        </div>
-                        <div className="icon_view" style={{ display: "flex" }}>
-                          <AiFillEye
-                            size={25}
-                            style={{
-                              marginRight: "5px",
-                              color: "white",
-                            }}
-                          />
-                          <span
-                            style={{
-                              color: "white",
-                              fontSize: "15px",
-                              alignItems: "center",
-                              display: "flex",
-                            }}
-                          >
-                            46
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </SwiperSlide>
-                </Col>
-              ))}
-            </Row>
+            {tab === "videos" && <VideosChannel data={videoByTag} />}
+            {tab === "audios" && <AudiosChannel data={videoByTag} />}
+            {tab === "playlists" && <PlaylistsChannel data={videoByTag} />}
+            {tab === "posts" && <PlaylistsChannel data={videoByTag} />}
+            {tab === "transferhistory" && <TransferHistory data={videoByTag} />}
+            {tab === "watchlater" && <WatchLater data={videoByTag} />}
           </div>
         </div>
       </div>
     </div>
   );
+}
+export async function getServerSideProps({ params }) {
+  console.log(params);
+  return {
+    props: {
+      tab: params.tab,
+    }, // will be passed to the page component as props
+  };
 }
