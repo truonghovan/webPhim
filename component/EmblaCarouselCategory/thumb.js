@@ -11,11 +11,7 @@ export const Thumb = ({ selected, onClick, imgSrc }) => (
       className="embla__slide__inner embla__slide__inner--thumb"
       type="button"
     >
-      <img
-        className="embla__slide__thumbnail"
-        src={imgSrc.src}
-        alt="A cool cat."
-      />
+      <img className="embla__slide__thumbnail" src={imgSrc} alt="A cool cat." />
     </button>
   </div>
 );

@@ -17,6 +17,7 @@ import {
 } from "react-icons/ai";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { SwiperSlide } from "swiper/react";
+import { convertToMinutes } from "../../../common/functions";
 
 export default function WatchLater({ data }) {
   return (
@@ -110,7 +111,9 @@ export default function WatchLater({ data }) {
                     </Col>
                     <Col>
                       <Tag color="#FEDC56">
-                        <span style={{ color: "black" }}>02:45</span>
+                        <span style={{ color: "black" }}>
+                          {convertToMinutes(item.duration)}
+                        </span>
                       </Tag>
                     </Col>
                     <Col>

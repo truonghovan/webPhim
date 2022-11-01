@@ -11,6 +11,7 @@ import Link from "next/link";
 import React from "react";
 import { AiFillCheckCircle, AiFillEye, AiFillHeart } from "react-icons/ai";
 import { SwiperSlide } from "swiper/react";
+import { convertToMinutes } from "../../../common/functions";
 
 export default function VideosChannel({ data }) {
   return (
@@ -57,7 +58,9 @@ export default function VideosChannel({ data }) {
                     </Col>
                     <Col>
                       <Tag color="#FEDC56">
-                        <span style={{ color: "black" }}>02:45</span>
+                        <span style={{ color: "black" }}>
+                          {convertToMinutes(item.duration)}
+                        </span>
                       </Tag>
                     </Col>
                     <Col>
@@ -85,6 +88,7 @@ export default function VideosChannel({ data }) {
                     percent={70}
                     width={35}
                     success={{ percent: 70 }}
+                    style={{ backgroundColor: "black", borderRadius: "50%" }}
                   />
                   <Tag
                     color="#0E0806"

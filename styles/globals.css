@@ -134,17 +134,19 @@ a {
 .embla{
   height: 60vh;
   /* max-width: 100% !important; */
+ 
   padding: 0 !important;
 }
+
 .embla>.embla__viewport{
   height: 100%;
 }
 .embla__container{
   height: 100%;
 }
-.embla__slide__inner{
+/* .embla__slide__inner{
   height: 100% !important;
-}
+} */
 .emblaChild{
   height: 25vh;
   max-width: 100% !important;
@@ -190,4 +192,17 @@ a {
 }
 .ant-select-arrow{
   color: white !important;
+}
+.buttonColor{
+  font-size: 15px;
+  font-weight: bold;
+  background-color:#DE0404 !important;
+  border-color: #DE0404 !important;
+}
+.buttonColor:hover{
+  background-color: #3C3F46 !important;
+  border-color: #3C3F46 !important;
+}
+.is-selected{
+  border: 2px black;
 }

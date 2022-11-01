@@ -1,6 +1,6 @@
 import { VideoCameraAddOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import EmblaCarousel from "../component/EmblaCarousel";
 import NewAudios from "../component/NewAudios";
 import NewMovie from "../component/NewMovie";
@@ -9,48 +9,83 @@ import HighestRated from "../component/Rated";
 import { BsFilm, BsMusicNoteBeamed } from "react-icons/bs";
 import { FaPlay } from "react-icons/fa";
 import Script from "next/script";
-const HomePage = () => {
+import {
+  getVideoHighestRate,
+  getVideoPaging,
+  getVideoPagingByClass,
+} from "./api/video";
+import { useRouter } from "next/router";
+import LayoutPage from "../component/Layout";
+const HomePage = ({ videoNew, audioList, videoRating }) => {
   const SLIDE_COUNT = 10;
   const slides = Array.from(Array(SLIDE_COUNT).keys());
   const [collapsed, setCollapsed] = useState(false);
+  const router = useRouter();
+  const [showChild, setShowChild] = useState(false);
+  useEffect(() => {
+    setShowChild(true);
+  }, []);
+
+  if (!showChild) {
+    return null;
+  }
   return (
-    <div
-      className="body"
-      style={{ backgroundColor: "#010001", marginBottom: "20px" }}
-    >
-      
-      <EmblaCarousel slides={slides} />
-      <NewMovie
-        data={[]}
-        title="New Audios"
-        category="All Audios"
-        icon={
-          <VideoCameraAddOutlined
-            style={{ color: "white", fontSize: "20px" }}
-          />
-        }
-      />
-      <NewAudios
-        data={[]}
-        title="All Audios"
-        category="New Audios"
-        icon={
-          <BsMusicNoteBeamed style={{ color: "white", fontSize: "20px" }} />
-        }
-      />
-      <NewMovie
-        data={[]}
-        title="All Videos"
-        category="Premium Videos"
-        quantity={4}
-        icon={<FaPlay style={{ color: "white", fontSize: "20px" }} />}
-      />
-      <HighestRated
-        icon={<BsFilm style={{ color: "white", fontSize: "20px" }} />}
-        title="Do Not Miss ^^"
-        category="Highest Rated"
-      />
-    </div>
+    <LayoutPage>
+      <div
+        className="body"
+        style={{ backgroundColor: "#010001", marginBottom: "20px" }}
+      >
+        <EmblaCarousel slides={videoNew || []} />
+        <NewMovie
+          data={videoNew}
+          title="All Movies"
+          category="New Movies"
+          router={router}
+          icon={
+            <VideoCameraAddOutlined
+              style={{ color: "white", fontSize: "20px" }}
+            />
+          }
+        />
+        <NewAudios
+          data={audioList}
+          router={router}
+          title="All Audios"
+          category="New Audios"
+          icon={
+            <BsMusicNoteBeamed style={{ color: "white", fontSize: "20px" }} />
+          }
+        />
+        <NewMovie
+          data={videoNew}
+          router={router}
+          title="All Videos"
+          category="Premium Videos"
+          quantity={4}
+          icon={<FaPlay style={{ color: "white", fontSize: "20px" }} />}
+        />
+        <HighestRated
+          data={videoRating}
+          icon={<BsFilm style={{ color: "white", fontSize: "20px" }} />}
+          title="Do Not Miss ^^"
+          category="Highest Rated"
+        />
+      </div>
+    </LayoutPage>
   );
 };
+export async function getServerSideProps() {
+  const [videoNew, audioList, videoRating] = await Promise.all([
+    getVideoPagingByClass("video", 10, 1),
+    getVideoPagingByClass("audio", 10, 1),
+    getVideoHighestRate(6, 1),
+  ]);
+  return {
+    props: {
+      videoNew: videoNew || [],
+      audioList: audioList || [],
+      videoRating: videoRating || [],
+    }, // will be passed to the page component as props
+  };
+}
 export default HomePage;

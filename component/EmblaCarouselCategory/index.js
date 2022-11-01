@@ -11,10 +11,12 @@ import {
 import styles from "../../styles/detailsPost.module.scss";
 import { Button } from "antd";
 import Link from "next/link";
+import { convertToMinutes } from "../../common/functions";
 const { Title } = Typography;
 const EmblaCarousel = ({ slides }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [mainViewportRef, embla] = useEmblaCarousel({ skipSnaps: false });
+  const [hover, setHover] = useState(false);
   const [thumbViewportRef, emblaThumbs] = useEmblaCarousel({
     containScroll: "keepSnaps",
     dragFree: true,
@@ -44,13 +46,13 @@ const EmblaCarousel = ({ slides }) => {
       <div className="embla" style={{ height: "70vh", minHeight: "540px" }}>
         <div className="embla__viewport" ref={mainViewportRef}>
           <div className="embla__container">
-            {slides.map((index) => (
+            {slides?.map((item, index) => (
               <div className="embla__slide" key={index}>
                 <div className="embla__slide__inner">
                   <div
                     className="embla__slide__img"
                     style={{
-                      backgroundImage: `url(${"https://vm.beeteam368.net/wp-content/uploads/2021/11/cosplay-5344250_1920-1.jpg"})`,
+                      backgroundImage: `url(${item.thumb})`,
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: "center center",
                       alignItems: "center",
@@ -69,8 +71,8 @@ const EmblaCarousel = ({ slides }) => {
                         level={3}
                         style={{ display: "flex", justifyContent: "center" }}
                       >
-                        <a style={{ fontSize: "4.3em", color: "white" }}>
-                          Con mèo con
+                        <a style={{ fontSize: "2em", color: "white" }}>
+                          {item.name}
                         </a>
                       </Title>
                       <div
@@ -82,30 +84,43 @@ const EmblaCarousel = ({ slides }) => {
                             icon={<PlayCircleOutlined />}
                             style={{ fontWeight: "bold" }}
                           >
-                            <span>WATCH NOW | 01:42</span>
+                            <span>WATCH NOW | {convertToMinutes(item.duration)}</span>
                           </Button> */}
                           <div
                             className={styles["button_loadmore"]}
                             style={{ margin: "0 30px" }}
                           >
-                            <Button
-                              icon={<PlayCircleOutlined />}
-                              className={styles["button_loadmore_butotn"]}
-                              // onClick={handleLoadMoreVideo}
-                              // loading={loadingButton}
-                            >
-                              WATCH NOW | 01:42
-                            </Button>
+                            <Link href={`/${item.class}/${item.slug}`}>
+                              <Button
+                                icon={<PlayCircleOutlined />}
+                                className={styles["button_loadmore_butotn"]}
+                                // onClick={handleLoadMoreVideo}
+                                // loading={loadingButton}
+                              >
+                                WATCH NOW | {convertToMinutes(item.duration)}
+                              </Button>
+                            </Link>
                           </div>
                         </Link>
                         <Button
                           icon={<EyeOutlined />}
                           style={{ fontWeight: "bold" }}
+                          onMouseEnter={() => setHover(true)}
+                          // onMouseLeave={() => setHover(false)}
                         >
                           PREVIEW
                         </Button>
                       </div>
                     </div>
+                    {/* {hover === true ? (
+                      <video
+                        autoPlay={true}
+                        style={{ zIndex: "999999999999" }}
+                        controls
+                        src="https://cdn.jwplayer.com/v2/media/TAITbudl"
+                        type="video/mp4"
+                      />
+                    ) : null} */}
                   </div>
                 </div>
               </div>
@@ -124,7 +139,7 @@ const EmblaCarousel = ({ slides }) => {
           }}
         >
           <div
-            className="embla embla--thumb"
+            className="embla .embla--thumb--cate"
             style={{
               height: "130px",
               minHeight: "120px",
@@ -132,12 +147,12 @@ const EmblaCarousel = ({ slides }) => {
             }}
           >
             <div className="embla__viewport" ref={thumbViewportRef}>
-              <div className="embla__container embla__container--thumb">
-                {slides.map((index) => (
+              <div className="embla__container embla__container--thumb--cate">
+                {slides?.map((item, index) => (
                   <Thumb
                     onClick={() => onThumbClick(index)}
                     selected={index === selectedIndex}
-                    imgSrc={mediaByIndex(index)}
+                    imgSrc={item.thumb}
                     key={index}
                   />
                 ))}

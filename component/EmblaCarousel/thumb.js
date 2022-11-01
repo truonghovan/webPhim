@@ -1,7 +1,8 @@
 import React from "react";
 
-export const Thumb = ({ selected, onClick, imgSrc }) => (
+export const Thumb = ({ selected, onClick, imgSrc, item }) => (
   <div
+    style={{ height: "160px" }}
     className={`embla__slide embla__slide--thumb ${
       selected ? "is-selected" : ""
     }`}
@@ -11,11 +12,7 @@ export const Thumb = ({ selected, onClick, imgSrc }) => (
       className="embla__slide__inner embla__slide__inner--thumb"
       type="button"
     >
-      <img
-        className="embla__slide__thumbnail"
-        src={imgSrc.src}
-        alt="A cool cat."
-      />
+      <img className="embla__slide__thumbnail" src={imgSrc} alt="A cool cat." />
     </button>
   </div>
 );

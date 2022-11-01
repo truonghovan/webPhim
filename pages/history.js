@@ -1,5 +1,10 @@
 import React, { useState } from "react";
+import LayoutPage from "../component/Layout";
 const HistoryPage = () => {
-  return <h1>đây là trang của trường</h1>;
+  return (
+    <LayoutPage>
+      <h1>đây là trang của trường</h1>
+    </LayoutPage>
+  );
 };
 export default HistoryPage;

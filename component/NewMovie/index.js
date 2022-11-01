@@ -15,6 +15,8 @@ import {
 import { Progress } from "antd";
 import { Row } from "antd";
 import { Col } from "antd";
+import Link from "next/link";
+import { convertToMinutes } from "../../common/functions";
 export default function NewMovie({ data, title, category, icon, quantity }) {
   return (
     <div style={{ margin: "0 40px" }}>
@@ -58,82 +60,121 @@ export default function NewMovie({ data, title, category, icon, quantity }) {
           modules={[FreeMode, Pagination]}
           className="mySwiper"
         >
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+          {data.map((item) => (
             <SwiperSlide
-              key={item}
+              // onClick={router.push(`/${item.category}/${item.slug}`)}
+              key={item._id}
               style={{
                 maxHeight: "350px",
                 minHeight: "300px",
                 borderRadius: "10px",
                 height: quantity ? "30vh" : "40vh",
-                backgroundImage: `url("https://vm.beeteam368.net/wp-content/uploads/2021/11/bruno-aguirre-EHAbTS3lnr4-unsplash-234x351.jpg")`,
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center center",
                 alignItems: "center",
-                backgroundSize: "cover",
                 position: "relative",
                 objectFit: "contain",
               }}
             >
-              <div
-                className="icon_top"
-                style={{ position: "absolute", top: "10px", left: "20px" }}
-              >
-                <Row>
-                  <Col>
-                    <Tag color="#108ee9" icon={<ThunderboltOutlined />}>
-                      #1
-                    </Tag>
-                  </Col>
-                  <Col>
-                    <Tag color="#FEDC56">
-                      <span style={{ color: "black" }}>02:45</span>
-                    </Tag>
-                  </Col>
-                  <Col>
-                    <Tag color="#FEDC56">
-                      <span style={{ color: "black" }}>HD</span>
-                    </Tag>
-                  </Col>
-                  <Col>
-                    <Tag color="#8C36E0" icon={<CrownOutlined />}>
-                      Platinum Elite
-                    </Tag>
-                  </Col>
-                </Row>
-              </div>
-              <div
-                className="icon_center"
-                style={{ position: "absolute", bottom: "70px", left: "20px" }}
-              >
-                <Progress
-                  type="circle"
-                  percent={70}
-                  width={35}
-                  success={{ percent: 70 }}
-                />
-                <Tag
-                  color="#0E0806"
-                  icon={<LineChartOutlined />}
-                  style={{ marginLeft: "10px" }}
-                >
-                  1
-                </Tag>
-              </div>
-              <div
-                className="name_movie"
-                style={{ position: "absolute", bottom: "35px", left: "20px" }}
-              >
-                <span
-                  style={{
-                    fontSize: "20px",
-                    fontWeight: "bold",
-                    color: "white",
-                  }}
-                >
-                  Có phim hay nè
-                </span>
-              </div>
+              <Link key={item._id} href={`/${item?.class}/${item.slug}`}>
+                <a style={{ height: "100%", width: "100%" }}>
+                  {" "}
+                  <div
+                    style={{
+                      backgroundImage: `url("${item.thumb}")`,
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "center center",
+                      height: "100%",
+                      width: "100%",
+                      backgroundSize: "cover",
+                    }}
+                  >
+                    <div
+                      className="icon_top"
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        left: "20px",
+                      }}
+                    >
+                      <Row>
+                        <Col>
+                          <Tag color="#108ee9" icon={<ThunderboltOutlined />}>
+                            #1
+                          </Tag>
+                        </Col>
+                        <Col>
+                          <Tag color="#FEDC56">
+                            <span style={{ color: "black" }}>
+                              {convertToMinutes(item.duration)}
+                            </span>
+                          </Tag>
+                        </Col>
+                        <Col>
+                          <Tag color="#FEDC56">
+                            <span style={{ color: "black" }}>HD</span>
+                          </Tag>
+                        </Col>
+                        <Col>
+                          <Tag color="#8C36E0" icon={<CrownOutlined />}>
+                            Platinum Elite
+                          </Tag>
+                        </Col>
+                      </Row>
+                    </div>
+                    <div
+                      className="icon_center"
+                      style={{
+                        position: "absolute",
+                        bottom: "80px",
+                        left: "20px",
+                      }}
+                    >
+                      <Progress
+                        type="circle"
+                        percent={
+                          (item.rate.total / (item.rate.amount * 5)) * 100
+                        }
+                        width={35}
+                        success={{
+                          percent:
+                            (item.rate.total / (item.rate.amount * 5)) * 100,
+                        }}
+                        style={{
+                          backgroundColor: "black",
+                          borderRadius: "100%",
+                        }}
+                      />
+                      <Tag
+                        color="#0E0806"
+                        icon={<LineChartOutlined />}
+                        style={{ marginLeft: "10px" }}
+                      >
+                        1
+                      </Tag>
+                    </div>
+                    <div
+                      className="name_movie"
+                      style={{
+                        position: "absolute",
+                        bottom: "20px",
+                        left: "20px",
+                        height: "55px",
+                        overflow: "hidden",
+                        marginRight: "10px",
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: "17px",
+                          fontWeight: "bold",
+                          color: "white",
+                        }}
+                      >
+                        {item.name}
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>

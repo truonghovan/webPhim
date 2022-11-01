@@ -110,7 +110,9 @@ export default function PlaylistsChannel({ data }) {
                     </Col>
                     <Col>
                       <Tag color="#FEDC56">
-                        <span style={{ color: "black" }}>02:45</span>
+                        <span style={{ color: "black" }}>
+                          {convertToMinutes(item.duration)}
+                        </span>
                       </Tag>
                     </Col>
                     <Col>

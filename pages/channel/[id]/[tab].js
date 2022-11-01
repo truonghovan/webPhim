@@ -47,6 +47,8 @@ import AudiosChannel from "../../../component/ChannelTab/Audios";
 import PlaylistsChannel from "../../../component/ChannelTab/Playlists";
 import TransferHistory from "../../../component/ChannelTab/TransferHistory";
 import WatchLater from "../../../component/ChannelTab/WatchLater";
+import LayoutPage from "../../../component/Layout";
+import { getVideoByChannel } from "../../api/video";
 const listTab = [
   { link: "videos", title: "Videos", icon: <FaVideo color="white" /> },
   { link: "audios", title: "Audios", icon: <FaMusic color="white" /> },
@@ -79,7 +81,6 @@ const listTab = [
   },
 ];
 export default function ChannelTabPage({ tab }) {
-  console.log(tab);
   const provinceData = ["Zhejiang", "Jiangsu"];
   const cityData = {
     Zhejiang: ["Hangzhou", "Ningbo", "Wenzhou"],
@@ -93,164 +94,172 @@ export default function ChannelTabPage({ tab }) {
   };
   const router = useRouter();
   return (
-    <div className={styles["container_channel"]}>
-      <div style={{ margin: "30px 10%" }}>
-        <div className={styles["container_author"]}>
-          <div className={styles["container_video"]}>
-            <Row className={styles["row_container"]}>
-              <Col md={20} className={styles["info_author"]}>
-                <div className={styles["img_info_author"]}>
-                  <img src="https://secure.gravatar.com/avatar/119915a6b9fb9c5149b70ee96a7bc1a6?s=61&d=mm&r=g"></img>
-                </div>
-                <div className={styles["author_name"]}>
-                  <div className={styles["author_name_name"]}>
-                    <BsFillCheckCircleFill size={15} color={"#6AC46D"} />
-                    <Link href={"/"}>
-                      <a
-                        style={{
-                          color: "white",
-                          fontWeight: "bold",
-                          fontSize: "1.1rem",
-                          paddingLeft: "10px",
-                        }}
-                      >
-                        Nicolas
-                      </a>
-                    </Link>
+    <LayoutPage>
+      <div className={styles["container_channel"]}>
+        <div style={{ margin: "30px 10%" }}>
+          <div className={styles["container_author"]}>
+            <div className={styles["container_video"]}>
+              <Row className={styles["row_container"]}>
+                <Col md={20} className={styles["info_author"]}>
+                  <div className={styles["img_info_author"]}>
+                    <img src="https://secure.gravatar.com/avatar/119915a6b9fb9c5149b70ee96a7bc1a6?s=61&d=mm&r=g"></img>
                   </div>
-                  <div className={styles["author_name_sub"]}>
-                    <AiOutlineHeart size={18} color={"white"} />
-                    <Link href={"/"}>
-                      <span
-                        style={{
-                          color: "white",
-                          fontWeight: "400",
-                          fontSize: "1rem",
-                          paddingLeft: "10px",
-                        }}
-                      >
-                        87 Subscribers
-                      </span>
-                    </Link>
-                  </div>
-                </div>
-              </Col>
-              <Col className={styles["subscribe_container"]}>
-                <Button
-                  className={styles["button_sub"]}
-                  icon={<AiOutlineHeart />}
-                  size="large"
-                  danger
-                  type="primary"
-                >
-                  <span
-                    style={{
-                      marginLeft: "10px",
-                      fontSize: "1em",
-                      fontWeight: "bold",
-                      color: "white",
-                    }}
-                  >
-                    Subscribe
-                  </span>
-                </Button>
-              </Col>
-              <Col className={styles["gift_container"]}>
-                <Tooltip title={"Virtual Gifts"}>
-                  <Button
-                    style={{
-                      alignItems: "center",
-                      display: "flex",
-                      justifyContent: "center",
-                      backgroundColor: "#3C3F46",
-                      border: "0",
-                    }}
-                    size="large"
-                    icon={<AiOutlineStar size={22} />}
-                  />
-                </Tooltip>
-              </Col>
-            </Row>
-          </div>
-        </div>
-        <div className={styles["container_listtab"]}>
-          <Swiper
-            slidesPerView={6}
-            spaceBetween={0}
-            slidesPerGroup={1}
-            loopFillGroupWithBlank={true}
-            navigation={true}
-            modules={[Pagination, Navigation]}
-            className="mySwiperChannel"
-          >
-            {listTab.map((item, index) => (
-              <SwiperSlide
-                key={index}
-                className={
-                  tab === item.link
-                    ? styles["slider_tab-active"]
-                    : styles["slider_tab"]
-                }
-                onClick={() => router.push(`/channel/1/${item.link}`)}
-              >
-                <Link href={`/channel/1/${item.link}`}>
-                  <div className={styles["container_slider_tab"]}>
-                    <div style={{ display: "flex", justifyContent: "center" }}>
-                      <div className={styles["icon_tab"]}>{item.icon}</div>
+                  <div className={styles["author_name"]}>
+                    <div className={styles["author_name_name"]}>
+                      <BsFillCheckCircleFill size={15} color={"#6AC46D"} />
+                      <Link href={"/"}>
+                        <a
+                          style={{
+                            color: "white",
+                            fontWeight: "bold",
+                            fontSize: "1.1rem",
+                            paddingLeft: "10px",
+                          }}
+                        >
+                          Nicolas
+                        </a>
+                      </Link>
                     </div>
+                    <div className={styles["author_name_sub"]}>
+                      <AiOutlineHeart size={18} color={"white"} />
+                      <Link href={"/"}>
+                        <span
+                          style={{
+                            color: "white",
+                            fontWeight: "400",
+                            fontSize: "1rem",
+                            paddingLeft: "10px",
+                          }}
+                        >
+                          87 Subscribers
+                        </span>
+                      </Link>
+                    </div>
+                  </div>
+                </Col>
+                <Col className={styles["subscribe_container"]}>
+                  <Button
+                    className={styles["button_sub"]}
+                    icon={<AiOutlineHeart />}
+                    size="large"
+                    danger
+                    type="primary"
+                  >
                     <span
                       style={{
-                        fontSize: "1rem",
+                        marginLeft: "10px",
+                        fontSize: "1em",
                         fontWeight: "bold",
                         color: "white",
                       }}
                     >
-                      {item.title}
+                      Subscribe
                     </span>
-                  </div>
-                </Link>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-
-        <div className={styles["container_listpost"]}>
-          <div className={styles["container_filter"]}>
-            <div className={styles["select_sort"]}>
-              <Select
-                className={styles["select_sort_video"]}
-                style={{ color: "white" }}
-                value={secondCity}
-                onChange={onSecondCityChange}
-              >
-                {cities.map((city) => (
-                  <Select.Option key={city}>{city}</Select.Option>
-                ))}
-              </Select>
-            </div>
-            <div className={styles["quantity_item_per_page"]}>
-              {" "}
-              There are 11 items in this tab
+                  </Button>
+                </Col>
+                <Col className={styles["gift_container"]}>
+                  <Tooltip title={"Virtual Gifts"}>
+                    <Button
+                      style={{
+                        alignItems: "center",
+                        display: "flex",
+                        justifyContent: "center",
+                        backgroundColor: "#3C3F46",
+                        border: "0",
+                      }}
+                      size="large"
+                      icon={<AiOutlineStar size={22} />}
+                    />
+                  </Tooltip>
+                </Col>
+              </Row>
             </div>
           </div>
-          <div className={styles["listpostbytag"]}>
-            {tab === "videos" && <VideosChannel data={videoByTag} />}
-            {tab === "audios" && <AudiosChannel data={videoByTag} />}
-            {tab === "playlists" && <PlaylistsChannel data={videoByTag} />}
-            {tab === "posts" && <PlaylistsChannel data={videoByTag} />}
-            {tab === "transferhistory" && <TransferHistory data={videoByTag} />}
-            {tab === "watchlater" && <WatchLater data={videoByTag} />}
+          <div className={styles["container_listtab"]}>
+            <Swiper
+              slidesPerView={6}
+              spaceBetween={0}
+              slidesPerGroup={1}
+              loopFillGroupWithBlank={true}
+              navigation={true}
+              modules={[Pagination, Navigation]}
+              className="mySwiperChannel"
+            >
+              {listTab.map((item, index) => (
+                <SwiperSlide
+                  key={index}
+                  className={
+                    tab === item.link
+                      ? styles["slider_tab-active"]
+                      : styles["slider_tab"]
+                  }
+                  onClick={() => router.push(`/channel/1/${item.link}`)}
+                >
+                  <Link href={`/channel/1/${item.link}`}>
+                    <div className={styles["container_slider_tab"]}>
+                      <div
+                        style={{ display: "flex", justifyContent: "center" }}
+                      >
+                        <div className={styles["icon_tab"]}>{item.icon}</div>
+                      </div>
+                      <span
+                        style={{
+                          fontSize: "1rem",
+                          fontWeight: "bold",
+                          color: "white",
+                        }}
+                      >
+                        {item.title}
+                      </span>
+                    </div>
+                  </Link>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+
+          <div className={styles["container_listpost"]}>
+            <div className={styles["container_filter"]}>
+              <div className={styles["select_sort"]}>
+                <Select
+                  className={styles["select_sort_video"]}
+                  style={{ color: "white" }}
+                  value={secondCity}
+                  onChange={onSecondCityChange}
+                >
+                  {cities.map((city) => (
+                    <Select.Option key={city}>{city}</Select.Option>
+                  ))}
+                </Select>
+              </div>
+              <div className={styles["quantity_item_per_page"]}>
+                {" "}
+                There are 11 items in this tab
+              </div>
+            </div>
+            <div className={styles["listpostbytag"]}>
+              {tab === "videos" && <VideosChannel data={videoByTag} />}
+              {tab === "audios" && <AudiosChannel data={videoByTag} />}
+              {tab === "playlists" && <PlaylistsChannel data={videoByTag} />}
+              {tab === "posts" && <PlaylistsChannel data={videoByTag} />}
+              {tab === "transferhistory" && (
+                <TransferHistory data={videoByTag} />
+              )}
+              {tab === "watchlater" && <WatchLater data={videoByTag} />}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </LayoutPage>
   );
 }
 export async function getServerSideProps({ params }) {
-  console.log(params);
+  const [videoByChannel] = await Promise.all([getVideoByChannel(params.id)]);
   return {
     props: {
       tab: params.tab,
+      id: params.id || "",
+      videoByChannel: videoByChannel || [],
     }, // will be passed to the page component as props
   };
 }

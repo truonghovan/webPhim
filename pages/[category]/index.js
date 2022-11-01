@@ -1,139 +1,96 @@
-import React, { useState } from "react";
-import LayoutPage from "../component/Layout";
-import { FaBolt } from "react-icons/fa";
-import { getVideoByView } from "./api/video";
-import { Row } from "antd";
 import { Col } from "antd";
+import { Row } from "antd";
+import React, { useEffect, useState } from "react";
+import EmblaCarousel from "../../component/EmblaCarouselCategory";
+import styles from "../../styles/category.module.scss";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/pagination";
+import { FreeMode, Pagination } from "swiper";
+import { Tag } from "antd";
 import {
   CrownOutlined,
   LineChartOutlined,
   ThunderboltOutlined,
+  Icon,
+  HeartOutlined,
+  EyeOutlined,
+  PoweroffOutlined,
 } from "@ant-design/icons";
 import { Progress } from "antd";
-import { Tag } from "antd";
 import Link from "next/link";
+import { AiFillCheckCircle, AiFillEye, AiFillHeart } from "react-icons/ai";
+import { Button } from "antd";
+import { convertToMinutes } from "../../common/functions";
+import { getVideoByCateSlug } from "../api/video";
 import moment from "moment";
 import "moment/locale/vi";
-import {
-  AiFillCheckCircle,
-  AiFillEye,
-  AiFillHeart,
-  AiOutlineHeart,
-} from "react-icons/ai";
-import { BsFillCheckCircleFill } from "react-icons/bs";
-import { SwiperSlide } from "swiper/react";
-import { convertToMinutes } from "../common/functions";
-const TrendingPage = ({ videoByView }) => {
+import LayoutPage from "../../component/Layout";
+import Head from "next/head";
+
+export default function CategoryPage({ videoByCate, slug }) {
+  const SLIDE_COUNT = 10;
+  const slides = Array.from(Array(SLIDE_COUNT).keys());
+  const [videoByCateData, setVideoByCateData] = useState(videoByCate);
+  const [pageSize, setPageSize] = useState(6);
+  const [pageIndex, setPageIndex] = useState(1);
+  const [hasMore, setHasMore] = useState(
+    videoByCate.length < pageSize ? false : true
+  );
+
+  const [loadings, setLoadings] = useState(false);
+  const [showChild, setShowChild] = useState(false);
+  useEffect(() => {
+    setShowChild(true);
+  }, []);
+
+  if (!showChild) {
+    return null;
+  }
+
+  const handleLoadMoreData = () => {
+    setLoadings(true);
+    setPageIndex(pageIndex + 1);
+    getVideoByCateSlug(slug, pageSize, pageIndex + 1).then((dataMore) => {
+      setVideoByCateData((data) => [...data, ...dataMore]);
+      setHasMore(dataMore.length < pageSize ? false : true);
+      setLoadings(false);
+    });
+  };
   return (
     <LayoutPage>
-      <div
-        className="container"
-        style={{ padding: "20px 10%", backgroundColor: "#010001" }}
-      >
+      <Head>
+        <title></title>
+      </Head>
+      <div className="container_detailPost">
+        <div className={styles["container_banner"]}>
+          <EmblaCarousel slides={videoByCate || []} />
+        </div>
         <div
-          className="top_title"
+          className={styles["container_listitem"]}
           style={{
-            display: "flex",
-            paddingTop: "30px",
-            paddingBottom: "30px",
+            backgroundColor: "#010001",
+            padding: "20px 10%",
           }}
         >
-          <div
-            className="icon_top_title"
-            style={{
-              marginRight: "20px",
-              width: "50px",
-              display: "flex",
-              height: "50px",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "red",
-              borderRadius: "15px",
-            }}
-          >
-            <FaBolt style={{ color: "white", fontSize: "20px" }} />
-          </div>
-          <div style={{ display: "grid" }}>
-            <span style={{ color: "white" }}>Top Posts</span>
-            <span
-              style={{ fontSize: "22px", fontWeight: "bold", color: "white" }}
-            >
-              Trending
-            </span>
-          </div>
-        </div>
-        <div className="containerListVideo">
           <Row gutter={[24, 24]}>
-            {videoByView.map((item, index) => (
-              <Col key={index} md={6} sm={24} xs={24}>
-                <Link href={`/${item.class}/${item.slug}`}>
-                  <a>
-                    <SwiperSlide
-                      key={item}
-                      style={{
-                        maxHeight: "400px",
-                        borderRadius: "10px",
-                        height: "50vh",
-                        minHeight: "520px",
-                        display: "block",
-                        backgroundColor: "#191A1D",
-                      }}
-                    >
-                      <div>
-                        <div style={{ display: "flex", padding: "20px 20px" }}>
-                          <div
-                            style={{
-                              border: "2px solid ",
-                              borderRadius: "50%",
-                              overflow: "hidden",
-                              marginRight: "10px",
-                            }}
-                          >
-                            <img src="https://secure.gravatar.com/avatar/119915a6b9fb9c5149b70ee96a7bc1a6?s=50&d=mm&r=g"></img>
-                          </div>
-                          <div
-                            style={{ display: "grid", alignItems: "center" }}
-                          >
-                            <div
-                              style={{ display: "flex", alignItems: "center" }}
-                            >
-                              <BsFillCheckCircleFill
-                                size={15}
-                                color={"#6AC46D"}
-                              />
-                              <Link href={`/${item.class}/${item.slug}`}>
-                                <a
-                                  style={{
-                                    color: "white",
-                                    fontWeight: "bold",
-                                    fontSize: "1.1rem",
-                                    paddingLeft: "10px",
-                                  }}
-                                >
-                                  {item?.user?.fullName}
-                                </a>
-                              </Link>
-                            </div>
-                            <div
-                              style={{ display: "flex", alignItems: "center" }}
-                            >
-                              <AiOutlineHeart size={18} color={"white"} />
-                              <Link href={`/${item.class}/${item.slug}`}>
-                                <span
-                                  style={{
-                                    color: "white",
-                                    fontWeight: "400",
-                                    fontSize: "1rem",
-                                    paddingLeft: "10px",
-                                  }}
-                                >
-                                  {item?.user?.subscriber?.length} Subscribers
-                                </span>
-                              </Link>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+            {videoByCateData.map((item) => (
+              <Col key={item._id} md={6}>
+                {" "}
+                <SwiperSlide
+                  key={item}
+                  style={{
+                    maxHeight: "400px",
+                    borderRadius: "10px",
+                    height: "50vh",
+                    minHeight: "350px",
+                    display: "block",
+                    backgroundColor: "#191A1D",
+                  }}
+                >
+                  <Link href={`/${item?.class}/${item.slug}`}>
+                    <a>
                       <div
                         style={{
                           backgroundImage: `url(${item.thumb})`,
@@ -142,7 +99,7 @@ const TrendingPage = ({ videoByView }) => {
                           alignItems: "center",
                           backgroundSize: "cover",
                           position: "relative",
-                          height: "40%",
+                          height: "65%",
                           width: "100%",
                         }}
                       >
@@ -186,7 +143,7 @@ const TrendingPage = ({ videoByView }) => {
                           className="icon_center"
                           style={{
                             position: "absolute",
-                            bottom: "30px",
+                            bottom: "40px",
                             left: "20px",
                           }}
                         >
@@ -203,7 +160,7 @@ const TrendingPage = ({ videoByView }) => {
                             }}
                             style={{
                               backgroundColor: "black",
-                              borderRadius: "50%",
+                              borderRadius: "100%",
                             }}
                           />
                           <Tag
@@ -219,69 +176,72 @@ const TrendingPage = ({ videoByView }) => {
                         <div
                           style={{
                             display: "grid",
-                            textAlign: "start",
+                            textAlign: "center",
                             paddingTop: "10px",
                             paddingBottom: "10px",
-                            marginLeft: "20px",
                           }}
                         >
                           <Link href={"/"}>
-                            <div>
-                              <a
-                                style={{
-                                  color: "#0D8B08",
-                                  fontWeight: "bold",
-                                  fontSize: "13px",
-                                  marginRight: "5px",
-                                }}
-                              >
-                                {item?.category?.cateName}
-                              </a>
-                              <span
-                                style={{
-                                  color: "#818182",
-                                  fontWeight: "bold",
-                                  fontSize: "12px",
-                                }}
-                              >
-                                - {moment(item?.createdAt).fromNow()}
-                              </span>
-                            </div>
+                            <a
+                              style={{
+                                color: "#0D8B08",
+                                fontWeight: "bold",
+                                fontSize: "13px",
+                              }}
+                            >
+                              {item?.category?.cateName}
+                            </a>
                           </Link>
-                          <Link href={`/${item.class}/${item.slug}`}>
+                          <Link href={"/"}>
                             <a
                               style={{
                                 color: "white",
-                                fontSize: "1.1rem",
+                                fontSize: "16px",
+                                height: "25px",
                                 fontWeight: "bold",
-                                maxHeight: "52px",
                                 overflow: "hidden",
-                                textOverflow: "ellipsis",
                               }}
                             >
                               {item.name}
                             </a>
                           </Link>
                         </div>
-                        <div className="description_playlist">
-                          <p
+                        <div className="author">
+                          <div
+                            className="name_author"
                             style={{
-                              color: "white",
-                              fontSize: "14px",
-                              display: "block",
-                              marginLeft: "20px",
-                              textAlign: "start",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
                             }}
                           >
-                            {item.description}
-                          </p>
+                            <AiFillCheckCircle color="#6AC46D" />
+                            <span
+                              style={{
+                                color: "white",
+                                fontWeight: "bold",
+                                fontSize: "12px",
+                                marginRight: "5px",
+                              }}
+                            >
+                              {item?.user?.fullName}
+                            </span>{" "}
+                            <span
+                              style={{
+                                color: "#818182",
+                                fontWeight: "bold",
+                                fontSize: "12px",
+                              }}
+                            >
+                              - {moment(item?.createdAt).fromNow()}
+                            </span>
+                          </div>
                         </div>
-
                         <div
                           className="icon_info_bottom"
                           style={{
                             display: "flex",
-                            justifyContent: "start",
+                            justifyContent: "center",
                             marginTop: "10px",
                             padding: "0 20px",
                           }}
@@ -333,24 +293,55 @@ const TrendingPage = ({ videoByView }) => {
                           </div>
                         </div>
                       </div>
-                    </SwiperSlide>
-                  </a>
-                </Link>
+                    </a>
+                  </Link>
+                </SwiperSlide>
               </Col>
             ))}
+            <Col md={24} style={{ justifyContent: "center", display: "flex" }}>
+              <div className={styles["button_loadmore"]}>
+                {hasMore ? (
+                  <Button
+                    type="primary"
+                    loading={loadings}
+                    className="buttonColor"
+                    onClick={() => handleLoadMoreData()}
+                  >
+                    Hiển thị thêm
+                  </Button>
+                ) : (
+                  <Button
+                    type="primary"
+                    className="buttonColor"
+                    onClick={(e) => e.preventDefault()}
+                    color={"#DE0404"}
+                  >
+                    Không còn dữ liệu để hiển thị
+                  </Button>
+                )}
+                {/* <Button
+                  className={styles["button_loadmore_butotn"]}
+                  // onClick={handleLoadMoreVideo}
+                  // loading={loadingButton}
+                >
+                  Load More
+                </Button> */}
+              </div>
+            </Col>
           </Row>
         </div>
       </div>
     </LayoutPage>
   );
-};
-export async function getStaticProps() {
-  const videoByView = await getVideoByView();
-  console.log(videoByView);
+}
+export async function getServerSideProps({ params }) {
+  const [videoByCate, categoryInfo] = await Promise.all([
+    getVideoByCateSlug(params.category, 6, 1),
+  ]);
   return {
     props: {
-      videoByView: videoByView || [],
+      videoByCate: videoByCate || [],
+      slug: params.category || "",
     }, // will be passed to the page component as props
   };
 }
-export default TrendingPage;
