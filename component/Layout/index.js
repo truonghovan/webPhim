@@ -300,7 +300,7 @@ export default function LayoutPage({ children }) {
           style={{
             minHeight: 280,
             backgroundColor: "#010001",
-            marginTop: "169px",
+            marginTop: "168px",
           }}
         >
           <div
