@@ -37,12 +37,16 @@ export default function LayoutPage({ children }) {
   const router = useRouter();
   const [path, setPath] = useState(router.asPath.slice(1));
   const [category, setCategory] = useState([]);
+  const [valueSearch, setValueSearch] = useState("");
   useEffect(() => {
     getCategoryPaging().then((data) => {
       console.log(data, "data");
       setCategory(data);
     });
   }, []);
+  useEffect(() => {
+    setValueSearch(router?.query?.q);
+  }, router.query);
   return (
     <Layout hasSider>
       <Sider
@@ -124,7 +128,7 @@ export default function LayoutPage({ children }) {
             height: "auto",
             position: "fixed",
             top: 0,
-            zIndex: "9999999999999999",
+            zIndex: "3",
             width: "100%",
           }}
         >
@@ -149,9 +153,10 @@ export default function LayoutPage({ children }) {
                         alignItems: "center",
                         backgroundColor: "rgb(1,0,1)",
                       }}
-                      defaultValue=""
+                      value={valueSearch}
                       placeholder="Nhập từ khóa cần tìm kiếm"
-                      // loading
+                      onSearch={(e) => router.push(`/search?q=${e}`)}
+                      onChange={(e) => setValueSearch(e.target.value)}
                     />
                   </Col>
                   <Col md={8}>

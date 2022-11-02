@@ -138,9 +138,15 @@ export default function WatchLater({ data }) {
                 >
                   <Progress
                     type="circle"
-                    percent={70}
+                    percent={Math.round(
+                      (item.rate.total / (item.rate.amount * 5)) * 100
+                    )}
                     width={35}
-                    success={{ percent: 70 }}
+                    success={{
+                      percent: Math.round(
+                        (item.rate.total / (item.rate.amount * 5)) * 100
+                      ),
+                    }}
                     style={{ backgroundColor: "black", borderRadius: "50%" }}
                   />
                   <Tag

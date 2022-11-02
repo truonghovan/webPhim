@@ -35,3 +35,13 @@ export const getCategoryPaging = async (pageSize = 20, pageIndex = 1) => {
     return "false";
   }
 };
+export const getCategoryBySlug = async (slug) => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/category/getCategoryBySlug?slug=${slug}`
+    );
+    return response.data;
+  } catch (error) {
+    return "false";
+  }
+};

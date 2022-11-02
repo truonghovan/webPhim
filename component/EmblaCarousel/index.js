@@ -74,7 +74,12 @@ const EmblaCarousel = ({ slides }) => {
                             <Link href={`/${item.class}/${item.slug}`}>
                               <Button
                                 icon={<PlayCircleOutlined />}
-                                style={{ fontWeight: "bold" }}
+                                style={{
+                                  fontWeight: "bold",
+                                  backgroundColor: "#DE0404",
+                                  border: "unset",
+                                }}
+                                className="button__watch__now"
                               >
                                 WATCH NOW | {convertToMinutes(item.duration)}
                               </Button>

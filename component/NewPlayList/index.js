@@ -6,41 +6,46 @@ import {
 import { Col } from "antd";
 import { Progress } from "antd";
 import { Tag } from "antd";
+import { Button } from "antd";
+import { Divider } from "antd";
 import { Row } from "antd";
 import Link from "next/link";
 import React from "react";
-import { AiFillCheckCircle, AiFillEye, AiFillHeart } from "react-icons/ai";
+import { AiFillCheckCircle } from "react-icons/ai";
 import { SwiperSlide } from "swiper/react";
-import { convertToMinutes } from "../../../common/functions";
-
-export default function AudiosChannel({ data }) {
+import { convertToMinutes } from "../../common/functions";
+import styles from "../../styles/detailsPost.module.scss";
+export default function NewPlayList({
+  playList,
+  handleLoadMorePlayList,
+  loadingButton,
+}) {
   return (
-    <div>
-      {" "}
-      <Row gutter={[24, 24]}>
-        {data.map((item) => (
-          <Col md={6} key={item}>
+    <div className={styles["container_listvideo_mostlike"]}>
+      <Row>
+        {playList.map((item) => (
+          <Col md={24} key={item}>
             <SwiperSlide
               key={item}
               style={{
                 maxHeight: "400px",
                 borderRadius: "10px",
-                height: "50vh",
-                minHeight: "350px",
+                height: "30vh",
                 display: "block",
                 backgroundColor: "#191A1D",
               }}
             >
               <div
                 style={{
-                  backgroundImage: `url("https://vm.beeteam368.net/wp-content/uploads/2021/11/bruno-aguirre-EHAbTS3lnr4-unsplash-234x351.jpg")`,
+                  backgroundImage: `url("https://vm.beeteam368.net/wp-content/uploads/2021/12/hacker-6741676_1920-420x237.jpg")`,
                   backgroundRepeat: "no-repeat",
                   backgroundPosition: "center center",
                   alignItems: "center",
                   backgroundSize: "cover",
                   position: "relative",
-                  height: "65%",
+                  height: "70%",
                   width: "100%",
+                  borderRadius: "10px",
                 }}
               >
                 <div
@@ -80,22 +85,25 @@ export default function AudiosChannel({ data }) {
                   className="icon_center"
                   style={{
                     position: "absolute",
-                    bottom: "70px",
+                    bottom: "40px",
                     left: "20px",
                   }}
                 >
                   <Progress
                     type="circle"
                     percent={Math.round(
-                      (item.rate.total / (item.rate.amount * 5)) * 100
+                      (item.rate?.total / (item.rate?.amount * 5)) * 100
                     )}
                     width={35}
                     success={{
                       percent: Math.round(
-                        (item.rate.total / (item.rate.amount * 5)) * 100
+                        (item.rate?.total / (item.rate?.amount * 5)) * 100
                       ),
                     }}
-                    style={{ backgroundColor: "black", borderRadius: "50%" }}
+                    style={{
+                      backgroundColor: "black",
+                      borderRadius: "100%",
+                    }}
                   />
                   <Tag
                     color="#0E0806"
@@ -105,30 +113,12 @@ export default function AudiosChannel({ data }) {
                     1
                   </Tag>
                 </div>
-                <div
-                  className="name_movie"
-                  style={{
-                    position: "absolute",
-                    bottom: "35px",
-                    left: "20px",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: "20px",
-                      fontWeight: "bold",
-                      color: "white",
-                    }}
-                  >
-                    Có phim hay nè
-                  </span>
-                </div>
               </div>
-              <div className="info_bottom">
+              <div className={styles["info_bottom"]}>
                 <div
                   style={{
                     display: "grid",
-                    textAlign: "center",
+                    textAlign: "start",
                     paddingTop: "10px",
                     paddingBottom: "10px",
                   }}
@@ -148,7 +138,7 @@ export default function AudiosChannel({ data }) {
                     <a
                       style={{
                         color: "white",
-                        fontSize: "16px",
+                        fontSize: "1.2rem",
                         fontWeight: "bold",
                       }}
                     >
@@ -161,8 +151,8 @@ export default function AudiosChannel({ data }) {
                     className="name_author"
                     style={{
                       display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
+                      alignItems: "start",
+                      justifyContent: "start",
                     }}
                   >
                     <AiFillCheckCircle color="#6AC46D" />
@@ -187,62 +177,22 @@ export default function AudiosChannel({ data }) {
                     </span>
                   </div>
                 </div>
-                <div
-                  className="icon_info_bottom"
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    marginTop: "10px",
-                    padding: "0 20px",
-                  }}
-                >
-                  <div
-                    className="icon_heart"
-                    style={{ display: "flex", marginRight: "20px" }}
-                  >
-                    {/* <HeartIcon /> */}
-                    <AiFillHeart
-                      size={25}
-                      style={{
-                        color: "#FF375F",
-                        marginRight: "5px",
-                      }}
-                    />
-                    <span
-                      style={{
-                        color: "white",
-                        fontSize: "15px",
-                        alignItems: "center",
-                        display: "flex",
-                      }}
-                    >
-                      46
-                    </span>
-                  </div>
-                  <div className="icon_view" style={{ display: "flex" }}>
-                    <AiFillEye
-                      size={25}
-                      style={{
-                        marginRight: "5px",
-                        color: "white",
-                      }}
-                    />
-                    <span
-                      style={{
-                        color: "white",
-                        fontSize: "15px",
-                        alignItems: "center",
-                        display: "flex",
-                      }}
-                    >
-                      46
-                    </span>
-                  </div>
-                </div>
               </div>
             </SwiperSlide>
+            <Divider style={{ backgroundColor: "#282828" }} />
           </Col>
         ))}
+        <Col md={24}>
+          <div className={styles["button_loadmore"]}>
+            <Button
+              className={styles["button_loadmore_butotn"]}
+              onClick={handleLoadMorePlayList}
+              loading={loadingButton}
+            >
+              Load More
+            </Button>
+          </div>
+        </Col>
       </Row>
     </div>
   );

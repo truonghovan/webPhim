@@ -28,7 +28,7 @@ import { getVideoHighestRate } from "../../pages/api/video";
 const { Meta } = Card;
 export default function HighestRated({ data, title, category, icon }) {
   const [dataVideo, setDataVideo] = useState(data);
-  const [pageSize, setPageSize] = useState(6);
+  const [pageSize, setPageSize] = useState(8);
   const [pageIndex, setPageIndex] = useState(1);
   const [loadings, setLoadings] = useState(false);
   const [hasMore, setHasMore] = useState(data.length < pageSize ? false : true);
@@ -154,13 +154,14 @@ export default function HighestRated({ data, title, category, icon }) {
                       >
                         <Progress
                           type="circle"
-                          percent={
+                          percent={Math.round(
                             (item.rate.total / (item.rate.amount * 5)) * 100
-                          }
+                          )}
                           width={35}
                           success={{
-                            percent:
-                              (item.rate.total / (item.rate.amount * 5)) * 100,
+                            percent: Math.round(
+                              (item.rate.total / (item.rate.amount * 5)) * 100
+                            ),
                           }}
                           style={{
                             backgroundColor: "black",

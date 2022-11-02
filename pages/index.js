@@ -16,6 +16,7 @@ import {
 } from "./api/video";
 import { useRouter } from "next/router";
 import LayoutPage from "../component/Layout";
+import Head from "next/head";
 const HomePage = ({ videoNew, audioList, videoRating }) => {
   const SLIDE_COUNT = 10;
   const slides = Array.from(Array(SLIDE_COUNT).keys());
@@ -35,6 +36,9 @@ const HomePage = ({ videoNew, audioList, videoRating }) => {
         className="body"
         style={{ backgroundColor: "#010001", marginBottom: "20px" }}
       >
+        <Head>
+          <title>Phim gì cũng có</title>
+        </Head>
         <EmblaCarousel slides={videoNew || []} />
         <NewMovie
           data={videoNew}
@@ -78,7 +82,7 @@ export async function getServerSideProps() {
   const [videoNew, audioList, videoRating] = await Promise.all([
     getVideoPagingByClass("video", 10, 1),
     getVideoPagingByClass("audio", 10, 1),
-    getVideoHighestRate(6, 1),
+    getVideoHighestRate(8, 1),
   ]);
   return {
     props: {

@@ -192,14 +192,14 @@ const TrendingPage = ({ videoByView }) => {
                         >
                           <Progress
                             type="circle"
-                            percent={
-                              (item.rate?.total / (item.rate?.amount * 5)) * 100
-                            }
+                            percent={Math.round(
+                              (item.rate.total / (item.rate.amount * 5)) * 100
+                            )}
                             width={35}
                             success={{
-                              percent:
-                                (item.rate?.total / (item.rate?.amount * 5)) *
-                                100,
+                              percent: Math.round(
+                                (item.rate.total / (item.rate.amount * 5)) * 100
+                              ),
                             }}
                             style={{
                               backgroundColor: "black",

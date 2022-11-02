@@ -206,3 +206,6 @@ a {
 .is-selected{
   border: 2px black;
 }
+.button__watch__now{
+  background-color: #DE0404;
+}

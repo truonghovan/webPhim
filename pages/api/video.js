@@ -102,3 +102,72 @@ export const getVideoByChannel = async (
     return false;
   }
 };
+export const rateVideo = async (id, value) => {
+  try {
+    const response = await axios.patch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/video/rating/${id}`,
+      { rate: value }
+    );
+    return response.data;
+  } catch (error) {
+    return false;
+  }
+};
+export const seacrhVideo = async (query, pageSize = 6, pageIndex = 1) => {
+  try {
+    let sort = {};
+    if (query.sortBy) {
+      switch (query.sortBy) {
+        case "title_a_z":
+          sort = {
+            name: 1,
+          };
+          break;
+        case "title_z_a":
+          sort = {
+            name: -1,
+          };
+          break;
+        case "reaction_highest":
+          sort = {
+            reactions: -1,
+          };
+          break;
+        case "reaction_lowest":
+          sort = {
+            reactions: 1,
+          };
+          break;
+        case "view_highest":
+          sort = {
+            views: -1,
+          };
+          break;
+        case "view_lowest":
+          sort = {
+            views: 1,
+          };
+          break;
+        case "time_lowest":
+          sort = {
+            createdAt: 1,
+          };
+          break;
+        case "time_highest":
+          sort = {
+            createdAt: -1,
+          };
+          break;
+      }
+    }
+    query.sortBy = sort;
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/video/searchVideosByTitle/?pageSize=${pageSize}&pageIndex=${pageIndex}`,
+      { query }
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    return false;
+  }
+};

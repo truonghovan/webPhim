@@ -28,8 +28,9 @@ import moment from "moment";
 import "moment/locale/vi";
 import LayoutPage from "../../component/Layout";
 import Head from "next/head";
+import { getCategoryBySlug } from "../api/category";
 
-export default function CategoryPage({ videoByCate, slug }) {
+export default function CategoryPage({ videoByCate, slug, categoryInfo }) {
   const SLIDE_COUNT = 10;
   const slides = Array.from(Array(SLIDE_COUNT).keys());
   const [videoByCateData, setVideoByCateData] = useState(videoByCate);
@@ -61,7 +62,7 @@ export default function CategoryPage({ videoByCate, slug }) {
   return (
     <LayoutPage>
       <Head>
-        <title></title>
+        <title>{categoryInfo?.cateName}</title>
       </Head>
       <div className="container_detailPost">
         <div className={styles["container_banner"]}>
@@ -149,14 +150,14 @@ export default function CategoryPage({ videoByCate, slug }) {
                         >
                           <Progress
                             type="circle"
-                            percent={
-                              (item.rate?.total / (item.rate?.amount * 5)) * 100
-                            }
+                            percent={Math.round(
+                              (item.rate.total / (item.rate.amount * 5)) * 100
+                            )}
                             width={35}
                             success={{
-                              percent:
-                                (item.rate?.total / (item.rate?.amount * 5)) *
-                                100,
+                              percent: Math.round(
+                                (item.rate.total / (item.rate.amount * 5)) * 100
+                              ),
                             }}
                             style={{
                               backgroundColor: "black",
@@ -337,11 +338,13 @@ export default function CategoryPage({ videoByCate, slug }) {
 export async function getServerSideProps({ params }) {
   const [videoByCate, categoryInfo] = await Promise.all([
     getVideoByCateSlug(params.category, 6, 1),
+    getCategoryBySlug(params.category),
   ]);
   return {
     props: {
       videoByCate: videoByCate || [],
       slug: params.category || "",
+      categoryInfo: categoryInfo || {},
     }, // will be passed to the page component as props
   };
 }
