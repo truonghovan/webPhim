@@ -59,6 +59,30 @@ export default function NewAudios({ data, title, category, icon }) {
           freeMode={true}
           modules={[FreeMode, Pagination]}
           className="mySwiper"
+          breakpoints={{
+            // when window width is <= 499px
+            10: {
+              slidesPerView: 1,
+              spaceBetweenSlides: 30,
+            },
+            640: {
+              slidesPerView: 2,
+              spaceBetweenSlides: 30,
+            },
+            768: {
+              slidesPerView: 2,
+              spaceBetweenSlides: 30,
+            },
+            // when window width is <= 999px
+            1024: {
+              slidesPerView: 4,
+              spaceBetweenSlides: 30,
+            },
+            1280: {
+              slidesPerView: 5,
+              spaceBetweenSlides: 30,
+            },
+          }}
         >
           {data.map((item) => (
             <SwiperSlide

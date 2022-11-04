@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LayoutPage from "../component/Layout";
 import { FaBolt } from "react-icons/fa";
 import { getVideoByView } from "./api/video";
@@ -24,6 +24,15 @@ import { BsFillCheckCircleFill } from "react-icons/bs";
 import { SwiperSlide } from "swiper/react";
 import { convertToMinutes } from "../common/functions";
 const TrendingPage = ({ videoByView }) => {
+  const [showChild, setShowChild] = useState(false);
+  useEffect(() => {
+    setShowChild(true);
+  }, []);
+
+  if (!showChild) {
+    return null;
+  }
+
   return (
     <LayoutPage>
       <div
@@ -344,7 +353,7 @@ const TrendingPage = ({ videoByView }) => {
     </LayoutPage>
   );
 };
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const videoByView = await getVideoByView();
   console.log(videoByView);
   return {

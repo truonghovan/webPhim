@@ -209,3 +209,18 @@ a {
 .button__watch__now{
   background-color: #DE0404;
 }
+
+@media only screen and (max-width: 1024px){
+  .category-dropdown{
+      display: none;
+  }
+}
+@media only screen and (max-width: 768px){
+  .embla--thumb{
+      display: none;
+  }
+  .container_detailPost{
+    padding: 80px 10% !important;
+  }
+}
+

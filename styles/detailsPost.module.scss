@@ -148,6 +148,7 @@
 .content_next_video{
     display: flex;
     align-items: center;
+    justify-content: flex-end;
 }
 .container_pre_video:hover .icon_prev{
     color: #DE0404 !important;

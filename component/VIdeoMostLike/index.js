@@ -148,51 +148,60 @@ export default function VideoMostLike({
                         marginTop: "10px",
                       }}
                     >
-                      <div
-                        className="icon_heart"
-                        style={{
-                          display: "flex",
-                          marginRight: "20px",
-                        }}
-                      >
-                        {/* <HeartIcon /> */}
-                        <AiFillHeart
-                          size={25}
-                          style={{
-                            color: "#FF375F",
-                            marginRight: "5px",
-                          }}
-                        />
-                        <span
-                          style={{
-                            color: "white",
-                            fontSize: "15px",
-                            alignItems: "center",
-                            display: "flex",
-                          }}
-                        >
-                          {item.reactions} Reactions
-                        </span>
-                      </div>
-                      <div className="icon_view" style={{ display: "flex" }}>
-                        <AiFillEye
-                          size={25}
-                          style={{
-                            marginRight: "5px",
-                            color: "white",
-                          }}
-                        />
-                        <span
-                          style={{
-                            color: "white",
-                            fontSize: "15px",
-                            alignItems: "center",
-                            display: "flex",
-                          }}
-                        >
-                          {item.views} Views
-                        </span>
-                      </div>
+                      <Row>
+                        <Col lg={12} md={24} sm={24}>
+                          <div
+                            className="icon_heart"
+                            style={{
+                              display: "flex",
+                              marginRight: "20px",
+                            }}
+                          >
+                            {/* <HeartIcon /> */}
+                            <AiFillHeart
+                              size={25}
+                              style={{
+                                color: "#FF375F",
+                                marginRight: "5px",
+                              }}
+                            />
+                            <span
+                              style={{
+                                color: "white",
+                                fontSize: "15px",
+                                alignItems: "center",
+                                display: "flex",
+                              }}
+                            >
+                              {item.reactions} Reactions
+                            </span>
+                          </div>
+                        </Col>
+                        <Col lg={12} md={24} sm={24}>
+                          <div
+                            className="icon_view"
+                            style={{ display: "flex" }}
+                          >
+                            <AiFillEye
+                              size={25}
+                              style={{
+                                marginRight: "5px",
+                                color: "white",
+                              }}
+                            />
+                            <span
+                              style={{
+                                color: "white",
+                                fontSize: "15px",
+                                alignItems: "center",
+                                display: "flex",
+                              }}
+                            >
+                              {item.views} Views
+                            </span>
+                          </div>
+                        </Col>
+                      </Row>
                     </div>
                   </div>
                 </SwiperSlide>

@@ -3,23 +3,11 @@ import { Tooltip } from "antd";
 import { Button } from "antd";
 import { Row } from "antd";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineHeart, AiOutlineStar } from "react-icons/ai";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import styles from "../../../styles/channelTab.module.scss";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Tag } from "antd";
-import {
-  CrownOutlined,
-  LineChartOutlined,
-  ThunderboltOutlined,
-  Icon,
-  HeartOutlined,
-  EyeOutlined,
-  PoweroffOutlined,
-} from "@ant-design/icons";
-import { Progress } from "antd";
-import { AiFillCheckCircle, AiFillEye, AiFillHeart } from "react-icons/ai";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -49,11 +37,12 @@ import TransferHistory from "../../../component/ChannelTab/TransferHistory";
 import WatchLater from "../../../component/ChannelTab/WatchLater";
 import LayoutPage from "../../../component/Layout";
 import { getVideoByChannel } from "../../api/video";
+import { getUserByUserName } from "../../api/user";
 const listTab = [
-  { link: "videos", title: "Videos", icon: <FaVideo color="white" /> },
-  { link: "audios", title: "Audios", icon: <FaMusic color="white" /> },
-  { link: "playlists", title: "Playlists", icon: <FaList color="white" /> },
-  { link: "posts", title: "Posts", icon: <FaBlog color="white" /> },
+  { link: "video", title: "Videos", icon: <FaVideo color="white" /> },
+  { link: "audio", title: "Audios", icon: <FaMusic color="white" /> },
+  { link: "playlist", title: "Playlists", icon: <FaList color="white" /> },
+  { link: "post", title: "Posts", icon: <FaBlog color="white" /> },
   {
     link: "transferhistory",
     title: "Transfer History",
@@ -80,19 +69,20 @@ const listTab = [
     icon: <FaComments color="white" />,
   },
 ];
-export default function ChannelTabPage({ tab }) {
-  const provinceData = ["Zhejiang", "Jiangsu"];
-  const cityData = {
-    Zhejiang: ["Hangzhou", "Ningbo", "Wenzhou"],
-    Jiangsu: ["Nanjing", "Suzhou", "Zhenjiang"],
-  };
-  const [videoByTag, setVideoByTag] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-  const [cities, setCities] = useState(cityData[provinceData[0]]);
-  const [secondCity, setSecondCity] = useState(cityData[provinceData[0]][0]);
-  const onSecondCityChange = (value) => {
-    setSecondCity(value);
-  };
+export default function ChannelTabPage({ tab, id, dataByTab, sortBy }) {
   const router = useRouter();
+  useEffect(() => {
+    setDataTab(dataByTab);
+  }, [router.query?.tab]);
+  const [dataTab, setDataTab] = useState(dataByTab);
+  const handleChangeSort = (value) => {
+    router.query.sortBy = value;
+    router.push(router);
+    getVideoByChannel({ id: id, sortBy: value }, 6, 1, tab).then((data) =>
+      setDataTab(data)
+    );
+  };
+
   return (
     <LayoutPage>
       <div className={styles["container_channel"]}>
@@ -193,9 +183,9 @@ export default function ChannelTabPage({ tab }) {
                       ? styles["slider_tab-active"]
                       : styles["slider_tab"]
                   }
-                  onClick={() => router.push(`/channel/1/${item.link}`)}
+                  onClick={() => router.push(`/channel/${id}/${item.link}`)}
                 >
-                  <Link href={`/channel/1/${item.link}`}>
+                  <Link href={`/channel/${id}/${item.link}`}>
                     <div className={styles["container_slider_tab"]}>
                       <div
                         style={{ display: "flex", justifyContent: "center" }}
@@ -220,32 +210,79 @@ export default function ChannelTabPage({ tab }) {
 
           <div className={styles["container_listpost"]}>
             <div className={styles["container_filter"]}>
-              <div className={styles["select_sort"]}>
-                <Select
-                  className={styles["select_sort_video"]}
-                  style={{ color: "white" }}
-                  value={secondCity}
-                  onChange={onSecondCityChange}
+              <Row style={{ width: "100%" }}>
+                <Col md={12}>
+                  <Select
+                    showSearch
+                    style={{ width: 200, color: "white" }}
+                    placeholder="Sắp xếp theo"
+                    optionFilterProp="children"
+                    filterOption={(input, option) =>
+                      (option?.label ?? "").includes(input)
+                    }
+                    filterSort={(optionA, optionB) =>
+                      (optionA?.label ?? "")
+                        .toLowerCase()
+                        .localeCompare((optionB?.label ?? "").toLowerCase())
+                    }
+                    onSelect={(value) => handleChangeSort(value)}
+                    options={[
+                      {
+                        value: "title_a_z",
+                        label: "Từ A-Z",
+                      },
+                      {
+                        value: "title_z_a",
+                        label: "Từ Z-A",
+                      },
+                      {
+                        value: "reaction_highest",
+                        label: "Theo Like (từ cao đến thấp)",
+                      },
+                      {
+                        value: "reaction_lowest",
+                        label: "Theo Like (từ thấp đến cao)",
+                      },
+                      {
+                        value: "view_highest",
+                        label: "Theo Views (từ cao đến thấp)",
+                      },
+                      {
+                        value: "view_lowest",
+                        label: "Theo Views (từ thấp đến cao)",
+                      },
+                      {
+                        value: "time_lowest",
+                        label: "Theo Thời Gian (từ thấp đến cao)",
+                      },
+                      {
+                        value: "time_highest",
+                        label: "Theo Thời Gian (từ cao đến thấp)",
+                      },
+                    ]}
+                  />
+                </Col>
+                <Col
+                  md={12}
+                  style={{ display: "flex", justifyContent: "flex-end" }}
                 >
-                  {cities.map((city) => (
-                    <Select.Option key={city}>{city}</Select.Option>
-                  ))}
-                </Select>
-              </div>
-              <div className={styles["quantity_item_per_page"]}>
-                {" "}
-                There are 11 items in this tab
-              </div>
+                  <div className={styles["quantity_item_per_page"]}>
+                    There are {dataTab.totalDocs} items in this tab
+                  </div>
+                </Col>
+              </Row>
             </div>
             <div className={styles["listpostbytag"]}>
-              {tab === "videos" && <VideosChannel data={videoByTag} />}
-              {tab === "audios" && <AudiosChannel data={videoByTag} />}
-              {tab === "playlists" && <PlaylistsChannel data={videoByTag} />}
-              {tab === "posts" && <PlaylistsChannel data={videoByTag} />}
-              {tab === "transferhistory" && (
-                <TransferHistory data={videoByTag} />
+              {tab === "video" && (
+                <VideosChannel data={dataTab} sortBy={sortBy} id={id} />
               )}
-              {tab === "watchlater" && <WatchLater data={videoByTag} />}
+              {tab === "audio" && (
+                <AudiosChannel data={dataTab} sortBy={sortBy} id={id} />
+              )}
+              {tab === "playlist" && <PlaylistsChannel data={dataTab} />}
+              {tab === "post" && <PlaylistsChannel data={dataTab} />}
+              {tab === "transferhistory" && <TransferHistory data={dataTab} />}
+              {tab === "watchlater" && <WatchLater data={dataTab} />}
             </div>
           </div>
         </div>
@@ -253,13 +290,23 @@ export default function ChannelTabPage({ tab }) {
     </LayoutPage>
   );
 }
-export async function getServerSideProps({ params }) {
-  const [videoByChannel] = await Promise.all([getVideoByChannel(params.id)]);
+export async function getServerSideProps(context) {
+  const [dataByTab, userInfo] = await Promise.all([
+    getVideoByChannel(
+      { id: context.params.id, sortBy: {} },
+      6,
+      1,
+      context.params.tab
+    ),
+    getUserByUserName(context.params.id),
+  ]);
   return {
     props: {
-      tab: params.tab,
-      id: params.id || "",
-      videoByChannel: videoByChannel || [],
+      tab: context.params.tab,
+      id: context.params.id || "",
+      dataByTab: dataByTab || [],
+      sortBy: context.query.sortBy || {},
+      userInfo: userInfo || {},
     }, // will be passed to the page component as props
   };
 }

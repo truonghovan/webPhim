@@ -20,8 +20,8 @@ export default function RelativePost({ videoRelative }) {
     <div className={styles["list_post"]}>
       <Row gutter={[24, 24]}>
         {videoRelative.map((item) => (
-          <Col md={8} key={item}>
-            <Link href={"/1/2"}>
+          <Col lg={8} md={12} sm={24} xs={24} key={item}>
+            <Link href={`/${item.class}/${item.slug}`}>
               <a>
                 <SwiperSlide
                   key={item}
@@ -121,7 +121,7 @@ export default function RelativePost({ videoRelative }) {
                         paddingBottom: "10px",
                       }}
                     >
-                      <Link href={"/"}>
+                      <Link href={`/${item?.category?.cateSlug}`}>
                         <a
                           style={{
                             color: "#0D8B08",

@@ -16,6 +16,8 @@ import {
   WifiOutlined,
 } from "@ant-design/icons";
 import "antd/dist/antd.css";
+import { isMobile } from "react-device-detect";
+
 import { Layout, Menu } from "antd";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -30,6 +32,8 @@ import { Tooltip } from "antd";
 import FooterLayout from "../Footer";
 import { useRouter } from "next/router";
 import { getCategoryPaging } from "../../pages/api/category";
+import ModalVideo from "../ModalCreateVideo";
+import MenuMobile from "../MenuMobile";
 const { Header, Sider, Content } = Layout;
 export default function LayoutPage({ children }) {
   const [keyIndex, setKeyIndex] = useState("");
@@ -38,21 +42,43 @@ export default function LayoutPage({ children }) {
   const [path, setPath] = useState(router.asPath.slice(1));
   const [category, setCategory] = useState([]);
   const [valueSearch, setValueSearch] = useState("");
+  const [open, setOpen] = useState(false);
   useEffect(() => {
     getCategoryPaging().then((data) => {
-      console.log(data, "data");
       setCategory(data);
     });
   }, []);
   useEffect(() => {
     setValueSearch(router?.query?.q);
-  }, router.query);
+  }, [router.query]);
+  const onClick = ({ key }) => {
+    message.info(`Click on item ${key}`);
+  };
+  const items = [
+    {
+      label: "1st menu item",
+      key: "1",
+    },
+    {
+      label: "2nd menu item",
+      key: "2",
+    },
+    {
+      label: "3rd menu item",
+      key: "3",
+    },
+  ];
   return (
     <Layout hasSider>
       <Sider
+        breakpoint={"lg"}
+        onBreakpoint={(check) =>
+          check === true ? setCollapsed(true) : setCollapsed(false)
+        }
         trigger={null}
         collapsible
         collapsed={collapsed}
+        collapsedWidth={50}
         style={{
           backgroundColor: "rgb(25,26,29)",
           borderRight: "1px solid #383838",
@@ -101,23 +127,23 @@ export default function LayoutPage({ children }) {
               icon: <ThunderboltOutlined />,
               label: "Trending",
             },
-            {
-              key: "history",
-              icon: <HistoryOutlined />,
-              label: "History",
-            },
-            {
-              key: "notifications",
-              icon: <NotificationOutlined />,
-              label: "Notifications",
-            },
+            // {
+            //   key: "history",
+            //   icon: <HistoryOutlined />,
+            //   label: "History",
+            // },
+            // {
+            //   key: "notifications",
+            //   icon: <NotificationOutlined />,
+            //   label: "Notifications",
+            // },
           ]}
         />
       </Sider>
       <Layout
         className="site-layout"
         style={{
-          marginLeft: !collapsed ? 200 : 80,
+          marginLeft: !collapsed ? 200 : 50,
         }}
       >
         <Header
@@ -133,10 +159,10 @@ export default function LayoutPage({ children }) {
           }}
         >
           <Row>
-            <Col md={24}>
+            <Col md={24} sm={24} xs={24}>
               <div className="header_top">
                 <Row style={{ width: "100%" }}>
-                  <Col md={4}>
+                  <Col md={4} sm={24}>
                     <Link href={"/"}>
                       <img
                         className="logo_header"
@@ -145,7 +171,7 @@ export default function LayoutPage({ children }) {
                       />
                     </Link>
                   </Col>
-                  <Col md={12} className="header_top">
+                  <Col md={12} sm={24} className="header_top">
                     <Input.Search
                       allowClear
                       style={{
@@ -159,7 +185,7 @@ export default function LayoutPage({ children }) {
                       onChange={(e) => setValueSearch(e.target.value)}
                     />
                   </Col>
-                  <Col md={8}>
+                  {/* <Col md={0} sm={0} xs={0}>
                     <div className="header_icon">
                       <Row gutter={[16, 16]}>
                         <Col style={{ paddingTop: "20px" }}>
@@ -175,13 +201,17 @@ export default function LayoutPage({ children }) {
                             </div>
                           </Tooltip>
                         </Col>
+                        <ModalVideo open={open} setOpen={setOpen} />
                         <Col style={{ paddingTop: "20px" }}>
                           <Tooltip
                             placement="bottom"
                             color="white"
                             title={<span className="span-tooltip">Create</span>}
                           >
-                            <div className="icon_header">
+                            <div
+                              className="icon_header"
+                              onClick={() => setOpen(true)}
+                            >
                               <PlusOutlined className="icon" />
                             </div>
                           </Tooltip>
@@ -227,23 +257,31 @@ export default function LayoutPage({ children }) {
                         </Col>
                       </Row>
                     </div>
-                  </Col>
+                  </Col> */}
                 </Row>
               </div>
             </Col>
 
             <Col md={24}>
               <Row>
-                <Col md={4}>
-                  {React.createElement(
-                    collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-                    {
-                      className: "trigger",
-                      onClick: () => setCollapsed(!collapsed),
-                    }
-                  )}
+                {!isMobile && (
+                  <Col md={4} sm={24} xs={24}>
+                    {React.createElement(
+                      collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+                      {
+                        className: "trigger",
+                        onClick: () => {
+                          if (!isMobile) setCollapsed(!collapsed);
+                        },
+                      }
+                    )}
+                  </Col>
+                )}
+                <Col>
+                  {isMobile && <MenuMobile items={items} onClick={onClick} />}
                 </Col>
-                <Col md={18}>
+
+                <Col md={18} sm={0}>
                   {category.map((item, index) => {
                     return (
                       <Dropdown
@@ -279,7 +317,7 @@ export default function LayoutPage({ children }) {
                     );
                   })}
                 </Col>
-                <Col>
+                {/* <Col>
                   <Col style={{ paddingTop: "20px" }}>
                     <Tooltip
                       placement="bottom"
@@ -295,13 +333,13 @@ export default function LayoutPage({ children }) {
                       </div>
                     </Tooltip>
                   </Col>
-                </Col>
+                </Col> */}
               </Row>
             </Col>
           </Row>
         </Header>
         <Content
-          className="site-layout-background"
+          className="site-layout-background-content"
           style={{
             minHeight: 280,
             backgroundColor: "#010001",

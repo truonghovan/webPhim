@@ -31,8 +31,6 @@ import Head from "next/head";
 import { getCategoryBySlug } from "../api/category";
 
 export default function CategoryPage({ videoByCate, slug, categoryInfo }) {
-  const SLIDE_COUNT = 10;
-  const slides = Array.from(Array(SLIDE_COUNT).keys());
   const [videoByCateData, setVideoByCateData] = useState(videoByCate);
   const [pageSize, setPageSize] = useState(6);
   const [pageIndex, setPageIndex] = useState(1);
@@ -66,7 +64,9 @@ export default function CategoryPage({ videoByCate, slug, categoryInfo }) {
       </Head>
       <div className="container_detailPost">
         <div className={styles["container_banner"]}>
-          <EmblaCarousel slides={videoByCate || []} />
+          {videoByCateData.length !== 0 && (
+            <EmblaCarousel slides={videoByCateData || []} />
+          )}
         </div>
         <div
           className={styles["container_listitem"]}
@@ -77,7 +77,7 @@ export default function CategoryPage({ videoByCate, slug, categoryInfo }) {
         >
           <Row gutter={[24, 24]}>
             {videoByCateData.map((item) => (
-              <Col key={item._id} md={6}>
+              <Col key={item._id} lg={6} md={12} sm={24} xs={24}>
                 {" "}
                 <SwiperSlide
                   key={item}
@@ -217,16 +217,26 @@ export default function CategoryPage({ videoByCate, slug, categoryInfo }) {
                             }}
                           >
                             <AiFillCheckCircle color="#6AC46D" />
-                            <span
-                              style={{
-                                color: "white",
-                                fontWeight: "bold",
-                                fontSize: "12px",
-                                marginRight: "5px",
-                              }}
-                            >
-                              {item?.user?.fullName}
-                            </span>{" "}
+                            <Link href={`/channel/${item?.user?.userName}`}>
+                              <a
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    color: "white",
+                                    fontWeight: "bold",
+                                    fontSize: "12px",
+                                    marginRight: "5px",
+                                  }}
+                                >
+                                  {item?.user?.fullName}
+                                </span>
+                              </a>
+                            </Link>
                             <span
                               style={{
                                 color: "#818182",

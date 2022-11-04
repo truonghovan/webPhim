@@ -90,7 +90,7 @@ export default function DetailPost({
   const [videoData, setVideoData] = useState(videoBySlug);
   const [cities, setCities] = useState(cityData[provinceData[0]]);
   const [secondCity, setSecondCity] = useState(cityData[provinceData[0]][0]);
-  const [listTag, setListTag] = useState(["2012", "2022", "Chines"]);
+  const [listTag, setListTag] = useState(videoData.tags);
   const [listVideo, setListVideo] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9]);
   const [listUserScore, setListUserScore] = useState([1, 2, 3, 4, 5, 6]);
   const [pageSizeMostLike, setPageSizeMostLike] = useState(3);
@@ -208,7 +208,7 @@ export default function DetailPost({
           <title>{videoData.name}</title>
         </Head>
         <Row>
-          <Col md={14} style={{ marginRight: "20px" }}>
+          <Col md={14} sm={24} style={{ marginRight: "20px" }}>
             <div
               className="jw-video-container"
               data-mediaid="TAITbudl"
@@ -218,12 +218,15 @@ export default function DetailPost({
                 borderRadius: "5px",
               }}
             >
+              {console.log(videoData.videoURL[0])}
               <ReactJWPlayer
                 playerId="4fv6q6z7"
+                // src="https://www.youtube.com/embed/YvhK5ccFQPM"
                 playerScript="https://content.jwplatform.com/libraries/j9BLvpMc.js"
-                playlist={`https://cdn.jwplayer.com/v2/media/${videoData.videoId}`}
+                playlist={videoData.videoURL[0]}
                 // onReady={onReady}
               />
+
               <div className={styles["container_video"]}>
                 <Row>
                   <Col md={14}>
@@ -255,7 +258,7 @@ export default function DetailPost({
                       <h1
                         style={{
                           color: "white",
-                          fontSize: "20px",
+                          fontSize: "1.5em",
                           fontWeight: "bold",
                         }}
                       >
@@ -360,7 +363,7 @@ export default function DetailPost({
                     <div className={styles["author_name"]}>
                       <div className={styles["author_name_name"]}>
                         <BsFillCheckCircleFill size={15} color={"#6AC46D"} />
-                        <Link href={"/"}>
+                        <Link href={`/channel/${videoData?.user?.userName}`}>
                           <a
                             style={{
                               color: "white",
@@ -447,13 +450,14 @@ export default function DetailPost({
                     <div className={styles[""]}>
                       <Progress
                         percent={Math.round(
-                          (videoData.rate.total / (videoData.rate.amount * 5)) *
+                          (videoData?.rate?.total /
+                            (videoData?.rate?.amount * 5)) *
                             100
                         )}
                         success={{
                           percent: Math.round(
-                            (videoData.rate.total /
-                              (videoData.rate.amount * 5)) *
+                            (videoData?.rate?.total /
+                              (videoData?.rate?.amount * 5)) *
                               100
                           ),
                         }}
@@ -683,19 +687,20 @@ export default function DetailPost({
                   </h2>
                 </div>
                 <div className={styles["list_tag"]}>
-                  {listTag.map((item, index) => (
-                    <Link key={index} href={`/${item}`}>
-                      <a>
-                        <Tag color="#3C3F46">{item}</Tag>
-                      </a>
-                    </Link>
-                  ))}
+                  {listTag &&
+                    listTag.map((item, index) => (
+                      <Link key={index} href={`/${item.tagSlug}`}>
+                        <a>
+                          <Tag color="#3C3F46">{item.tagName}</Tag>
+                        </a>
+                      </Link>
+                    ))}
                 </div>
               </div>
             </div>
             <div className={styles["container_nextvideo"]}>
-              <Row>
-                <Col md={12}>
+              <Row style={{ width: "100%" }}>
+                <Col md={12} sm={24}>
                   <div className={styles["pre_video"]}>
                     <Link
                       href={`/${relativeVideo[0]?.class}/${relativeVideo[0]?.slug}`}
@@ -721,7 +726,7 @@ export default function DetailPost({
                     <div className={styles["content_prev_video"]}>
                       <div className={styles["thumb_video_prev"]}>
                         <img
-                          src={relativeVideo[0].thumb}
+                          src={relativeVideo[0]?.thumb}
                           style={{ height: "100%", objectFit: "cover" }}
                         />
                       </div>
@@ -730,14 +735,14 @@ export default function DetailPost({
                       >
                         <a style={{ maxHeight: "55px", overflow: "hidden" }}>
                           <h3 className={styles["title_video"]}>
-                            {relativeVideo[0].name}
+                            {relativeVideo[0]?.name}
                           </h3>
                         </a>
                       </Link>
                     </div>
                   </div>
                 </Col>
-                <Col md={12}>
+                <Col md={12} sm={24}>
                   <div className={styles["next_video"]}>
                     <Link
                       href={`/${relativeVideo[1]?.class}/${relativeVideo[1]?.slug}`}
@@ -765,13 +770,13 @@ export default function DetailPost({
                       >
                         <a style={{ maxHeight: "55px", overflow: "hidden" }}>
                           <h3 className={styles["title_video"]}>
-                            {relativeVideo[1].name}
+                            {relativeVideo[1]?.name}
                           </h3>
                         </a>
                       </Link>
                       <div className={styles["thumb_video_next"]}>
                         <img
-                          src={relativeVideo[1].thumb}
+                          src={relativeVideo[1]?.thumb}
                           style={{ height: "100%", objectFit: "cover" }}
                         />
                       </div>
@@ -809,8 +814,8 @@ export default function DetailPost({
             </div>
             <CommentVideo onFinish={onFinish} onFinishFailed={onFinishFailed} />
           </Col>
-          <Col md={8}>
-            <HighestUser listUserScore={listUserScore} />
+          <Col md={8} sm={24}>
+            {/* <HighestUser listUserScore={listUserScore} /> */}
 
             <div className={styles["container_most_like_video"]}>
               <div className={styles["highest_title"]}>
@@ -838,7 +843,7 @@ export default function DetailPost({
               />
             </div>
 
-            <div className={styles["container_new_playlist"]}>
+            {/* <div className={styles["container_new_playlist"]}>
               <div className={styles["highest_title"]}>
                 <FaHeadphonesAlt
                   color="red"
@@ -861,7 +866,7 @@ export default function DetailPost({
                 handleLoadMorePlayList={handleLoadMorePlayList}
                 loadingButton={loadingButton}
               />
-            </div>
+            </div> */}
           </Col>
         </Row>
       </div>
@@ -876,6 +881,7 @@ export async function getServerSideProps({ params }) {
     getCommentVideo(videoBySlug._id),
     getVideoByReaction(3, 1),
   ]);
+  console.log(videoBySlug);
   return {
     props: {
       category: category || "",

@@ -85,7 +85,7 @@ export default function HighestRated({ data, title, category, icon }) {
         > */}
         <Row gutter={[16, 16]}>
           {dataVideo.map((item) => (
-            <Col key={item._id} md={6}>
+            <Col key={item._id} lg={6} md={8} sm={24} xs={24}>
               <Link href={`/${item.class}/${item.slug}`}>
                 <a>
                   <SwiperSlide
@@ -186,7 +186,7 @@ export default function HighestRated({ data, title, category, icon }) {
                           paddingBottom: "10px",
                         }}
                       >
-                        <Link href={`/${item.class}/${item.slug}`}>
+                        <Link href={`/${item?.category?.cateSlug}`}>
                           <a
                             style={{
                               color: "#0D8B08",
@@ -221,16 +221,26 @@ export default function HighestRated({ data, title, category, icon }) {
                           }}
                         >
                           <AiFillCheckCircle color="#6AC46D" />
-                          <span
-                            style={{
-                              color: "white",
-                              fontWeight: "bold",
-                              fontSize: "12px",
-                              marginRight: "5px",
-                            }}
-                          >
-                            {item?.user?.fullName}
-                          </span>{" "}
+                          <Link href={`/channel/${item?.user?.userName}`}>
+                            <a
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <span
+                                style={{
+                                  color: "white",
+                                  fontWeight: "bold",
+                                  fontSize: "12px",
+                                  marginRight: "5px",
+                                }}
+                              >
+                                {item?.user?.fullName}
+                              </span>{" "}
+                            </a>
+                          </Link>
                           <span
                             style={{
                               color: "#818182",
