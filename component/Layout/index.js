@@ -16,7 +16,6 @@ import {
   WifiOutlined,
 } from "@ant-design/icons";
 import "antd/dist/antd.css";
-import { isMobile } from "react-device-detect";
 
 import { Layout, Menu } from "antd";
 import { useEffect, useState } from "react";
@@ -35,7 +34,7 @@ import { getCategoryPaging } from "../../pages/api/category";
 import ModalVideo from "../ModalCreateVideo";
 import MenuMobile from "../MenuMobile";
 const { Header, Sider, Content } = Layout;
-export default function LayoutPage({ children }) {
+export default function LayoutPage({ children, isMobile }) {
   const [keyIndex, setKeyIndex] = useState("");
   const [collapsed, setCollapsed] = useState(false);
   const router = useRouter();
@@ -48,6 +47,14 @@ export default function LayoutPage({ children }) {
       setCategory(data);
     });
   }, []);
+  // const getCate = async () => {
+  //   let cateList = await getCategoryPaging();
+  //   setCategory(cateList);
+  // };
+  // getCategoryPaging().then((data) => {
+  //   setCategory(data);
+  // });
+  // getCate();
   useEffect(() => {
     setValueSearch(router?.query?.q);
   }, [router.query]);
@@ -168,6 +175,7 @@ export default function LayoutPage({ children }) {
                         className="logo_header"
                         src="https://vm.beeteam368.net/wp-content/uploads/2021/11/main-logo-dark.png"
                         style={{ paddingRight: "30px" }}
+                        alt=""
                       />
                     </Link>
                   </Col>
@@ -278,19 +286,21 @@ export default function LayoutPage({ children }) {
                   </Col>
                 )}
                 <Col>
-                  {isMobile && <MenuMobile items={items} onClick={onClick} />}
+                  {isMobile && window.screen.width <= 1024 && (
+                    <MenuMobile items={items} onClick={onClick} />
+                  )}
                 </Col>
 
                 <Col md={18} sm={0}>
-                  {category.map((item, index) => {
+                  {category?.map((item, index) => {
                     return (
                       <Dropdown
                         overlay={
-                          item.children.length === 0 ? (
+                          item?.children.length === 0 ? (
                             <Menu items={[{ label: "Không có dữ liệu" }]} />
                           ) : (
                             <Menu
-                              items={item.children}
+                              items={item?.children}
                               onClick={(e) => router.push(`/${e.key}`)}
                               expandIcon={
                                 <CaretRightOutlined className="icon-menu" />
@@ -298,16 +308,16 @@ export default function LayoutPage({ children }) {
                             />
                           )
                         }
-                        key={index}
+                        key={item?._id}
                         arrow={true}
                         className="category-dropdown"
                         autoFocus={true}
                       >
                         <a onClick={(e) => e.preventDefault()}>
-                          <Link key={index} href={`/${item.key}`}>
+                          <Link key={index} href={`/${item?.key}`}>
                             <Space>
-                              {item.label}
-                              {item.children.length === 0 ? null : (
+                              {item?.label}
+                              {item?.children.length === 0 ? null : (
                                 <CaretDownOutlined />
                               )}
                             </Space>

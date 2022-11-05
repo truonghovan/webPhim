@@ -23,10 +23,10 @@ export default function NewPlayList({
   return (
     <div className={styles["container_listvideo_mostlike"]}>
       <Row>
-        {playList.map((item) => (
-          <Col md={24} key={item}>
+        {playList?.map((item) => (
+          <Col md={24} key={item?._id}>
             <SwiperSlide
-              key={item}
+              key={item?._id}
               style={{
                 maxHeight: "400px",
                 borderRadius: "10px",
@@ -65,7 +65,7 @@ export default function NewPlayList({
                     <Col>
                       <Tag color="#FEDC56">
                         <span style={{ color: "black" }}>
-                          {convertToMinutes(item.duration)}
+                          {convertToMinutes(item?.duration)}
                         </span>
                       </Tag>
                     </Col>
@@ -92,12 +92,12 @@ export default function NewPlayList({
                   <Progress
                     type="circle"
                     percent={Math.round(
-                      (item.rate?.total / (item.rate?.amount * 5)) * 100
+                      (item?.rate?.total / (item?.rate?.amount * 5)) * 100
                     )}
                     width={35}
                     success={{
                       percent: Math.round(
-                        (item.rate?.total / (item.rate?.amount * 5)) * 100
+                        (item?.rate?.total / (item?.rate?.amount * 5)) * 100
                       ),
                     }}
                     style={{

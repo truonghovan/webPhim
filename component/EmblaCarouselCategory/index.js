@@ -52,7 +52,7 @@ const EmblaCarousel = ({ slides }) => {
                   <div
                     className="embla__slide__img"
                     style={{
-                      backgroundImage: `url(${item.thumb})`,
+                      backgroundImage: `url(${item?.thumb})`,
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: "center center",
                       alignItems: "center",
@@ -72,7 +72,7 @@ const EmblaCarousel = ({ slides }) => {
                         style={{ display: "flex", justifyContent: "center" }}
                       >
                         <a style={{ fontSize: "2em", color: "white" }}>
-                          {item.name}
+                          {item?.name}
                         </a>
                       </Title>
                       <div
@@ -84,20 +84,20 @@ const EmblaCarousel = ({ slides }) => {
                             icon={<PlayCircleOutlined />}
                             style={{ fontWeight: "bold" }}
                           >
-                            <span>WATCH NOW | {convertToMinutes(item.duration)}</span>
+                            <span>WATCH NOW | {convertToMinutes(item?.duration)}</span>
                           </Button> */}
                           <div
                             className={styles["button_loadmore"]}
                             style={{ margin: "0 30px" }}
                           >
-                            <Link href={`/${item.class}/${item.slug}`}>
+                            <Link href={`/${item?.class}/${item?.slug}`}>
                               <Button
                                 icon={<PlayCircleOutlined />}
                                 className={styles["button_loadmore_butotn"]}
                                 // onClick={handleLoadMoreVideo}
                                 // loading={loadingButton}
                               >
-                                WATCH NOW | {convertToMinutes(item.duration)}
+                                WATCH NOW | {convertToMinutes(item?.duration)}
                               </Button>
                             </Link>
                           </div>
@@ -152,7 +152,7 @@ const EmblaCarousel = ({ slides }) => {
                   <Thumb
                     onClick={() => onThumbClick(index)}
                     selected={index === selectedIndex}
-                    imgSrc={item.thumb}
+                    imgSrc={item?.thumb}
                     key={index}
                   />
                 ))}

@@ -23,8 +23,8 @@ export default function HighestUser({ listUserScore }) {
       </div>
       <div className={styles["listUserScore"]}>
         <Row>
-          {listUserScore.map((item) => (
-            <Col md={24} className={styles["info_author_user"]} key={item}>
+          {listUserScore?.map((item) => (
+            <Col md={24} className={styles["info_author_user"]} key={item?._id}>
               <div className={styles["img_info_author_user"]}>
                 <img src="https://secure.gravatar.com/avatar/119915a6b9fb9c5149b70ee96a7bc1a6?s=61&d=mm&r=g"></img>
               </div>

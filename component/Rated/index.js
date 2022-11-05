@@ -84,12 +84,12 @@ export default function HighestRated({ data, title, category, icon }) {
           className="mySwiper"
         > */}
         <Row gutter={[16, 16]}>
-          {dataVideo.map((item) => (
-            <Col key={item._id} lg={6} md={8} sm={24} xs={24}>
-              <Link href={`/${item.class}/${item.slug}`}>
+          {dataVideo?.map((item) => (
+            <Col key={item?._id} lg={6} md={8} sm={24} xs={24}>
+              <Link href={`/${item?.class}/${item?.slug}`}>
                 <a>
                   <SwiperSlide
-                    key={item}
+                    key={item?._id}
                     style={{
                       maxHeight: "400px",
                       borderRadius: "10px",
@@ -101,7 +101,7 @@ export default function HighestRated({ data, title, category, icon }) {
                   >
                     <div
                       style={{
-                        backgroundImage: `url(${item.thumb})`,
+                        backgroundImage: `url(${item?.thumb})`,
                         backgroundRepeat: "no-repeat",
                         backgroundPosition: "center center",
                         alignItems: "center",
@@ -128,7 +128,7 @@ export default function HighestRated({ data, title, category, icon }) {
                           <Col>
                             <Tag color="#FEDC56">
                               <span style={{ color: "black" }}>
-                                {convertToMinutes(item.duration)}
+                                {convertToMinutes(item?.duration)}
                               </span>
                             </Tag>
                           </Col>
@@ -155,12 +155,12 @@ export default function HighestRated({ data, title, category, icon }) {
                         <Progress
                           type="circle"
                           percent={Math.round(
-                            (item.rate.total / (item.rate.amount * 5)) * 100
+                            (item?.rate.total / (item?.rate.amount * 5)) * 100
                           )}
                           width={35}
                           success={{
                             percent: Math.round(
-                              (item.rate.total / (item.rate.amount * 5)) * 100
+                              (item?.rate.total / (item?.rate.amount * 5)) * 100
                             ),
                           }}
                           style={{
@@ -197,7 +197,7 @@ export default function HighestRated({ data, title, category, icon }) {
                             {item?.category?.cateName}
                           </a>
                         </Link>
-                        <Link href={`/${item.class}/${item.slug}`}>
+                        <Link href={`/${item?.class}/${item?.slug}`}>
                           <a
                             style={{
                               color: "white",
@@ -207,7 +207,7 @@ export default function HighestRated({ data, title, category, icon }) {
                               overflow: "hidden",
                             }}
                           >
-                            {item.name}
+                            {item?.name}
                           </a>
                         </Link>
                       </div>
@@ -281,7 +281,7 @@ export default function HighestRated({ data, title, category, icon }) {
                               display: "flex",
                             }}
                           >
-                            {item.reactions}
+                            {item?.reactions}
                           </span>
                         </div>
                         <div className="icon_view" style={{ display: "flex" }}>
@@ -300,7 +300,7 @@ export default function HighestRated({ data, title, category, icon }) {
                               display: "flex",
                             }}
                           >
-                            {item.views}
+                            {item?.views}
                           </span>
                         </div>
                       </div>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import LayoutPage from "../component/Layout";
 import { FaBolt } from "react-icons/fa";
 import { getVideoByView } from "./api/video";
 import { Row } from "antd";
@@ -34,7 +33,7 @@ const TrendingPage = ({ videoByView }) => {
   }
 
   return (
-    <LayoutPage>
+    <>
       <div
         className="container"
         style={{ padding: "20px 10%", backgroundColor: "#010001" }}
@@ -73,12 +72,12 @@ const TrendingPage = ({ videoByView }) => {
         </div>
         <div className="containerListVideo">
           <Row gutter={[24, 24]}>
-            {videoByView.map((item, index) => (
+            {videoByView?.map((item, index) => (
               <Col key={index} md={6} sm={24} xs={24}>
-                <Link href={`/${item.class}/${item.slug}`}>
+                <Link href={`/${item?.class}/${item?.slug}`}>
                   <a>
                     <SwiperSlide
-                      key={item}
+                      key={item?._id}
                       style={{
                         maxHeight: "400px",
                         borderRadius: "10px",
@@ -110,7 +109,7 @@ const TrendingPage = ({ videoByView }) => {
                                 size={15}
                                 color={"#6AC46D"}
                               />
-                              <Link href={`/${item.class}/${item.slug}`}>
+                              <Link href={`/${item?.class}/${item?.slug}`}>
                                 <a
                                   style={{
                                     color: "white",
@@ -127,7 +126,7 @@ const TrendingPage = ({ videoByView }) => {
                               style={{ display: "flex", alignItems: "center" }}
                             >
                               <AiOutlineHeart size={18} color={"white"} />
-                              <Link href={`/${item.class}/${item.slug}`}>
+                              <Link href={`/${item?.class}/${item?.slug}`}>
                                 <span
                                   style={{
                                     color: "white",
@@ -145,7 +144,7 @@ const TrendingPage = ({ videoByView }) => {
                       </div>
                       <div
                         style={{
-                          backgroundImage: `url(${item.thumb})`,
+                          backgroundImage: `url(${item?.thumb})`,
                           backgroundRepeat: "no-repeat",
                           backgroundPosition: "center center",
                           alignItems: "center",
@@ -175,7 +174,7 @@ const TrendingPage = ({ videoByView }) => {
                             <Col>
                               <Tag color="#FEDC56">
                                 <span style={{ color: "black" }}>
-                                  {convertToMinutes(item.duration)}
+                                  {convertToMinutes(item?.duration)}
                                 </span>
                               </Tag>
                             </Col>
@@ -202,12 +201,13 @@ const TrendingPage = ({ videoByView }) => {
                           <Progress
                             type="circle"
                             percent={Math.round(
-                              (item.rate.total / (item.rate.amount * 5)) * 100
+                              (item?.rate.total / (item?.rate.amount * 5)) * 100
                             )}
                             width={35}
                             success={{
                               percent: Math.round(
-                                (item.rate.total / (item.rate.amount * 5)) * 100
+                                (item?.rate.total / (item?.rate.amount * 5)) *
+                                  100
                               ),
                             }}
                             style={{
@@ -234,7 +234,7 @@ const TrendingPage = ({ videoByView }) => {
                             marginLeft: "20px",
                           }}
                         >
-                          <Link href={"/"}>
+                          <Link href={`/${item?.category?.cateSlug}`}>
                             <div>
                               <a
                                 style={{
@@ -257,7 +257,7 @@ const TrendingPage = ({ videoByView }) => {
                               </span>
                             </div>
                           </Link>
-                          <Link href={`/${item.class}/${item.slug}`}>
+                          <Link href={`/${item?.class}/${item?.slug}`}>
                             <a
                               style={{
                                 color: "white",
@@ -268,7 +268,7 @@ const TrendingPage = ({ videoByView }) => {
                                 textOverflow: "ellipsis",
                               }}
                             >
-                              {item.name}
+                              {item?.name}
                             </a>
                           </Link>
                         </div>
@@ -282,7 +282,7 @@ const TrendingPage = ({ videoByView }) => {
                               textAlign: "start",
                             }}
                           >
-                            {item.description}
+                            {item?.description}
                           </p>
                         </div>
 
@@ -315,7 +315,7 @@ const TrendingPage = ({ videoByView }) => {
                                 display: "flex",
                               }}
                             >
-                              {item.reactions}
+                              {item?.reactions}
                             </span>
                           </div>
                           <div
@@ -337,7 +337,7 @@ const TrendingPage = ({ videoByView }) => {
                                 display: "flex",
                               }}
                             >
-                              {item.views}
+                              {item?.views}
                             </span>
                           </div>
                         </div>
@@ -350,12 +350,11 @@ const TrendingPage = ({ videoByView }) => {
           </Row>
         </div>
       </div>
-    </LayoutPage>
+    </>
   );
 };
 export async function getServerSideProps() {
   const videoByView = await getVideoByView();
-  console.log(videoByView);
   return {
     props: {
       videoByView: videoByView || [],

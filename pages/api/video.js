@@ -172,8 +172,18 @@ export const seacrhVideo = async (query, pageSize = 6, pageIndex = 1) => {
       `${process.env.NEXT_PUBLIC_API_URL}/api/video/searchVideosByTitle/?pageSize=${pageSize}&pageIndex=${pageIndex}`,
       { query }
     );
-    console.log(response.data);
     return response.data;
+  } catch (error) {
+    return false;
+  }
+};
+export const getPremiumVideo = async (pageSize = 6, pageIndex = 1) => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/video/getVideosPremium/?pageSize=${pageSize}&pageIndex=${pageIndex}`
+    );
+    console.log(response.data.data, "premiumvideo");
+    return response.data.data;
   } catch (error) {
     return false;
   }

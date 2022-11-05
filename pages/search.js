@@ -43,7 +43,6 @@ import { Checkbox } from "antd";
 import { Select } from "antd";
 import { getVideoByReaction, seacrhVideo } from "./api/video";
 import { convertToMinutes } from "../common/functions";
-import LayoutPage from "../component/Layout";
 import Head from "next/head";
 import { notification } from "antd";
 import { message } from "antd";
@@ -93,7 +92,6 @@ export default function SearchPage() {
       });
     };
     renewData();
-    console.log("chạy lần");
   }, [router.query]);
   if (!showChild) {
     return null;
@@ -134,7 +132,7 @@ export default function SearchPage() {
     setSearchObject(router.query);
   };
   return (
-    <LayoutPage>
+    <>
       <div
         className="container_detailPost"
         style={{
@@ -270,7 +268,7 @@ export default function SearchPage() {
                     {videoData &&
                       videoData?.map((item, index) => (
                         <Col key={index} md={12} sm={24} xs={24}>
-                          <Link href={`/${item.class}/${item.slug}`}>
+                          <Link href={`/${item?.class}/${item?.slug}`}>
                             <a>
                               <SwiperSearch item={item} />
                             </a>
@@ -344,6 +342,6 @@ export default function SearchPage() {
           </Col>
         </Row>
       </div>
-    </LayoutPage>
+    </>
   );
 }

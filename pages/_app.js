@@ -36,14 +36,12 @@ import FooterLayout from "../component/Footer";
 import Router from "next/router";
 import Loading from "../component/Loading";
 import { getCategoryPaging } from "./api/category";
+import LayoutPage from "../component/Layout";
 const { Header, Sider, Content } = Layout;
 
-function MyApp({ Component, pageProps }) {
-  const [keyIndex, setKeyIndex] = useState("");
-  const [collapsed, setCollapsed] = useState(false);
+function MyApp({ Component, pageProps, category }) {
   const router = useRouter();
-  const [path, setPath] = useState(router.asPath.slice(1));
-  const [category, setCategory] = useState([]);
+  console.log(category);
   // useEffect(() => {
   //   getCategoryPaging((data) => {
   //     setCategory(data);
@@ -59,10 +57,6 @@ function MyApp({ Component, pageProps }) {
   Router.events.on("routeChangeError", () => {
     setLoadPage(true);
   });
-
-  useEffect(() => {
-    setPath(router.asPath.slice(1));
-  }, [router.asPath]);
   // return (
   //   <Layout hasSider>
   //     {loadPage ? <Loading /> : null}
@@ -264,11 +258,11 @@ function MyApp({ Component, pageProps }) {
   //                   return (
   //                     <Dropdown
   //                       overlay={
-  //                         item.children === undefined ? (
+  //                         item?.children === undefined ? (
   //                           <Menu items={[{ label: "Không có dữ liệu" }]} />
   //                         ) : (
   //                           <Menu
-  //                             items={item.children}
+  //                             items={item?.children}
   //                             onClick={(e) => router.push(`/${e.key}`)}
   //                             expandIcon={
   //                               <CaretRightOutlined className="icon-menu" />
@@ -282,10 +276,10 @@ function MyApp({ Component, pageProps }) {
   //                       autoFocus={true}
   //                     >
   //                       <a onClick={(e) => e.preventDefault()}>
-  //                         <Link key={index} href={`/${item.key}`}>
+  //                         <Link key={index} href={`/${item?.key}`}>
   //                           <Space>
-  //                             {item.label}
-  //                             {item.children === undefined ? null : (
+  //                             {item?.label}
+  //                             {item?.children === undefined ? null : (
   //                               <CaretDownOutlined />
   //                             )}
   //                           </Space>
@@ -338,10 +332,10 @@ function MyApp({ Component, pageProps }) {
   //   </Layout>
   // );
   return (
-    <>
-      {loadPage ? <Loading /> : null}
+    <LayoutPage categoryProps={category}>
+      {/* {loadPage ? <Loading /> : null} */}
       <Component {...pageProps} />
-    </>
+    </LayoutPage>
   );
 }
 

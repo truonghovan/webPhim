@@ -19,7 +19,7 @@ import Link from "next/link";
 import { convertToMinutes } from "../../common/functions";
 export default function NewMovie({ data, title, category, icon, quantity }) {
   return (
-    <div style={{ margin: "0 40px" }}>
+    <div style={{ margin: "20px 40px" }}>
       <div
         className="top_title"
         style={{
@@ -84,10 +84,10 @@ export default function NewMovie({ data, title, category, icon, quantity }) {
             },
           }}
         >
-          {data.map((item) => (
+          {data?.map((item) => (
             <SwiperSlide
-              // onClick={router.push(`/${item.category}/${item.slug}`)}
-              key={item._id}
+              // onClick={router.push(`/${item?.category}/${item?.slug}`)}
+              key={item?._id}
               style={{
                 maxHeight: "350px",
                 minHeight: "300px",
@@ -98,12 +98,12 @@ export default function NewMovie({ data, title, category, icon, quantity }) {
                 objectFit: "contain",
               }}
             >
-              <Link key={item._id} href={`/${item?.class}/${item.slug}`}>
+              <Link key={item?._id} href={`/${item?.class}/${item?.slug}`}>
                 <a style={{ height: "100%", width: "100%" }}>
                   {" "}
                   <div
                     style={{
-                      backgroundImage: `url("${item.thumb}")`,
+                      backgroundImage: `url("${item?.thumb}")`,
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: "center center",
                       height: "100%",
@@ -128,7 +128,7 @@ export default function NewMovie({ data, title, category, icon, quantity }) {
                         <Col>
                           <Tag color="#FEDC56">
                             <span style={{ color: "black" }}>
-                              {convertToMinutes(item.duration)}
+                              {convertToMinutes(item?.duration)}
                             </span>
                           </Tag>
                         </Col>
@@ -155,12 +155,12 @@ export default function NewMovie({ data, title, category, icon, quantity }) {
                       <Progress
                         type="circle"
                         percent={Math.round(
-                          (item.rate.total / (item.rate.amount * 5)) * 100
+                          (item?.rate.total / (item?.rate.amount * 5)) * 100
                         )}
                         width={35}
                         success={{
                           percent: Math.round(
-                            (item.rate.total / (item.rate.amount * 5)) * 100
+                            (item?.rate.total / (item?.rate.amount * 5)) * 100
                           ),
                         }}
                         style={{
@@ -194,7 +194,7 @@ export default function NewMovie({ data, title, category, icon, quantity }) {
                           color: "white",
                         }}
                       >
-                        {item.name}
+                        {item?.name}
                       </span>
                     </div>
                   </div>

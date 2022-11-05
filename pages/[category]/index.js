@@ -26,10 +26,9 @@ import { convertToMinutes } from "../../common/functions";
 import { getVideoByCateSlug } from "../api/video";
 import moment from "moment";
 import "moment/locale/vi";
-import LayoutPage from "../../component/Layout";
 import Head from "next/head";
 import { getCategoryBySlug } from "../api/category";
-
+import { isMobile } from "react-device-detect";
 export default function CategoryPage({ videoByCate, slug, categoryInfo }) {
   const [videoByCateData, setVideoByCateData] = useState(videoByCate);
   const [pageSize, setPageSize] = useState(6);
@@ -37,7 +36,10 @@ export default function CategoryPage({ videoByCate, slug, categoryInfo }) {
   const [hasMore, setHasMore] = useState(
     videoByCate.length < pageSize ? false : true
   );
-
+  useEffect(() => {
+    setVideoByCateData(videoByCate);
+    setHasMore(videoByCate.length < pageSize ? false : true);
+  }, [videoByCate]);
   const [loadings, setLoadings] = useState(false);
   const [showChild, setShowChild] = useState(false);
   useEffect(() => {
@@ -58,16 +60,19 @@ export default function CategoryPage({ videoByCate, slug, categoryInfo }) {
     });
   };
   return (
-    <LayoutPage>
+    <>
       <Head>
         <title>{categoryInfo?.cateName}</title>
       </Head>
       <div className="container_detailPost">
-        <div className={styles["container_banner"]}>
-          {videoByCateData.length !== 0 && (
-            <EmblaCarousel slides={videoByCateData || []} />
-          )}
-        </div>
+        {!isMobile && (
+          <div className={styles["container_banner"]}>
+            {videoByCateData.length !== 0 && (
+              <EmblaCarousel slides={videoByCateData || []} />
+            )}
+          </div>
+        )}
+
         <div
           className={styles["container_listitem"]}
           style={{
@@ -76,11 +81,11 @@ export default function CategoryPage({ videoByCate, slug, categoryInfo }) {
           }}
         >
           <Row gutter={[24, 24]}>
-            {videoByCateData.map((item) => (
-              <Col key={item._id} lg={6} md={12} sm={24} xs={24}>
+            {videoByCateData?.map((item) => (
+              <Col key={item?._id} lg={6} md={12} sm={24} xs={24}>
                 {" "}
                 <SwiperSlide
-                  key={item}
+                  key={item?._id}
                   style={{
                     maxHeight: "400px",
                     borderRadius: "10px",
@@ -90,11 +95,11 @@ export default function CategoryPage({ videoByCate, slug, categoryInfo }) {
                     backgroundColor: "#191A1D",
                   }}
                 >
-                  <Link href={`/${item?.class}/${item.slug}`}>
+                  <Link href={`/${item?.class}/${item?.slug}`}>
                     <a>
                       <div
                         style={{
-                          backgroundImage: `url(${item.thumb})`,
+                          backgroundImage: `url(${item?.thumb})`,
                           backgroundRepeat: "no-repeat",
                           backgroundPosition: "center center",
                           alignItems: "center",
@@ -124,7 +129,7 @@ export default function CategoryPage({ videoByCate, slug, categoryInfo }) {
                             <Col>
                               <Tag color="#FEDC56">
                                 <span style={{ color: "black" }}>
-                                  {convertToMinutes(item.duration)}
+                                  {convertToMinutes(item?.duration)}
                                 </span>
                               </Tag>
                             </Col>
@@ -151,12 +156,13 @@ export default function CategoryPage({ videoByCate, slug, categoryInfo }) {
                           <Progress
                             type="circle"
                             percent={Math.round(
-                              (item.rate.total / (item.rate.amount * 5)) * 100
+                              (item?.rate.total / (item?.rate.amount * 5)) * 100
                             )}
                             width={35}
                             success={{
                               percent: Math.round(
-                                (item.rate.total / (item.rate.amount * 5)) * 100
+                                (item?.rate.total / (item?.rate.amount * 5)) *
+                                  100
                               ),
                             }}
                             style={{
@@ -203,7 +209,7 @@ export default function CategoryPage({ videoByCate, slug, categoryInfo }) {
                                 overflow: "hidden",
                               }}
                             >
-                              {item.name}
+                              {item?.name}
                             </a>
                           </Link>
                         </div>
@@ -277,7 +283,7 @@ export default function CategoryPage({ videoByCate, slug, categoryInfo }) {
                                 display: "flex",
                               }}
                             >
-                              {item.reactions}
+                              {item?.reactions}
                             </span>
                           </div>
                           <div
@@ -299,7 +305,7 @@ export default function CategoryPage({ videoByCate, slug, categoryInfo }) {
                                 display: "flex",
                               }}
                             >
-                              {item.views}
+                              {item?.views}
                             </span>
                           </div>
                         </div>
@@ -342,7 +348,9 @@ export default function CategoryPage({ videoByCate, slug, categoryInfo }) {
           </Row>
         </div>
       </div>
-    </LayoutPage>
+
+      {/* //{" "} */}
+    </>
   );
 }
 export async function getServerSideProps({ params }) {
@@ -350,6 +358,7 @@ export async function getServerSideProps({ params }) {
     getVideoByCateSlug(params.category, 6, 1),
     getCategoryBySlug(params.category),
   ]);
+  console.log(videoByCate);
   return {
     props: {
       videoByCate: videoByCate || [],

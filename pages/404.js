@@ -1,10 +1,9 @@
 import { Button, Result } from "antd";
 import Link from "next/link";
 import React from "react";
-import LayoutPage from "../component/Layout";
 
 const Page404 = () => (
-  <LayoutPage>
+  <>
     <Result
       status="404"
       title="404"
@@ -15,7 +14,7 @@ const Page404 = () => (
         </Link>
       }
     />
-  </LayoutPage>
+  </>
 );
 
 export default Page404;

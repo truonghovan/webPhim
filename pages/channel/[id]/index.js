@@ -47,7 +47,6 @@ import AudiosChannel from "../../../component/ChannelTab/Audios";
 import PlaylistsChannel from "../../../component/ChannelTab/Playlists";
 import TransferHistory from "../../../component/ChannelTab/TransferHistory";
 import WatchLater from "../../../component/ChannelTab/WatchLater";
-import LayoutPage from "../../../component/Layout";
 import { getVideoByChannel } from "../../api/video";
 import { getUserByUserName } from "../../api/user";
 const listTab = [
@@ -99,7 +98,7 @@ export default function ChannelTabPage({
   };
 
   return (
-    <LayoutPage>
+    <>
       <div className={styles["container_channel"]}>
         <div style={{ margin: "30px 10%" }}>
           <div className={styles["container_author"]}>
@@ -190,22 +189,22 @@ export default function ChannelTabPage({
               modules={[Pagination, Navigation]}
               className="mySwiperChannel"
             >
-              {listTab.map((item, index) => (
+              {listTab?.map((item, index) => (
                 <SwiperSlide
                   key={index}
                   className={
-                    "video" === item.link
+                    "video" === item?.link
                       ? styles["slider_tab-active"]
                       : styles["slider_tab"]
                   }
-                  onClick={() => router.push(`/channel/${id}/${item.link}`)}
+                  onClick={() => router.push(`/channel/${id}/${item?.link}`)}
                 >
-                  <Link href={`/channel/${id}/${item.link}`}>
+                  <Link href={`/channel/${id}/${item?.link}`}>
                     <div className={styles["container_slider_tab"]}>
                       <div
                         style={{ display: "flex", justifyContent: "center" }}
                       >
-                        <div className={styles["icon_tab"]}>{item.icon}</div>
+                        <div className={styles["icon_tab"]}>{item?.icon}</div>
                       </div>
                       <span
                         style={{
@@ -214,7 +213,7 @@ export default function ChannelTabPage({
                           color: "white",
                         }}
                       >
-                        {item.title}
+                        {item?.title}
                       </span>
                     </div>
                   </Link>
@@ -293,7 +292,7 @@ export default function ChannelTabPage({
           </div>
         </div>
       </div>
-    </LayoutPage>
+    </>
   );
 }
 export async function getServerSideProps(context) {
@@ -301,7 +300,6 @@ export async function getServerSideProps(context) {
     getVideoByChannel(context.query, 6, 1),
     getUserByUserName(context.params.id),
   ]);
-  console.log(userInfo, "userInfo");
   return {
     props: {
       tab: context?.params?.tab || "",

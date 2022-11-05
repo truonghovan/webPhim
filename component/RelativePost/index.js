@@ -19,12 +19,12 @@ export default function RelativePost({ videoRelative }) {
   return (
     <div className={styles["list_post"]}>
       <Row gutter={[24, 24]}>
-        {videoRelative.map((item) => (
-          <Col lg={8} md={12} sm={24} xs={24} key={item}>
-            <Link href={`/${item.class}/${item.slug}`}>
+        {videoRelative?.map((item) => (
+          <Col lg={8} md={12} sm={24} xs={24} key={item?._id}>
+            <Link href={`/${item?.class}/${item?.slug}`}>
               <a>
                 <SwiperSlide
-                  key={item}
+                  key={item?._id}
                   style={{
                     maxHeight: "400px",
                     borderRadius: "10px",
@@ -36,7 +36,7 @@ export default function RelativePost({ videoRelative }) {
                 >
                   <div
                     style={{
-                      backgroundImage: `url("${item.thumb}")`,
+                      backgroundImage: `url("${item?.thumb}")`,
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: "center center",
                       alignItems: "center",
@@ -63,7 +63,7 @@ export default function RelativePost({ videoRelative }) {
                         <Col>
                           <Tag color="#FEDC56">
                             <span style={{ color: "black" }}>
-                              {convertToMinutes(item.duration)}
+                              {convertToMinutes(item?.duration)}
                             </span>
                           </Tag>
                         </Col>
@@ -90,12 +90,12 @@ export default function RelativePost({ videoRelative }) {
                       <Progress
                         type="circle"
                         percent={Math.round(
-                          (item.rate.total / (item.rate.amount * 5)) * 100
+                          (item?.rate.total / (item?.rate.amount * 5)) * 100
                         )}
                         width={35}
                         success={{
                           percent: Math.round(
-                            (item.rate.total / (item.rate.amount * 5)) * 100
+                            (item?.rate.total / (item?.rate.amount * 5)) * 100
                           ),
                         }}
                         style={{
@@ -142,7 +142,7 @@ export default function RelativePost({ videoRelative }) {
                             overflow: "hidden",
                           }}
                         >
-                          {item.name}
+                          {item?.name}
                         </a>
                       </Link>
                     </div>
@@ -209,7 +209,7 @@ export default function RelativePost({ videoRelative }) {
                             display: "flex",
                           }}
                         >
-                          {item.reactions}
+                          {item?.reactions}
                         </span>
                       </div>
                       <div className="icon_view" style={{ display: "flex" }}>
@@ -228,7 +228,7 @@ export default function RelativePost({ videoRelative }) {
                             display: "flex",
                           }}
                         >
-                          {item.views}
+                          {item?.views}
                         </span>
                       </div>
                     </div>

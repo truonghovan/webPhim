@@ -53,9 +53,9 @@ export default function PlaylistsChannel({ data }) {
         {dataVideo &&
           dataVideo.length !== 0 &&
           dataVideo?.map((item) => (
-            <Col lg={8} md={12} sm={24} xs={24} key={item}>
+            <Col lg={8} md={12} sm={24} xs={24} key={item?._id}>
               <SwiperSlide
-                key={item}
+                key={item?._id}
                 style={{
                   maxHeight: "400px",
                   borderRadius: "10px",
@@ -140,7 +140,7 @@ export default function PlaylistsChannel({ data }) {
                       <Col>
                         <Tag color="#FEDC56">
                           <span style={{ color: "black" }}>
-                            {convertToMinutes(item.duration)}
+                            {convertToMinutes(item?.duration)}
                           </span>
                         </Tag>
                       </Col>

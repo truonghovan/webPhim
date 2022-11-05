@@ -25,12 +25,12 @@ export default function VideoMostLike({
   return (
     <div className={styles["container_listvideo_mostlike"]}>
       <Row>
-        {videoMostLike.map((item) => (
-          <Col md={24} key={item._id}>
-            <Link href={`/${item.class}/${item.slug}`}>
+        {videoMostLike?.map((item) => (
+          <Col md={24} key={item?._id}>
+            <Link href={`/${item?.class}/${item?.slug}`}>
               <a>
                 <SwiperSlide
-                  key={item}
+                  key={item?._id}
                   style={{
                     maxHeight: "500px",
                     borderRadius: "10px",
@@ -41,7 +41,7 @@ export default function VideoMostLike({
                 >
                   <div
                     style={{
-                      backgroundImage: `url(${item.thumb})`,
+                      backgroundImage: `url(${item?.thumb})`,
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: "center center",
                       alignItems: "center",
@@ -69,7 +69,7 @@ export default function VideoMostLike({
                         <Col>
                           <Tag color="#FEDC56">
                             <span style={{ color: "black" }}>
-                              {convertToMinutes(item.duration)}
+                              {convertToMinutes(item?.duration)}
                             </span>
                           </Tag>
                         </Col>
@@ -96,12 +96,12 @@ export default function VideoMostLike({
                       <Progress
                         type="circle"
                         percent={Math.round(
-                          (item.rate.total / (item.rate.amount * 5)) * 100
+                          (item?.rate.total / (item?.rate.amount * 5)) * 100
                         )}
                         width={35}
                         success={{
                           percent: Math.round(
-                            (item.rate.total / (item.rate.amount * 5)) * 100
+                            (item?.rate.total / (item?.rate.amount * 5)) * 100
                           ),
                         }}
                         style={{
@@ -136,7 +136,7 @@ export default function VideoMostLike({
                             overflow: "hidden",
                           }}
                         >
-                          {item.name}
+                          {item?.name}
                         </a>
                       </Link>
                     </div>
@@ -173,7 +173,7 @@ export default function VideoMostLike({
                                 display: "flex",
                               }}
                             >
-                              {item.reactions} Reactions
+                              {item?.reactions} Reactions
                             </span>
                           </div>
                         </Col>
@@ -197,7 +197,7 @@ export default function VideoMostLike({
                                 display: "flex",
                               }}
                             >
-                              {item.views} Views
+                              {item?.views} Views
                             </span>
                           </div>
                         </Col>

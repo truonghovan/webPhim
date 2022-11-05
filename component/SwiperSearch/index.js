@@ -16,10 +16,9 @@ import { convertToMinutes } from "../../common/functions";
 import "moment/locale/vi";
 import moment from "moment";
 export default function SwiperSearch({ item }) {
-  console.log(item);
   return (
     <SwiperSlide
-      key={item}
+      key={item._id}
       style={{
         maxHeight: "400px",
         borderRadius: "10px",

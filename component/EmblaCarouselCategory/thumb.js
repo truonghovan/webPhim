@@ -10,6 +10,7 @@ export const Thumb = ({ selected, onClick, imgSrc }) => (
       onClick={onClick}
       className="embla__slide__inner embla__slide__inner--thumb"
       type="button"
+      style={{ height: "100%" }}
     >
       <img className="embla__slide__thumbnail" src={imgSrc} alt="A cool cat." />
     </button>

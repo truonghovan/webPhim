@@ -84,9 +84,9 @@ export default function NewAudios({ data, title, category, icon }) {
             },
           }}
         >
-          {data.map((item) => (
+          {data?.map((item) => (
             <SwiperSlide
-              key={item}
+              key={item?._id}
               style={{
                 maxHeight: "500px",
                 borderRadius: "10px",
@@ -96,11 +96,11 @@ export default function NewAudios({ data, title, category, icon }) {
                 backgroundColor: "#191A1D",
               }}
             >
-              <Link href={`/${item.class}/${item.slug}`}>
+              <Link href={`/${item?.class}/${item?.slug}`}>
                 <a>
                   <div
                     style={{
-                      backgroundImage: `url("${item.thumb}")`,
+                      backgroundImage: `url("${item?.thumb}")`,
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: "center center",
                       alignItems: "center",
@@ -127,7 +127,7 @@ export default function NewAudios({ data, title, category, icon }) {
                         <Col>
                           <Tag color="#FEDC56">
                             <span style={{ color: "black" }}>
-                              {convertToMinutes(item.duration)}
+                              {convertToMinutes(item?.duration)}
                             </span>
                           </Tag>
                         </Col>
@@ -154,12 +154,12 @@ export default function NewAudios({ data, title, category, icon }) {
                       <Progress
                         type="circle"
                         percent={Math.round(
-                          (item.rate.total / (item.rate.amount * 5)) * 100
+                          (item?.rate.total / (item?.rate.amount * 5)) * 100
                         )}
                         width={35}
                         success={{
                           percent: Math.round(
-                            (item.rate.total / (item.rate.amount * 5)) * 100
+                            (item?.rate.total / (item?.rate.amount * 5)) * 100
                           ),
                         }}
                         style={{
@@ -185,7 +185,7 @@ export default function NewAudios({ data, title, category, icon }) {
                         paddingTop: "10px",
                       }}
                     >
-                      <Link href={`/${item.class}/${item.slug}`}>
+                      <Link href={`/${item?.class}/${item?.slug}`}>
                         <a
                           style={{
                             color: "#ff9f0a",
@@ -196,7 +196,7 @@ export default function NewAudios({ data, title, category, icon }) {
                           {item?.category?.cateName}
                         </a>
                       </Link>
-                      <Link href={`/${item.class}/${item.slug}`}>
+                      <Link href={`/${item?.class}/${item?.slug}`}>
                         <a
                           style={{
                             color: "white",
@@ -206,7 +206,7 @@ export default function NewAudios({ data, title, category, icon }) {
                             overflow: "hidden",
                           }}
                         >
-                          {item.name}
+                          {item?.name}
                         </a>
                       </Link>
                     </div>
@@ -236,7 +236,7 @@ export default function NewAudios({ data, title, category, icon }) {
                             display: "flex",
                           }}
                         >
-                          {item.reactions}
+                          {item?.reactions}
                         </span>
                       </div>
                       <div className="icon_view" style={{ display: "flex" }}>
@@ -255,7 +255,7 @@ export default function NewAudios({ data, title, category, icon }) {
                             display: "flex",
                           }}
                         >
-                          {item.views}
+                          {item?.views}
                         </span>
                       </div>
                     </div>

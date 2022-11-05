@@ -201,7 +201,10 @@
   /* margin-left: -8px; */
   display: flex;
   flex-direction: column; 
-  height: 400px;
+  min-height: 400px;
+  height: 60vh;
+  transform: translate3d(0px,0px,0px); 
+
 }
 
 .embla__slide--thumb {
@@ -214,7 +217,7 @@
 .embla__slide__inner--thumb {
   touch-action: manipulation;
   cursor: pointer;
-  height: 100%;
+  height: 140px;
   border: 0;
   outline: 0;
   margin: 0;
@@ -233,7 +236,7 @@
   bottom: 0;
   left: -10000%;
   right: -10000%;
-  height: 100%;
+  height: 160px;
   width: 100%;
   margin: auto;
   min-width: 1000%;
@@ -253,3 +256,5 @@
   border-image-slice: 1;
   border-image-source: radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(149,253,45,1) 30%, rgba(103,229,105,1) 60%);
 }
+
+

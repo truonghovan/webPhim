@@ -61,7 +61,6 @@ import {
 } from "../api/video";
 import { convertToMinutes } from "../../common/functions";
 import { getCommentVideo } from "../api/comment";
-import LayoutPage from "../../component/Layout";
 import Head from "next/head";
 import { notification } from "antd";
 import { message } from "antd";
@@ -88,8 +87,7 @@ export default function DetailPost({
   };
   const router = useRouter();
   const [videoData, setVideoData] = useState(videoBySlug);
-  const [cities, setCities] = useState(cityData[provinceData[0]]);
-  const [secondCity, setSecondCity] = useState(cityData[provinceData[0]][0]);
+
   const [listTag, setListTag] = useState(videoData.tags);
   const [listVideo, setListVideo] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9]);
   const [listUserScore, setListUserScore] = useState([1, 2, 3, 4, 5, 6]);
@@ -136,9 +134,6 @@ export default function DetailPost({
   if (!showChild) {
     return null;
   }
-  const onSecondCityChange = (value) => {
-    setSecondCity(value);
-  };
   const handleLoadMoreVideo = () => {
     setLoadingButton(true);
     setTimeout(() => {
@@ -196,7 +191,7 @@ export default function DetailPost({
     });
   };
   return (
-    <LayoutPage>
+    <>
       <div
         className="container_detailPost"
         style={{
@@ -218,12 +213,11 @@ export default function DetailPost({
                 borderRadius: "5px",
               }}
             >
-              {console.log(videoData.videoURL[0])}
               <ReactJWPlayer
                 playerId="4fv6q6z7"
                 // src="https://www.youtube.com/embed/YvhK5ccFQPM"
                 playerScript="https://content.jwplatform.com/libraries/j9BLvpMc.js"
-                playlist={videoData.videoURL[0]}
+                playlist={videoData?.videoURL && videoData.videoURL[0]}
                 // onReady={onReady}
               />
 
@@ -317,7 +311,9 @@ export default function DetailPost({
                     </Tooltip>
                     <Tooltip placement="top" title={"Previos Video"}>
                       <Link
-                        href={`/${relativeVideo[0]?.class}/${relativeVideo[0]?.slug}`}
+                        href={`/${relativeVideo && relativeVideo[0]?.class}/${
+                          relativeVideo && relativeVideo[0]?.slug
+                        }`}
                       >
                         <a className={styles["icon_video_icon"]}>
                           <FaAngleDoubleLeft size={20} color={"white"} />
@@ -326,7 +322,9 @@ export default function DetailPost({
                     </Tooltip>
                     <Tooltip placement="top" title={"Next Video"}>
                       <Link
-                        href={`/${relativeVideo[1]?.class}/${relativeVideo[1]?.slug}`}
+                        href={`/${relativeVideo && relativeVideo[1]?.class}/${
+                          relativeVideo && relativeVideo[1]?.slug
+                        }`}
                       >
                         <a className={styles["icon_video_icon"]}>
                           <FaAngleDoubleRight size={20} color={"white"} />
@@ -568,7 +566,7 @@ export default function DetailPost({
                     {[1, 2, 3, 4, 5, 6].map((item) => (
                       <Col
                         md={8}
-                        key={item}
+                        key={item?._id}
                         className={styles["container_casts_item"]}
                       >
                         <div className={styles["image_casts"]}>
@@ -633,7 +631,7 @@ export default function DetailPost({
                     {[1, 2, 3, 4, 5, 6].map((item) => (
                       <Col
                         md={8}
-                        key={item}
+                        key={item?._id}
                         className={styles["container_casts_item"]}
                       >
                         <div className={styles["image_casts"]}>
@@ -689,9 +687,9 @@ export default function DetailPost({
                 <div className={styles["list_tag"]}>
                   {listTag &&
                     listTag.map((item, index) => (
-                      <Link key={index} href={`/${item.tagSlug}`}>
+                      <Link key={index} href={`/${item?.tagSlug}`}>
                         <a>
-                          <Tag color="#3C3F46">{item.tagName}</Tag>
+                          <Tag color="#3C3F46">{item?.tagName}</Tag>
                         </a>
                       </Link>
                     ))}
@@ -703,7 +701,9 @@ export default function DetailPost({
                 <Col md={12} sm={24}>
                   <div className={styles["pre_video"]}>
                     <Link
-                      href={`/${relativeVideo[0]?.class}/${relativeVideo[0]?.slug}`}
+                      href={`/${relativeVideo && relativeVideo[0]?.class}/${
+                        relativeVideo && relativeVideo[0]?.slug
+                      }`}
                     >
                       <a className={styles["container_pre_video"]}>
                         <FaLongArrowAltLeft
@@ -726,16 +726,18 @@ export default function DetailPost({
                     <div className={styles["content_prev_video"]}>
                       <div className={styles["thumb_video_prev"]}>
                         <img
-                          src={relativeVideo[0]?.thumb}
+                          src={relativeVideo && relativeVideo[0]?.thumb}
                           style={{ height: "100%", objectFit: "cover" }}
                         />
                       </div>
                       <Link
-                        href={`/${relativeVideo[0]?.class}/${relativeVideo[0]?.slug}`}
+                        href={`/${relativeVideo && relativeVideo[0]?.class}/${
+                          relativeVideo && relativeVideo[0]?.slug
+                        }`}
                       >
                         <a style={{ maxHeight: "55px", overflow: "hidden" }}>
                           <h3 className={styles["title_video"]}>
-                            {relativeVideo[0]?.name}
+                            {relativeVideo && relativeVideo[0]?.name}
                           </h3>
                         </a>
                       </Link>
@@ -870,7 +872,7 @@ export default function DetailPost({
           </Col>
         </Row>
       </div>
-    </LayoutPage>
+    </>
   );
 }
 export async function getServerSideProps({ params }) {

@@ -46,9 +46,9 @@ export default function AudiosChannel({ data, id, sortBy }) {
       <Row gutter={[24, 24]}>
         {dataVideo &&
           dataVideo?.map((item) => (
-            <Col lg={6} md={12} sm={24} xs={24} key={item}>
+            <Col lg={6} md={12} sm={24} xs={24} key={item?._id}>
               <SwiperSlide
-                key={item}
+                key={item?._id}
                 style={{
                   maxHeight: "400px",
                   borderRadius: "10px",
@@ -60,7 +60,7 @@ export default function AudiosChannel({ data, id, sortBy }) {
               >
                 <div
                   style={{
-                    backgroundImage: `url(${item.thumb})`,
+                    backgroundImage: `url(${item?.thumb})`,
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center center",
                     alignItems: "center",
@@ -87,7 +87,7 @@ export default function AudiosChannel({ data, id, sortBy }) {
                       <Col>
                         <Tag color="#FEDC56">
                           <span style={{ color: "black" }}>
-                            {convertToMinutes(item.duration)}
+                            {convertToMinutes(item?.duration)}
                           </span>
                         </Tag>
                       </Col>

@@ -110,7 +110,7 @@ export default function FooterLayout() {
                   fontWeight: "600",
                 }}
               >
-                {category.map((item, index) => (
+                {category?.map((item, index) => (
                   <div key={index}>
                     <Link href={`/${index}`}>
                       <a
@@ -156,7 +156,7 @@ export default function FooterLayout() {
                   marginLeft: "5px",
                 }}
               >
-                {category.map((item, index) => (
+                {category?.map((item, index) => (
                   <div key={index}>
                     <Link href={`/${index}`}>
                       <a

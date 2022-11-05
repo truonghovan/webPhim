@@ -35,7 +35,6 @@ import AudiosChannel from "../../../component/ChannelTab/Audios";
 import PlaylistsChannel from "../../../component/ChannelTab/Playlists";
 import TransferHistory from "../../../component/ChannelTab/TransferHistory";
 import WatchLater from "../../../component/ChannelTab/WatchLater";
-import LayoutPage from "../../../component/Layout";
 import { getVideoByChannel } from "../../api/video";
 import { getUserByUserName } from "../../api/user";
 const listTab = [
@@ -84,7 +83,7 @@ export default function ChannelTabPage({ tab, id, dataByTab, sortBy }) {
   };
 
   return (
-    <LayoutPage>
+    <>
       <div className={styles["container_channel"]}>
         <div style={{ margin: "30px 10%" }}>
           <div className={styles["container_author"]}>
@@ -175,22 +174,22 @@ export default function ChannelTabPage({ tab, id, dataByTab, sortBy }) {
               modules={[Pagination, Navigation]}
               className="mySwiperChannel"
             >
-              {listTab.map((item, index) => (
+              {listTab?.map((item, index) => (
                 <SwiperSlide
                   key={index}
                   className={
-                    tab === item.link
+                    tab === item?.link
                       ? styles["slider_tab-active"]
                       : styles["slider_tab"]
                   }
-                  onClick={() => router.push(`/channel/${id}/${item.link}`)}
+                  onClick={() => router.push(`/channel/${id}/${item?.link}`)}
                 >
-                  <Link href={`/channel/${id}/${item.link}`}>
+                  <Link href={`/channel/${id}/${item?.link}`}>
                     <div className={styles["container_slider_tab"]}>
                       <div
                         style={{ display: "flex", justifyContent: "center" }}
                       >
-                        <div className={styles["icon_tab"]}>{item.icon}</div>
+                        <div className={styles["icon_tab"]}>{item?.icon}</div>
                       </div>
                       <span
                         style={{
@@ -199,7 +198,7 @@ export default function ChannelTabPage({ tab, id, dataByTab, sortBy }) {
                           color: "white",
                         }}
                       >
-                        {item.title}
+                        {item?.title}
                       </span>
                     </div>
                   </Link>
@@ -287,7 +286,7 @@ export default function ChannelTabPage({ tab, id, dataByTab, sortBy }) {
           </div>
         </div>
       </div>
-    </LayoutPage>
+    </>
   );
 }
 export async function getServerSideProps(context) {

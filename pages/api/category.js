@@ -1,4 +1,5 @@
 import axios from "axios";
+import Link from "next/link";
 
 function createCategories(categories, parent = null) {
   const categoryList = [];
@@ -14,7 +15,13 @@ function createCategories(categories, parent = null) {
       // eslint-disable-next-line no-underscore-dangle
       _id: cate._id,
       key: cate.cateSlug,
-      label: cate.cateName,
+      label: (
+        <Link href={`/${cate.cateSlug}`}>
+          <a style={{ color: parent === null ? "white" : "unset" }}>
+            {cate.cateName}
+          </a>
+        </Link>
+      ),
       cateName: cate.cateName,
       cateSlug: cate.cateSlug,
       parent: cate.parent,
@@ -29,7 +36,6 @@ export const getCategoryPaging = async (pageSize = 20, pageIndex = 1) => {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/api/category/getPaging?pageIndex=${pageIndex}&pageSize=${pageSize}`
     );
-    console.log(response?.data?.data, "api");
     return createCategories(response?.data?.data);
   } catch (error) {
     return "false";

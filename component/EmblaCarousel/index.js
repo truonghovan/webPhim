@@ -11,16 +11,21 @@ import {
 import { Button } from "antd";
 import Link from "next/link";
 import { convertToMinutes } from "../../common/functions";
+import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
+
 const { Title } = Typography;
 const EmblaCarousel = ({ slides }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [mainViewportRef, embla] = useEmblaCarousel({ skipSnaps: false });
-  const [thumbViewportRef, emblaThumbs] = useEmblaCarousel({
-    axis: "y",
-    containScroll: "keepSnaps",
-    selectedClass: "",
-    dragFree: true,
-  });
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [thumbViewportRef, emblaThumbs] = useEmblaCarousel(
+    {
+      axis: "y",
+      selectedClass: "",
+      dragFree: true,
+    }
+    // [WheelGesturesPlugin({ forceWheelAxis: "y" })]
+  );
 
   const onThumbClick = useCallback(
     (index) => {
@@ -29,13 +34,22 @@ const EmblaCarousel = ({ slides }) => {
     },
     [embla, emblaThumbs]
   );
-
+  const onScroll = useCallback(() => {
+    if (!embla) return;
+    const progress = Math.max(0, Math.min(1, embla.scrollProgress()));
+    setScrollProgress(progress * 100);
+  }, [embla, setScrollProgress]);
   const onSelect = useCallback(() => {
     if (!embla || !emblaThumbs) return;
     setSelectedIndex(embla.selectedScrollSnap());
     emblaThumbs.scrollTo(embla.selectedScrollSnap());
   }, [embla, emblaThumbs, setSelectedIndex]);
-
+  useEffect(() => {
+    if (!embla) return;
+    embla.on("select", onSelect);
+    embla.on("scroll", onScroll);
+    onSelect();
+  }, [embla, onSelect, onScroll]);
   useEffect(() => {
     if (!embla) return;
     onSelect();
@@ -46,58 +60,59 @@ const EmblaCarousel = ({ slides }) => {
       <div className="embla" style={{ minHeight: "400px" }}>
         <div className="embla__viewport" ref={mainViewportRef}>
           <div className="embla__container">
-            {slides.map((item, index) => (
-              <div className="embla__slide" key={index}>
-                <Link href={`/${item.class}/${item.slug}`}>
-                  <a>
-                    <div className="embla__slide__inner">
-                      <div
-                        className="embla__slide__img"
-                        style={{
-                          backgroundImage: `url(${item.thumb})`,
-                          backgroundRepeat: "no-repeat",
-                          backgroundPosition: "center center",
-                          alignItems: "center",
-                          backgroundSize: "cover",
-                          alignItems: "center",
-                          display: "flex",
-                        }}
-                        alt="A cool cat."
-                      >
-                        <div className="container-content-image">
-                          <Title level={3}>
-                            <a style={{ fontSize: "2em", color: "white" }}>
-                              {item.name}
-                            </a>
-                          </Title>
-                          <div className="embla__slide__img__button">
-                            <Link href={`/${item.class}/${item.slug}`}>
+            {slides &&
+              slides?.map((item, index) => (
+                <div className="embla__slide" key={index}>
+                  <Link href={`/${item?.class}/${item?.slug}`}>
+                    <a>
+                      <div className="embla__slide__inner">
+                        <div
+                          className="embla__slide__img"
+                          style={{
+                            backgroundImage: `url(${item?.thumb})`,
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "center center",
+                            alignItems: "center",
+                            backgroundSize: "cover",
+                            alignItems: "center",
+                            display: "flex",
+                          }}
+                          alt="A cool cat."
+                        >
+                          <div className="container-content-image">
+                            <Title level={3}>
+                              <a style={{ fontSize: "2em", color: "white" }}>
+                                {item?.name}
+                              </a>
+                            </Title>
+                            <div className="embla__slide__img__button">
+                              <Link href={`/${item?.class}/${item?.slug}`}>
+                                <Button
+                                  icon={<PlayCircleOutlined />}
+                                  style={{
+                                    fontWeight: "bold",
+                                    backgroundColor: "#DE0404",
+                                    border: "unset",
+                                  }}
+                                  className="button__watch__now"
+                                >
+                                  WATCH NOW | {convertToMinutes(item?.duration)}
+                                </Button>
+                              </Link>
                               <Button
-                                icon={<PlayCircleOutlined />}
-                                style={{
-                                  fontWeight: "bold",
-                                  backgroundColor: "#DE0404",
-                                  border: "unset",
-                                }}
-                                className="button__watch__now"
+                                icon={<EyeOutlined />}
+                                style={{ fontWeight: "bold" }}
                               >
-                                WATCH NOW | {convertToMinutes(item.duration)}
+                                PREVIEW
                               </Button>
-                            </Link>
-                            <Button
-                              icon={<EyeOutlined />}
-                              style={{ fontWeight: "bold" }}
-                            >
-                              PREVIEW
-                            </Button>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </a>
-                </Link>
-              </div>
-            ))}
+                    </a>
+                  </Link>
+                </div>
+              ))}
           </div>
         </div>
       </div>
@@ -108,17 +123,19 @@ const EmblaCarousel = ({ slides }) => {
         <div
           className="embla__viewport"
           ref={thumbViewportRef}
-          // style={{ maxHeight: "400px" }}
+          style={{ marginTop: "-200px", height: "750px" }}
         >
           <div
             className="embla__container embla__container--thumb"
-            style={{ margin: "0 5px" }}
+            style={{
+              margin: "0 5px",
+            }}
           >
-            {slides.map((item, index) => (
+            {slides?.map((item, index) => (
               <Thumb
                 onClick={() => onThumbClick(index)}
                 selected={index === selectedIndex}
-                imgSrc={item.thumb}
+                imgSrc={item?.thumb}
                 key={index}
                 item={item}
               />
@@ -136,7 +153,7 @@ const EmblaCarousel = ({ slides }) => {
               <Thumb
                 onClick={() => onThumbClick(index)}
                 selected={index === selectedIndex}
-                imgSrc={item.thumb}
+                imgSrc={item?.thumb}
                 key={index}
                 item={item}
               />
