@@ -148,7 +148,7 @@ export default function VideoMostLike({
                         marginTop: "10px",
                       }}
                     >
-                      <Row>
+                      <Row style={{ width: "100%" }}>
                         <Col lg={12} md={24} sm={24}>
                           <div
                             className="icon_heart"

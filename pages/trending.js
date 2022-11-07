@@ -73,7 +73,7 @@ const TrendingPage = ({ videoByView }) => {
         <div className="containerListVideo">
           <Row gutter={[24, 24]}>
             {videoByView?.map((item, index) => (
-              <Col key={index} md={6} sm={24} xs={24}>
+              <Col key={index} lg={6} md={12} sm={24} xs={24}>
                 <Link href={`/${item?.class}/${item?.slug}`}>
                   <a>
                     <SwiperSlide

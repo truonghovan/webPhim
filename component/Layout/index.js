@@ -8,6 +8,7 @@ import {
   MenuUnfoldOutlined,
   NotificationOutlined,
   PlusOutlined,
+  SearchOutlined,
   ShoppingCartOutlined,
   ThunderboltOutlined,
   UploadOutlined,
@@ -33,20 +34,33 @@ import { useRouter } from "next/router";
 import { getCategoryPaging } from "../../pages/api/category";
 import ModalVideo from "../ModalCreateVideo";
 import MenuMobile from "../MenuMobile";
+import { logo } from "../../assets/img";
+import Icon from "@ant-design/icons/lib/components/AntdIcon";
 const { Header, Sider, Content } = Layout;
-export default function LayoutPage({ children, isMobile }) {
+import { isMobile } from "react-device-detect";
+export default function LayoutPage({ children }) {
   const [keyIndex, setKeyIndex] = useState("");
   const [collapsed, setCollapsed] = useState(false);
   const router = useRouter();
-  const [path, setPath] = useState(router.asPath.slice(1));
+  const [path, setPath] = useState(router.asPath.substring(1));
   const [category, setCategory] = useState([]);
   const [valueSearch, setValueSearch] = useState("");
   const [open, setOpen] = useState(false);
+  const [showChild, setShowChild] = useState(false);
+  // const [path, setPath] = useState("");
+  useEffect(() => {
+    setShowChild(true);
+  }, []);
+
   useEffect(() => {
     getCategoryPaging().then((data) => {
       setCategory(data);
     });
   }, []);
+  useEffect(() => {
+    const asPath = router.asPath.substring(1);
+    setPath(asPath);
+  }, [router]);
   // const getCate = async () => {
   //   let cateList = await getCategoryPaging();
   //   setCategory(cateList);
@@ -75,6 +89,9 @@ export default function LayoutPage({ children, isMobile }) {
       key: "3",
     },
   ];
+  if (!showChild) {
+    return null;
+  }
   return (
     <Layout hasSider>
       <Sider
@@ -90,7 +107,6 @@ export default function LayoutPage({ children, isMobile }) {
           backgroundColor: "rgb(25,26,29)",
           borderRight: "1px solid #383838",
           overflow: "auto",
-          height: "100vh",
           position: "fixed",
           left: 0,
           top: 0,
@@ -101,8 +117,8 @@ export default function LayoutPage({ children, isMobile }) {
           <div className="logo">
             {!collapsed && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src="https://vm.beeteam368.net/wp-content/uploads/2021/11/side-logo-dark.png"
+              <Image
+                src={logo}
                 alt="logo"
                 style={{
                   display: "block",
@@ -153,47 +169,97 @@ export default function LayoutPage({ children, isMobile }) {
           marginLeft: !collapsed ? 200 : 50,
         }}
       >
-        <Header
-          className="site-layout-background"
-          style={{
-            padding: "0 10%",
-            backgroundColor: "rgb(25,26,29)",
-            height: "auto",
-            position: "fixed",
-            top: 0,
-            zIndex: "3",
-            width: "100%",
-          }}
-        >
-          <Row>
-            <Col md={24} sm={24} xs={24}>
-              <div className="header_top">
-                <Row style={{ width: "100%" }}>
-                  <Col md={4} sm={24}>
-                    <Link href={"/"}>
-                      <img
-                        className="logo_header"
-                        src="https://vm.beeteam368.net/wp-content/uploads/2021/11/main-logo-dark.png"
-                        style={{ paddingRight: "30px" }}
-                        alt=""
-                      />
-                    </Link>
-                  </Col>
-                  <Col md={12} sm={24} className="header_top">
-                    <Input.Search
-                      allowClear
-                      style={{
-                        width: "80%",
-                        alignItems: "center",
-                        backgroundColor: "rgb(1,0,1)",
-                      }}
-                      value={valueSearch}
-                      placeholder="Nhập từ khóa cần tìm kiếm"
-                      onSearch={(e) => router.push(`/search?q=${e}`)}
-                      onChange={(e) => setValueSearch(e.target.value)}
-                    />
-                  </Col>
-                  {/* <Col md={0} sm={0} xs={0}>
+        <Row>
+          <Col
+            md={24}
+            sm={24}
+            xs={24}
+            style={{
+              minHeight: "135px",
+              backgroundColor: "#191A1D",
+              zIndex: "999",
+            }}
+            className="col-header"
+          >
+            <Header
+              className="site-layout-background"
+              style={{
+                padding: "0 10%",
+                backgroundColor: "rgb(25,26,29)",
+                height: "auto",
+                position: "fixed",
+                top: 0,
+                zIndex: "3",
+                width: "100%",
+              }}
+            >
+              <Row>
+                <Col
+                  md={24}
+                  sm={24}
+                  xs={24}
+                  style={{ maxHeight: "80px !important" }}
+                >
+                  <div className="header_top" style={{ paddingTop: "0" }}>
+                    <Row style={{ width: "100%" }}>
+                      <Col xs={6} md={0}>
+                        {isMobile && window.screen.width <= 576 && (
+                          <MenuMobile items={items} onClick={onClick} />
+                        )}
+                      </Col>
+                      <Col
+                        md={4}
+                        sm={4}
+                        xs={12}
+                        style={{
+                          justifyContent: "center",
+                          display: "flex",
+                          alignContent: "center",
+                        }}
+                      >
+                        <Link href={"/"}>
+                          <Image
+                            className="logo_header"
+                            src={logo}
+                            style={{ paddingRight: "30px" }}
+                            alt=""
+                          />
+                        </Link>
+                      </Col>
+                      <Col
+                        md={12}
+                        sm={12}
+                        xs={24}
+                        className="header_top col-input-search"
+                        style={{
+                          paddingTop: "0",
+                          justifyContent: "center",
+                          display: "flex",
+                        }}
+                      >
+                        <Input
+                          // addonBefore={<SearchOutlined />}
+                          prefix={<SearchOutlined />}
+                          className="input_search"
+                          allowClear
+                          style={{
+                            width: "80%",
+                            alignItems: "center",
+                            borderRadius: "20px",
+                            backgroundColor: "#010001",
+                            color: "white",
+                          }}
+                          onPressEnter={(e) =>
+                            router.push(`/search?q=${e.target.value}`)
+                          }
+                          // suffix={<Icon type="smile" />}
+                          value={valueSearch}
+                          placeholder="Nhập từ khóa cần tìm kiếm"
+                          // onSearch={(e) => router.push(`/search?q=${e}`)}
+                          onChange={(e) => setValueSearch(e.target.value)}
+                        />
+                      </Col>
+                      {/* <Col md={0} sm={0} xs={0}>
                     <div className="header_icon">
                       <Row gutter={[16, 16]}>
                         <Col style={{ paddingTop: "20px" }}>
@@ -266,68 +332,71 @@ export default function LayoutPage({ children, isMobile }) {
                       </Row>
                     </div>
                   </Col> */}
-                </Row>
-              </div>
-            </Col>
+                    </Row>
+                  </div>
+                </Col>
 
-            <Col md={24}>
-              <Row>
-                {!isMobile && (
-                  <Col md={4} sm={24} xs={24}>
-                    {React.createElement(
-                      collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-                      {
-                        className: "trigger",
-                        onClick: () => {
-                          if (!isMobile) setCollapsed(!collapsed);
-                        },
-                      }
+                <Col md={24} sm={24} xs={24}>
+                  <Row>
+                    {!isMobile && window.screen.width > 1024 && (
+                      <Col md={4} sm={24} xs={24}>
+                        {React.createElement(
+                          collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+                          {
+                            className: "trigger",
+                            onClick: () => {
+                              if (!isMobile) setCollapsed(!collapsed);
+                            },
+                          }
+                        )}
+                      </Col>
                     )}
-                  </Col>
-                )}
-                <Col>
-                  {isMobile && window.screen.width <= 1024 && (
-                    <MenuMobile items={items} onClick={onClick} />
-                  )}
-                </Col>
-
-                <Col md={18} sm={0}>
-                  {category?.map((item, index) => {
-                    return (
-                      <Dropdown
-                        overlay={
-                          item?.children.length === 0 ? (
-                            <Menu items={[{ label: "Không có dữ liệu" }]} />
-                          ) : (
-                            <Menu
-                              items={item?.children}
-                              onClick={(e) => router.push(`/${e.key}`)}
-                              expandIcon={
-                                <CaretRightOutlined className="icon-menu" />
-                              }
-                            />
-                          )
-                        }
-                        key={item?._id}
-                        arrow={true}
-                        className="category-dropdown"
-                        autoFocus={true}
-                      >
-                        <a onClick={(e) => e.preventDefault()}>
-                          <Link key={index} href={`/${item?.key}`}>
-                            <Space>
-                              {item?.label}
-                              {item?.children.length === 0 ? null : (
-                                <CaretDownOutlined />
-                              )}
-                            </Space>
-                          </Link>
-                        </a>
-                      </Dropdown>
-                    );
-                  })}
-                </Col>
-                {/* <Col>
+                    <Col xs={0} md={24} lg={0}>
+                      {isMobile && window.screen.width <= 1024 && (
+                        <MenuMobile items={items} onClick={onClick} />
+                      )}
+                    </Col>
+                    <Col md={18} sm={0}>
+                      {category?.map((item, index) => {
+                        return (
+                          <Dropdown
+                            overlay={
+                              item?.children.length === 0 ? (
+                                <Menu items={[{ label: "Không có dữ liệu" }]} />
+                              ) : (
+                                <Menu
+                                  items={item?.children}
+                                  onClick={(e) => router.push(`/${e.key}`)}
+                                  expandIcon={
+                                    <CaretRightOutlined className="icon-menu" />
+                                  }
+                                />
+                              )
+                            }
+                            key={item?._id}
+                            arrow={true}
+                            className="category-dropdown"
+                            autoFocus={true}
+                          >
+                            <a onClick={(e) => e.preventDefault()}>
+                              <Link key={index} href={`/${item?.key}`}>
+                                <Space
+                                  className={
+                                    path === item.key ? "active-label" : ""
+                                  }
+                                >
+                                  {item?.label}
+                                  {item?.children.length === 0 ? null : (
+                                    <CaretDownOutlined />
+                                  )}
+                                </Space>
+                              </Link>
+                            </a>
+                          </Dropdown>
+                        );
+                      })}
+                    </Col>
+                    {/* <Col>
                   <Col style={{ paddingTop: "20px" }}>
                     <Tooltip
                       placement="bottom"
@@ -344,27 +413,32 @@ export default function LayoutPage({ children, isMobile }) {
                     </Tooltip>
                   </Col>
                 </Col> */}
+                  </Row>
+                </Col>
               </Row>
-            </Col>
-          </Row>
-        </Header>
-        <Content
-          className="site-layout-background-content"
-          style={{
-            minHeight: 280,
-            backgroundColor: "#010001",
-            marginTop: "168px",
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: "rgb(25,26,29)",
-              height: "100%",
-            }}
-          >
-            {children}
-          </div>
-        </Content>
+            </Header>
+          </Col>
+
+          <Col md={24} sm={24} xs={24} style={{ backgroundColor: "#010001" }}>
+            <Content
+              className="site-layout-background-content"
+              style={{
+                minHeight: 280,
+                backgroundColor: "#010001",
+              }}
+            >
+              <div
+                style={{
+                  backgroundColor: "rgb(25,26,29)",
+                  height: "100%",
+                }}
+              >
+                {children}
+              </div>
+            </Content>
+          </Col>
+        </Row>
+
         <FooterLayout />
       </Layout>
     </Layout>

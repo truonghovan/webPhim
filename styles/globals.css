@@ -68,7 +68,7 @@ a {
 }
 
 .logo {
-  height: 32px;
+
   margin: 16px;
   background: rgba(255, 255, 255, 0.3);
 }
@@ -214,6 +214,12 @@ a {
   .category-dropdown{
       display: none;
   }
+  .header_top{
+    padding: 10px 0  !important;
+  }
+  .col-header{
+    min-height: 75px !important;
+  }
 }
 @media only screen and (max-width: 768px){
   .embla--thumb{
@@ -222,5 +228,25 @@ a {
   .container_detailPost{
     padding: 80px 10% !important;
   }
-}
+  .header_top{
+    padding: 10px 0 !important;
+  }
 
+}
+@media only screen and (max-width: 425px){
+
+  .col-input-search{
+    justify-content: unset !important;
+  }
+}
+.input_search{
+  border-color: #242525;
+}
+.input_search input{
+  background-color: #010001;
+  color: white;
+}
+.active-label a{
+  color: red !important;
+  border-bottom: 2px solid  red;
+}

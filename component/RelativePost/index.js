@@ -18,7 +18,7 @@ import moment from "moment";
 export default function RelativePost({ videoRelative }) {
   return (
     <div className={styles["list_post"]}>
-      <Row gutter={[24, 24]}>
+      <Row gutter={[12, 24]}>
         {videoRelative?.map((item) => (
           <Col lg={8} md={12} sm={24} xs={24} key={item?._id}>
             <Link href={`/${item?.class}/${item?.slug}`}>
@@ -138,7 +138,7 @@ export default function RelativePost({ videoRelative }) {
                             color: "white",
                             fontSize: "16px",
                             fontWeight: "bold",
-                            height: "50px",
+                            height: "30px",
                             overflow: "hidden",
                           }}
                         >

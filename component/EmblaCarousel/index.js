@@ -22,7 +22,7 @@ const EmblaCarousel = ({ slides }) => {
     {
       axis: "y",
       selectedClass: "",
-      dragFree: true,
+      dragFree: false,
     }
     // [WheelGesturesPlugin({ forceWheelAxis: "y" })]
   );
@@ -123,7 +123,7 @@ const EmblaCarousel = ({ slides }) => {
         <div
           className="embla__viewport"
           ref={thumbViewportRef}
-          style={{ marginTop: "-200px", height: "750px" }}
+          style={{ marginTop: "-20vh", height: "75vh" }}
         >
           <div
             className="embla__container embla__container--thumb"
