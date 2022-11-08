@@ -32,7 +32,7 @@ export default function CommentVideo({ onFinish, onFinishFailed }) {
           autoComplete="off"
         >
           <Row gutter={[32, 8]}>
-            <Col md={24}>
+            <Col md={24} sm={24} xs={24}>
               {" "}
               <Form.Item
                 name="comment"
@@ -50,7 +50,7 @@ export default function CommentVideo({ onFinish, onFinishFailed }) {
                 />
               </Form.Item>
             </Col>
-            <Col md={8}>
+            <Col md={8} sm={24} xs={24}>
               <Form.Item
                 name="username"
                 rules={[
@@ -63,7 +63,7 @@ export default function CommentVideo({ onFinish, onFinishFailed }) {
                 <Input placeholder="Your Name" />
               </Form.Item>
             </Col>
-            <Col md={8}>
+            <Col md={8} sm={24} xs={24}>
               <Form.Item
                 name="email"
                 rules={[
@@ -76,7 +76,7 @@ export default function CommentVideo({ onFinish, onFinishFailed }) {
                 <Input placeholder="Your Email" />
               </Form.Item>
             </Col>
-            <Col md={8}>
+            <Col md={8} sm={24} xs={24}>
               <Form.Item
                 name="website"
                 rules={[

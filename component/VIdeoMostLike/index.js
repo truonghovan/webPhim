@@ -210,7 +210,7 @@ export default function VideoMostLike({
             <Divider style={{ backgroundColor: "#282828" }} />
           </Col>
         ))}
-        <Col md={24}>
+        <Col md={24} style={{ width: "100%" }}>
           <ButtonLoadMore
             hasMore={hasMoreMostLike}
             loading={loadingButtonMostLike}

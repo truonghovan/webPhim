@@ -49,6 +49,7 @@ import TransferHistory from "../../../component/ChannelTab/TransferHistory";
 import WatchLater from "../../../component/ChannelTab/WatchLater";
 import { getVideoByChannel } from "../../api/video";
 import { getUserByUserName } from "../../api/user";
+import { isMobile } from "react-device-detect";
 const listTab = [
   { link: "video", title: "Videos", icon: <FaVideo color="white" /> },
   { link: "audio", title: "Audios", icon: <FaMusic color="white" /> },
@@ -100,7 +101,7 @@ export default function ChannelTabPage({
   return (
     <>
       <div className={styles["container_channel"]}>
-        <div style={{ margin: "30px 10%" }}>
+        <div style={{ margin: isMobile ? "100px 10px 20px 10px" : "30px 10%" }}>
           <div className={styles["container_author"]}>
             <div className={styles["container_video"]}>
               <Row className={styles["row_container"]}>
@@ -120,7 +121,7 @@ export default function ChannelTabPage({
                             paddingLeft: "10px",
                           }}
                         >
-                          {userInfo.fullName}
+                          {userInfo?.fullName}
                         </a>
                       </Link>
                     </div>
@@ -135,7 +136,7 @@ export default function ChannelTabPage({
                             paddingLeft: "10px",
                           }}
                         >
-                          {userInfo.subscriber.length} Subscribers
+                          {userInfo?.subscriber?.length} Subscribers
                         </span>
                       </Link>
                     </div>
@@ -208,7 +209,7 @@ export default function ChannelTabPage({
                       </div>
                       <span
                         style={{
-                          fontSize: "1rem",
+                          fontSize: isMobile ? "10px" : "1rem",
                           fontWeight: "bold",
                           color: "white",
                         }}

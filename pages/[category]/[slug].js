@@ -71,6 +71,8 @@ import CommentVideo from "../../component/CommentVideo";
 import RelativePost from "../../component/RelativePost";
 import ButtonLoadMore from "../../component/ButtonLoadMore";
 import HighestUser from "../../component/HighestUser";
+import { isMobile } from "react-device-detect";
+import { Radio } from "antd";
 export default function DetailPost({
   quantity,
   category,
@@ -112,6 +114,7 @@ export default function DetailPost({
   const [loadingButton, setLoadingButton] = useState(false);
   const [showChild, setShowChild] = useState(false);
   const [rate, setRate] = useState(null);
+  const [linkActive, setLinkActive] = useState(0);
   useEffect(() => {
     setShowChild(true);
     setRate(localStorage.getItem(`rate${videoBySlug._id}`));
@@ -217,7 +220,7 @@ export default function DetailPost({
                 playerId="4fv6q6z7"
                 // src="https://www.youtube.com/embed/YvhK5ccFQPM"
                 playerScript="https://content.jwplatform.com/libraries/j9BLvpMc.js"
-                playlist={videoData?.videoURL && videoData.videoURL[0]}
+                playlist={videoData?.videoURL && videoData.videoURL[linkActive]}
                 // onReady={onReady}
               />
 
@@ -296,6 +299,23 @@ export default function DetailPost({
                           {commentData.length}
                         </span>
                       </div>
+                    </div>
+                    <div className={styles["list_link_video"]}>
+                      <Radio.Group
+                        defaultValue={0}
+                        buttonStyle="solid"
+                        onChange={(e) => setLinkActive(e.target.value)}
+                      >
+                        {videoData?.videoURL?.map((item, index) => (
+                          <Radio.Button
+                            value={index}
+                            key={index}
+                            className={styles["button_link_video"]}
+                          >
+                            Link {index}
+                          </Radio.Button>
+                        ))}
+                      </Radio.Group>
                     </div>
                   </Col>
                   <Col className={styles["icon_video"]}>
@@ -819,31 +839,33 @@ export default function DetailPost({
           <Col md={8} sm={24}>
             {/* <HighestUser listUserScore={listUserScore} /> */}
 
-            <div className={styles["container_most_like_video"]}>
-              <div className={styles["highest_title"]}>
-                <AiFillLike
-                  color="red"
-                  size={30}
-                  style={{ marginRight: "20px" }}
+            {!isMobile && (
+              <div className={styles["container_most_like_video"]}>
+                <div className={styles["highest_title"]}>
+                  <AiFillLike
+                    color="red"
+                    size={30}
+                    style={{ marginRight: "20px" }}
+                  />
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: "1.5rem",
+                      marginRight: "5px",
+                      color: "white",
+                    }}
+                  >
+                    Most Liked Videos
+                  </span>
+                </div>
+                <VideoMostLike
+                  hasMoreMostLike={hasMoreMostLike}
+                  videoMostLike={videoMostLike}
+                  loadingButtonMostLike={loadingButtonMostLike}
+                  handleLoadMoreVideoLike={handleLoadMoreVideoLike}
                 />
-                <span
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "1.5rem",
-                    marginRight: "5px",
-                    color: "white",
-                  }}
-                >
-                  Most Liked Videos
-                </span>
               </div>
-              <VideoMostLike
-                hasMoreMostLike={hasMoreMostLike}
-                videoMostLike={videoMostLike}
-                loadingButtonMostLike={loadingButtonMostLike}
-                handleLoadMoreVideoLike={handleLoadMoreVideoLike}
-              />
-            </div>
+            )}
 
             {/* <div className={styles["container_new_playlist"]}>
               <div className={styles["highest_title"]}>

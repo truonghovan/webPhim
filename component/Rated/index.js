@@ -25,6 +25,7 @@ import { AiFillCheckCircle, AiFillEye, AiFillHeart } from "react-icons/ai";
 import { Button } from "antd";
 import { convertToMinutes } from "../../common/functions";
 import { getVideoHighestRate } from "../../pages/api/video";
+import { isMobile } from "react-device-detect";
 const { Meta } = Card;
 export default function HighestRated({ data, title, category, icon }) {
   const [dataVideo, setDataVideo] = useState(data);
@@ -42,22 +43,22 @@ export default function HighestRated({ data, title, category, icon }) {
     });
   };
   return (
-    <div style={{ margin: "0 40px" }}>
+    <div style={{ padding: !isMobile ? "0 160px" : "0px 10px" }}>
       <div
         className="top_title"
         style={{
           display: "flex",
-          paddingTop: "30px",
-          paddingBottom: "30px",
+          paddingTop: isMobile ? "0" : "30px",
+          paddingBottom: isMobile ? "0px" : "30px",
         }}
       >
         <div
           className="icon_top_title"
           style={{
-            marginRight: "20px",
-            width: "50px",
+            marginRight: isMobile ? "10px" : "20px",
+            width: isMobile ? "40px" : "50px",
             display: "flex",
-            height: "50px",
+            height: isMobile ? "40px" : "50px",
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: "red",
@@ -66,14 +67,22 @@ export default function HighestRated({ data, title, category, icon }) {
         >
           {icon}
         </div>
-        <div style={{ display: "grid" }}>
-          <span style={{ color: "white" }}>{title}</span>
-          <span
-            style={{ fontSize: "22px", fontWeight: "bold", color: "white" }}
-          >
-            {category}
-          </span>
-        </div>
+        <Link href={`/highestrate`}>
+          <a>
+            <div style={{ display: "grid" }}>
+              <span style={{ color: "white" }}>{title}</span>
+              <span
+                style={{
+                  fontSize: isMobile ? "15px" : "22px",
+                  fontWeight: "bold",
+                  color: "white",
+                }}
+              >
+                {category}
+              </span>
+            </div>
+          </a>
+        </Link>
       </div>
       <div className="list_card_movie">
         {/* <Swiper
@@ -83,9 +92,9 @@ export default function HighestRated({ data, title, category, icon }) {
           modules={[FreeMode, Pagination]}
           className="mySwiper"
         > */}
-        <Row gutter={[16, 16]}>
+        <Row gutter={[10, 16]}>
           {dataVideo?.map((item) => (
-            <Col key={item?._id} lg={6} md={8} sm={24} xs={24}>
+            <Col key={item?._id} lg={6} md={8} sm={8} xs={8}>
               <Link href={`/${item?.class}/${item?.slug}`}>
                 <a>
                   <SwiperSlide
@@ -93,8 +102,8 @@ export default function HighestRated({ data, title, category, icon }) {
                     style={{
                       maxHeight: "400px",
                       borderRadius: "10px",
-                      height: "50vh",
-                      minHeight: "350px",
+                      height: isMobile ? "27vh" : "50vh",
+                      minHeight: isMobile ? "200px" : "350px",
                       display: "block",
                       backgroundColor: "#191A1D",
                     }}
@@ -107,7 +116,7 @@ export default function HighestRated({ data, title, category, icon }) {
                         alignItems: "center",
                         backgroundSize: "cover",
                         position: "relative",
-                        height: "65%",
+                        height: isMobile ? "60%" : "65%",
                         width: "100%",
                       }}
                     >
@@ -116,15 +125,21 @@ export default function HighestRated({ data, title, category, icon }) {
                         style={{
                           position: "absolute",
                           top: "10px",
-                          left: "20px",
+                          left: isMobile ? "10px" : "20px",
                         }}
                       >
                         <Row>
-                          <Col>
-                            <Tag color="#108ee9" icon={<ThunderboltOutlined />}>
-                              #1
-                            </Tag>
-                          </Col>
+                          {!isMobile && (
+                            <Col>
+                              <Tag
+                                color="#108ee9"
+                                icon={<ThunderboltOutlined />}
+                              >
+                                #1
+                              </Tag>
+                            </Col>
+                          )}
+
                           <Col>
                             <Tag color="#FEDC56">
                               <span style={{ color: "black" }}>
@@ -132,50 +147,57 @@ export default function HighestRated({ data, title, category, icon }) {
                               </span>
                             </Tag>
                           </Col>
-                          <Col>
-                            <Tag color="#FEDC56">
-                              <span style={{ color: "black" }}>HD</span>
-                            </Tag>
-                          </Col>
-                          <Col>
-                            <Tag color="#8C36E0" icon={<CrownOutlined />}>
-                              Platinum Elite
-                            </Tag>
-                          </Col>
+                          {!isMobile && (
+                            <Col>
+                              <Tag color="#FEDC56">
+                                <span style={{ color: "black" }}>HD</span>
+                              </Tag>
+                            </Col>
+                          )}
+                          {!isMobile && (
+                            <Col>
+                              <Tag color="#8C36E0" icon={<CrownOutlined />}>
+                                Platinum Elite
+                              </Tag>
+                            </Col>
+                          )}
                         </Row>
                       </div>
-                      <div
-                        className="icon_center"
-                        style={{
-                          position: "absolute",
-                          bottom: "40px",
-                          left: "20px",
-                        }}
-                      >
-                        <Progress
-                          type="circle"
-                          percent={Math.round(
-                            (item?.rate.total / (item?.rate.amount * 5)) * 100
-                          )}
-                          width={35}
-                          success={{
-                            percent: Math.round(
-                              (item?.rate.total / (item?.rate.amount * 5)) * 100
-                            ),
-                          }}
+                      {!isMobile && (
+                        <div
+                          className="icon_center"
                           style={{
-                            backgroundColor: "black",
-                            borderRadius: "100%",
+                            position: "absolute",
+                            bottom: isMobile ? "10px" : "40px",
+                            left: isMobile ? "10px" : "20px",
                           }}
-                        />
-                        <Tag
-                          color="#0E0806"
-                          icon={<LineChartOutlined />}
-                          style={{ marginLeft: "10px" }}
                         >
-                          1
-                        </Tag>
-                      </div>
+                          <Progress
+                            type="circle"
+                            percent={Math.round(
+                              (item?.rate.total / (item?.rate.amount * 5)) * 100
+                            )}
+                            width={35}
+                            success={{
+                              percent: Math.round(
+                                (item?.rate.total / (item?.rate.amount * 5)) *
+                                  100
+                              ),
+                            }}
+                            style={{
+                              backgroundColor: "black",
+                              borderRadius: "100%",
+                            }}
+                          />
+                          <Tag
+                            color="#0E0806"
+                            icon={<LineChartOutlined />}
+                            style={{ marginLeft: "10px" }}
+                          >
+                            1
+                          </Tag>
+                        </div>
+                      )}
                     </div>
                     <div className="info_bottom">
                       <div
@@ -183,7 +205,7 @@ export default function HighestRated({ data, title, category, icon }) {
                           display: "grid",
                           textAlign: "center",
                           paddingTop: "10px",
-                          paddingBottom: "10px",
+                          paddingBottom: isMobile ? "0" : "10px",
                         }}
                       >
                         <Link href={`/${item?.category?.cateSlug}`}>
@@ -191,7 +213,7 @@ export default function HighestRated({ data, title, category, icon }) {
                             style={{
                               color: "#0D8B08",
                               fontWeight: "bold",
-                              fontSize: "13px",
+                              fontSize: isMobile ? "9px" : "13px",
                             }}
                           >
                             {item?.category?.cateName}
@@ -201,9 +223,9 @@ export default function HighestRated({ data, title, category, icon }) {
                           <a
                             style={{
                               color: "white",
-                              fontSize: "16px",
+                              fontSize: isMobile ? "13px" : "16px",
                               fontWeight: "bold",
-                              height: "30px",
+                              height: isMobile ? "23px" : "30px",
                               overflow: "hidden",
                             }}
                           >
@@ -211,47 +233,49 @@ export default function HighestRated({ data, title, category, icon }) {
                           </a>
                         </Link>
                       </div>
-                      <div className="author">
-                        <div
-                          className="name_author"
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                        >
-                          <AiFillCheckCircle color="#6AC46D" />
-                          <Link href={`/channel/${item?.user?.userName}`}>
-                            <a
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                              }}
-                            >
-                              <span
-                                style={{
-                                  color: "white",
-                                  fontWeight: "bold",
-                                  fontSize: "12px",
-                                  marginRight: "5px",
-                                }}
-                              >
-                                {item?.user?.fullName}
-                              </span>{" "}
-                            </a>
-                          </Link>
-                          <span
+                      {!isMobile && (
+                        <div className="author">
+                          <div
+                            className="name_author"
                             style={{
-                              color: "#818182",
-                              fontWeight: "bold",
-                              fontSize: "12px",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
                             }}
                           >
-                            - {moment(item?.createdAt).fromNow()}
-                          </span>
+                            <AiFillCheckCircle color="#6AC46D" />
+                            <Link href={`/channel/${item?.user?.userName}`}>
+                              <a
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    color: "white",
+                                    fontWeight: "bold",
+                                    fontSize: "12px",
+                                    marginRight: "5px",
+                                  }}
+                                >
+                                  {item?.user?.fullName}
+                                </span>{" "}
+                              </a>
+                            </Link>
+                            <span
+                              style={{
+                                color: "#818182",
+                                fontWeight: "bold",
+                                fontSize: "12px",
+                              }}
+                            >
+                              - {moment(item?.createdAt).fromNow()}
+                            </span>
+                          </div>
                         </div>
-                      </div>
+                      )}
                       <div
                         className="icon_info_bottom"
                         style={{
@@ -263,11 +287,15 @@ export default function HighestRated({ data, title, category, icon }) {
                       >
                         <div
                           className="icon_heart"
-                          style={{ display: "flex", marginRight: "20px" }}
+                          style={{
+                            display: "flex",
+                            marginRight: "20px",
+                            alignItems: "center",
+                          }}
                         >
                           {/* <HeartIcon /> */}
                           <AiFillHeart
-                            size={25}
+                            size={isMobile ? 15 : 25}
                             style={{
                               color: "#FF375F",
                               marginRight: "5px",
@@ -276,7 +304,7 @@ export default function HighestRated({ data, title, category, icon }) {
                           <span
                             style={{
                               color: "white",
-                              fontSize: "15px",
+                              fontSize: isMobile ? "10px" : "15px",
                               alignItems: "center",
                               display: "flex",
                             }}
@@ -284,9 +312,12 @@ export default function HighestRated({ data, title, category, icon }) {
                             {item?.reactions}
                           </span>
                         </div>
-                        <div className="icon_view" style={{ display: "flex" }}>
+                        <div
+                          className="icon_view"
+                          style={{ display: "flex", alignItems: "center" }}
+                        >
                           <AiFillEye
-                            size={25}
+                            size={isMobile ? 15 : 25}
                             style={{
                               marginRight: "5px",
                               color: "white",
@@ -295,7 +326,7 @@ export default function HighestRated({ data, title, category, icon }) {
                           <span
                             style={{
                               color: "white",
-                              fontSize: "15px",
+                              fontSize: isMobile ? "10px" : "15px",
                               alignItems: "center",
                               display: "flex",
                             }}

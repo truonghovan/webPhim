@@ -17,24 +17,33 @@ import { Row } from "antd";
 import { Col } from "antd";
 import Link from "next/link";
 import { convertToMinutes } from "../../common/functions";
+import { isMobile } from "react-device-detect";
 export default function NewMovie({ data, title, category, icon, quantity }) {
   return (
-    <div style={{ margin: "20px 40px" }}>
+    <div
+      style={{
+        padding: !isMobile
+          ? "0 160px"
+          : quantity
+          ? "0px 10px 10px 10px"
+          : "50px 10px 10px 10px",
+      }}
+    >
       <div
         className="top_title"
         style={{
           display: "flex",
-          paddingTop: "30px",
-          paddingBottom: "30px",
+          paddingTop: isMobile && quantity ? "0px" : "30px",
+          paddingBottom: isMobile ? "5px" : "30px",
         }}
       >
         <div
           className="icon_top_title"
           style={{
-            marginRight: "20px",
-            width: "50px",
+            marginRight: isMobile ? "10px" : "20px",
+            width: isMobile ? "40px" : "50px",
             display: "flex",
-            height: "50px",
+            height: isMobile ? "40px" : "50px",
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: "red",
@@ -43,14 +52,24 @@ export default function NewMovie({ data, title, category, icon, quantity }) {
         >
           {icon}
         </div>
-        <div style={{ display: "grid" }}>
-          <span style={{ color: "white" }}>{title}</span>
-          <span
-            style={{ fontSize: "22px", fontWeight: "bold", color: "white" }}
-          >
-            {category}
-          </span>
-        </div>
+        <Link
+          href={category !== "Premium Videos" ? `/newmovie` : `premiumvideo`}
+        >
+          <a>
+            <div style={{ display: "grid" }}>
+              <span style={{ color: "white" }}>{title}</span>
+              <span
+                style={{
+                  fontSize: isMobile ? "15px" : "22px",
+                  fontWeight: "bold",
+                  color: "white",
+                }}
+              >
+                {category}
+              </span>
+            </div>
+          </a>
+        </Link>
       </div>
       <div className="list_card_movie">
         <Swiper
@@ -62,25 +81,25 @@ export default function NewMovie({ data, title, category, icon, quantity }) {
           breakpoints={{
             // when window width is <= 499px
             10: {
-              slidesPerView: 1,
-              spaceBetweenSlides: 30,
+              slidesPerView: 3,
+              spaceBetween: 10,
             },
             640: {
-              slidesPerView: 2,
-              spaceBetweenSlides: 30,
+              slidesPerView: 3,
+              spaceBetween: 10,
             },
             768: {
-              slidesPerView: 2,
-              spaceBetweenSlides: 30,
+              slidesPerView: 3,
+              spaceBetween: 20,
             },
             // when window width is <= 999px
             1024: {
               slidesPerView: 4,
-              spaceBetweenSlides: 30,
+              spaceBetween: 30,
             },
             1280: {
               slidesPerView: 5,
-              spaceBetweenSlides: 30,
+              spaceBetween: 30,
             },
           }}
         >
@@ -90,9 +109,16 @@ export default function NewMovie({ data, title, category, icon, quantity }) {
               key={item?._id}
               style={{
                 maxHeight: "350px",
-                minHeight: "300px",
+                // height: isMobile ? "40vh" : "50vh",
+                minHeight: isMobile ? "180px" : "400px",
                 borderRadius: "10px",
-                height: quantity ? "30vh" : "40vh",
+                height: quantity
+                  ? isMobile
+                    ? "20vh"
+                    : "30vh"
+                  : isMobile
+                  ? "20vh"
+                  : "40vh",
                 alignItems: "center",
                 position: "relative",
                 objectFit: "contain",
@@ -120,11 +146,13 @@ export default function NewMovie({ data, title, category, icon, quantity }) {
                       }}
                     >
                       <Row>
-                        <Col>
-                          <Tag color="#108ee9" icon={<ThunderboltOutlined />}>
-                            #1
-                          </Tag>
-                        </Col>
+                        {!isMobile && (
+                          <Col>
+                            <Tag color="#108ee9" icon={<ThunderboltOutlined />}>
+                              #1
+                            </Tag>
+                          </Col>
+                        )}
                         <Col>
                           <Tag color="#FEDC56">
                             <span style={{ color: "black" }}>
@@ -132,50 +160,56 @@ export default function NewMovie({ data, title, category, icon, quantity }) {
                             </span>
                           </Tag>
                         </Col>
-                        <Col>
-                          <Tag color="#FEDC56">
-                            <span style={{ color: "black" }}>HD</span>
-                          </Tag>
-                        </Col>
-                        <Col>
-                          <Tag color="#8C36E0" icon={<CrownOutlined />}>
-                            Platinum Elite
-                          </Tag>
-                        </Col>
+                        {!isMobile && (
+                          <Col>
+                            <Tag color="#FEDC56">
+                              <span style={{ color: "black" }}>HD</span>
+                            </Tag>
+                          </Col>
+                        )}
+                        {!isMobile && (
+                          <Col>
+                            <Tag color="#8C36E0" icon={<CrownOutlined />}>
+                              Platinum Elite
+                            </Tag>
+                          </Col>
+                        )}
                       </Row>
                     </div>
-                    <div
-                      className="icon_center"
-                      style={{
-                        position: "absolute",
-                        bottom: "80px",
-                        left: "20px",
-                      }}
-                    >
-                      <Progress
-                        type="circle"
-                        percent={Math.round(
-                          (item?.rate.total / (item?.rate.amount * 5)) * 100
-                        )}
-                        width={35}
-                        success={{
-                          percent: Math.round(
-                            (item?.rate.total / (item?.rate.amount * 5)) * 100
-                          ),
-                        }}
+                    {!isMobile && (
+                      <div
+                        className="icon_center"
                         style={{
-                          backgroundColor: "black",
-                          borderRadius: "100%",
+                          position: "absolute",
+                          bottom: "80px",
+                          left: "20px",
                         }}
-                      />
-                      <Tag
-                        color="#0E0806"
-                        icon={<LineChartOutlined />}
-                        style={{ marginLeft: "10px" }}
                       >
-                        1
-                      </Tag>
-                    </div>
+                        <Progress
+                          type="circle"
+                          percent={Math.round(
+                            (item?.rate.total / (item?.rate.amount * 5)) * 100
+                          )}
+                          width={35}
+                          success={{
+                            percent: Math.round(
+                              (item?.rate.total / (item?.rate.amount * 5)) * 100
+                            ),
+                          }}
+                          style={{
+                            backgroundColor: "black",
+                            borderRadius: "100%",
+                          }}
+                        />
+                        <Tag
+                          color="#0E0806"
+                          icon={<LineChartOutlined />}
+                          style={{ marginLeft: "10px" }}
+                        >
+                          1
+                        </Tag>
+                      </div>
+                    )}
                     <div
                       className="name_movie"
                       style={{
@@ -189,7 +223,7 @@ export default function NewMovie({ data, title, category, icon, quantity }) {
                     >
                       <span
                         style={{
-                          fontSize: "17px",
+                          fontSize: isMobile ? "14px" : "17px",
                           fontWeight: "bold",
                           color: "white",
                         }}

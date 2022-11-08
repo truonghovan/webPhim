@@ -17,24 +17,25 @@ import { Col } from "antd";
 import Link from "next/link";
 import { AiFillEye, AiFillHeart } from "react-icons/ai";
 import { convertToMinutes } from "../../common/functions";
+import { isMobile } from "react-device-detect";
 export default function NewAudios({ data, title, category, icon }) {
   return (
-    <div style={{ margin: "0 40px" }}>
+    <div style={{ padding: !isMobile ? "0 160px" : "10px 10px" }}>
       <div
         className="top_title"
         style={{
           display: "flex",
-          paddingTop: "30px",
-          paddingBottom: "30px",
+          paddingTop: isMobile ? "0px" : "30px",
+          paddingBottom: isMobile ? "0" : "30px",
         }}
       >
         <div
           className="icon_top_title"
           style={{
-            marginRight: "20px",
-            width: "50px",
+            marginRight: isMobile ? "10px" : "20px",
+            width: isMobile ? "40px" : "50px",
             display: "flex",
-            height: "50px",
+            height: isMobile ? "40px" : "50px",
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: "red",
@@ -43,14 +44,22 @@ export default function NewAudios({ data, title, category, icon }) {
         >
           {icon}
         </div>
-        <div style={{ display: "grid" }}>
-          <span style={{ color: "white" }}>{title}</span>
-          <span
-            style={{ fontSize: "22px", fontWeight: "bold", color: "white" }}
-          >
-            {category}
-          </span>
-        </div>
+        <Link href={`/newaudios`}>
+          <a>
+            <div style={{ display: "grid" }}>
+              <span style={{ color: "white" }}>{title}</span>
+              <span
+                style={{
+                  fontSize: isMobile ? "15px" : "22px",
+                  fontWeight: "bold",
+                  color: "white",
+                }}
+              >
+                {category}
+              </span>
+            </div>
+          </a>
+        </Link>
       </div>
       <div className="list_card_movie">
         <Swiper
@@ -62,25 +71,25 @@ export default function NewAudios({ data, title, category, icon }) {
           breakpoints={{
             // when window width is <= 499px
             10: {
-              slidesPerView: 1,
-              spaceBetweenSlides: 30,
+              slidesPerView: 3,
+              spaceBetween: 10,
             },
             640: {
-              slidesPerView: 2,
-              spaceBetweenSlides: 30,
+              slidesPerView: 3,
+              spaceBetween: 10,
             },
             768: {
-              slidesPerView: 2,
-              spaceBetweenSlides: 30,
+              slidesPerView: 3,
+              spaceBetween: 10,
             },
             // when window width is <= 999px
             1024: {
               slidesPerView: 4,
-              spaceBetweenSlides: 30,
+              spaceBetween: 30,
             },
             1280: {
               slidesPerView: 5,
-              spaceBetweenSlides: 30,
+              spaceBetween: 30,
             },
           }}
         >
@@ -90,8 +99,8 @@ export default function NewAudios({ data, title, category, icon }) {
               style={{
                 maxHeight: "500px",
                 borderRadius: "10px",
-                height: "50vh",
-                minHeight: "400px",
+                height: isMobile ? "25vh" : "50vh",
+                minHeight: isMobile ? "200px" : "400px",
                 display: "block",
                 backgroundColor: "#191A1D",
               }}
@@ -106,7 +115,7 @@ export default function NewAudios({ data, title, category, icon }) {
                       alignItems: "center",
                       backgroundSize: "cover",
                       position: "relative",
-                      height: "70%",
+                      height: isMobile ? "60%" : "70%",
                       width: "100%",
                     }}
                   >
@@ -119,11 +128,13 @@ export default function NewAudios({ data, title, category, icon }) {
                       }}
                     >
                       <Row>
-                        <Col>
-                          <Tag color="#108ee9" icon={<ThunderboltOutlined />}>
-                            #1
-                          </Tag>
-                        </Col>
+                        {!isMobile && (
+                          <Col>
+                            <Tag color="#108ee9" icon={<ThunderboltOutlined />}>
+                              #1
+                            </Tag>
+                          </Col>
+                        )}
                         <Col>
                           <Tag color="#FEDC56">
                             <span style={{ color: "black" }}>
@@ -131,57 +142,63 @@ export default function NewAudios({ data, title, category, icon }) {
                             </span>
                           </Tag>
                         </Col>
-                        <Col>
-                          <Tag color="#FEDC56">
-                            <span style={{ color: "black" }}>HD</span>
-                          </Tag>
-                        </Col>
-                        <Col>
-                          <Tag color="#8C36E0" icon={<CrownOutlined />}>
-                            Platinum Elite
-                          </Tag>
-                        </Col>
+                        {!isMobile && (
+                          <Col>
+                            <Tag color="#FEDC56">
+                              <span style={{ color: "black" }}>HD</span>
+                            </Tag>
+                          </Col>
+                        )}
+                        {!isMobile && (
+                          <Col>
+                            <Tag color="#8C36E0" icon={<CrownOutlined />}>
+                              Platinum Elite
+                            </Tag>
+                          </Col>
+                        )}
                       </Row>
                     </div>
-                    <div
-                      className="icon_center"
-                      style={{
-                        position: "absolute",
-                        bottom: "40px",
-                        left: "20px",
-                      }}
-                    >
-                      <Progress
-                        type="circle"
-                        percent={Math.round(
-                          (item?.rate.total / (item?.rate.amount * 5)) * 100
-                        )}
-                        width={35}
-                        success={{
-                          percent: Math.round(
-                            (item?.rate.total / (item?.rate.amount * 5)) * 100
-                          ),
-                        }}
+                    {!isMobile && (
+                      <div
+                        className="icon_center"
                         style={{
-                          backgroundColor: "black",
-                          borderRadius: "100%",
+                          position: "absolute",
+                          bottom: "40px",
+                          left: "20px",
                         }}
-                      />
-                      <Tag
-                        color="#0E0806"
-                        icon={<LineChartOutlined />}
-                        style={{ marginLeft: "10px" }}
                       >
-                        1
-                      </Tag>
-                    </div>
+                        <Progress
+                          type="circle"
+                          percent={Math.round(
+                            (item?.rate.total / (item?.rate.amount * 5)) * 100
+                          )}
+                          width={35}
+                          success={{
+                            percent: Math.round(
+                              (item?.rate.total / (item?.rate.amount * 5)) * 100
+                            ),
+                          }}
+                          style={{
+                            backgroundColor: "black",
+                            borderRadius: "100%",
+                          }}
+                        />
+                        <Tag
+                          color="#0E0806"
+                          icon={<LineChartOutlined />}
+                          style={{ marginLeft: "10px" }}
+                        >
+                          1
+                        </Tag>
+                      </div>
+                    )}
                   </div>
                   <div className="info_bottom">
                     <div
                       style={{
                         display: "grid",
                         textAlign: "start",
-                        paddingLeft: "20px",
+                        paddingLeft: isMobile ? "5px" : "20px",
                         paddingTop: "10px",
                       }}
                     >
@@ -190,7 +207,7 @@ export default function NewAudios({ data, title, category, icon }) {
                           style={{
                             color: "#ff9f0a",
                             fontWeight: "bold",
-                            fontSize: "13px",
+                            fontSize: isMobile ? "8px" : "13px",
                           }}
                         >
                           {item?.category?.cateName}
@@ -202,7 +219,7 @@ export default function NewAudios({ data, title, category, icon }) {
                             color: "white",
                             fontSize: "14px",
                             fontWeight: "bold",
-                            height: "45px",
+                            height: isMobile ? "20px" : "45px",
                             overflow: "hidden",
                           }}
                         >
@@ -216,13 +233,16 @@ export default function NewAudios({ data, title, category, icon }) {
                         display: "flex",
                         justifyContent: "space-between",
                         marginTop: "10px",
-                        padding: "0 20px",
+                        padding: isMobile ? "0 5px" : "0 20px",
                       }}
                     >
-                      <div className="icon_heart" style={{ display: "flex" }}>
+                      <div
+                        className="icon_heart"
+                        style={{ display: "flex", alignItems: "center" }}
+                      >
                         {/* <HeartIcon /> */}
                         <AiFillHeart
-                          size={25}
+                          size={isMobile ? 15 : 25}
                           style={{
                             color: "#FF375F",
                             marginRight: "5px",
@@ -231,7 +251,7 @@ export default function NewAudios({ data, title, category, icon }) {
                         <span
                           style={{
                             color: "white",
-                            fontSize: "15px",
+                            fontSize: isMobile ? "10px" : "15px",
                             alignItems: "center",
                             display: "flex",
                           }}
@@ -239,9 +259,12 @@ export default function NewAudios({ data, title, category, icon }) {
                           {item?.reactions}
                         </span>
                       </div>
-                      <div className="icon_view" style={{ display: "flex" }}>
+                      <div
+                        className="icon_view"
+                        style={{ display: "flex", alignItems: "center" }}
+                      >
                         <AiFillEye
-                          size={25}
+                          size={isMobile ? 15 : 25}
                           style={{
                             marginRight: "5px",
                             color: "white",
@@ -250,7 +273,7 @@ export default function NewAudios({ data, title, category, icon }) {
                         <span
                           style={{
                             color: "white",
-                            fontSize: "15px",
+                            fontSize: isMobile ? "10px" : "15px",
                             alignItems: "center",
                             display: "flex",
                           }}

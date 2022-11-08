@@ -15,6 +15,7 @@ import { SwiperSlide } from "swiper/react";
 import { convertToMinutes } from "../../common/functions";
 import "moment/locale/vi";
 import moment from "moment";
+import { isMobile } from "react-device-detect";
 export default function SwiperSearch({ item }) {
   return (
     <SwiperSlide
@@ -22,78 +23,80 @@ export default function SwiperSearch({ item }) {
       style={{
         maxHeight: "400px",
         borderRadius: "10px",
-        height: "50vh",
-        minHeight: "520px",
+        height: isMobile ? "25vh" : "50vh",
+        minHeight: isMobile ? "200px" : "520px",
         display: "block",
         backgroundColor: "#191A1D",
       }}
     >
-      <div>
-        <div
-          style={{
-            display: "flex",
-            padding: "20px 20px",
-          }}
-        >
+      {!isMobile && (
+        <div>
           <div
             style={{
-              border: "2px solid ",
-              borderRadius: "50%",
-              overflow: "hidden",
-              marginRight: "10px",
-            }}
-          >
-            <img src="https://secure.gravatar.com/avatar/119915a6b9fb9c5149b70ee96a7bc1a6?s=50&d=mm&r=g"></img>
-          </div>
-          <div
-            style={{
-              display: "grid",
-              alignItems: "center",
+              display: "flex",
+              padding: "20px 20px",
             }}
           >
             <div
               style={{
-                display: "flex",
-                alignItems: "center",
+                border: "2px solid ",
+                borderRadius: "50%",
+                overflow: "hidden",
+                marginRight: "10px",
               }}
             >
-              <BsFillCheckCircleFill size={15} color={"#6AC46D"} />
-              <Link href={`/${item.class}/${item.slug}`}>
-                <a
-                  style={{
-                    color: "white",
-                    fontWeight: "bold",
-                    fontSize: "1.1rem",
-                    paddingLeft: "10px",
-                  }}
-                >
-                  {item?.user?.fullName}
-                </a>
-              </Link>
+              <img src="https://secure.gravatar.com/avatar/119915a6b9fb9c5149b70ee96a7bc1a6?s=50&d=mm&r=g"></img>
             </div>
             <div
               style={{
-                display: "flex",
+                display: "grid",
                 alignItems: "center",
               }}
             >
-              <AiOutlineHeart size={18} color={"white"} />
-              <Link href={`/${item.class}/${item.slug}`}>
-                <span
-                  style={{
-                    color: "white",
-                    fontWeight: "400",
-                    fontSize: "1rem",
-                    paddingLeft: "10px",
-                  }}
-                >
-                  {item?.user?.subscriber?.length} Subscribers
-                </span>
-              </Link>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <BsFillCheckCircleFill size={15} color={"#6AC46D"} />
+                <Link href={`/${item.class}/${item.slug}`}>
+                  <a
+                    style={{
+                      color: "white",
+                      fontWeight: "bold",
+                      fontSize: "1.1rem",
+                      paddingLeft: "10px",
+                    }}
+                  >
+                    {item?.user?.fullName}
+                  </a>
+                </Link>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <AiOutlineHeart size={18} color={"white"} />
+                <Link href={`/${item.class}/${item.slug}`}>
+                  <span
+                    style={{
+                      color: "white",
+                      fontWeight: "400",
+                      fontSize: "1rem",
+                      paddingLeft: "10px",
+                    }}
+                  >
+                    {item?.user?.subscriber?.length} Subscribers
+                  </span>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
       <div
         style={{
           backgroundImage: `url(${item.thumb})`,
@@ -102,7 +105,7 @@ export default function SwiperSearch({ item }) {
           alignItems: "center",
           backgroundSize: "cover",
           position: "relative",
-          height: "40%",
+          height: isMobile ? "65%" : "40%",
           width: "100%",
         }}
       >
@@ -115,11 +118,13 @@ export default function SwiperSearch({ item }) {
           }}
         >
           <Row>
-            <Col>
-              <Tag color="#108ee9" icon={<ThunderboltOutlined />}>
-                #1
-              </Tag>
-            </Col>
+            {!isMobile && (
+              <Col>
+                <Tag color="#108ee9" icon={<ThunderboltOutlined />}>
+                  #1
+                </Tag>
+              </Col>
+            )}
             <Col>
               <Tag color="#FEDC56">
                 <span style={{ color: "black" }}>
@@ -127,59 +132,65 @@ export default function SwiperSearch({ item }) {
                 </span>
               </Tag>
             </Col>
-            <Col>
-              <Tag color="#FEDC56">
-                <span style={{ color: "black" }}>HD</span>
-              </Tag>
-            </Col>
-            <Col>
-              <Tag color="#8C36E0" icon={<CrownOutlined />}>
-                Platinum Elite
-              </Tag>
-            </Col>
+            {!isMobile && (
+              <Col>
+                <Tag color="#FEDC56">
+                  <span style={{ color: "black" }}>HD</span>
+                </Tag>
+              </Col>
+            )}
+            {!isMobile && (
+              <Col>
+                <Tag color="#8C36E0" icon={<CrownOutlined />}>
+                  Platinum Elite
+                </Tag>
+              </Col>
+            )}
           </Row>
         </div>
-        <div
-          className="icon_center"
-          style={{
-            position: "absolute",
-            bottom: "30px",
-            left: "20px",
-          }}
-        >
-          <Progress
-            type="circle"
-            percent={Math.round(
-              (item.rate.total / (item.rate.amount * 5)) * 100
-            )}
-            width={35}
-            success={{
-              percent: Math.round(
-                (item.rate.total / (item.rate.amount * 5)) * 100
-              ),
-            }}
+        {!isMobile && (
+          <div
+            className="icon_center"
             style={{
-              backgroundColor: "black",
-              borderRadius: "50%",
+              position: "absolute",
+              bottom: "30px",
+              left: "20px",
             }}
-          />
-          <Tag
-            color="#0E0806"
-            icon={<LineChartOutlined />}
-            style={{ marginLeft: "10px" }}
           >
-            1
-          </Tag>
-        </div>
+            <Progress
+              type="circle"
+              percent={Math.round(
+                (item.rate.total / (item.rate.amount * 5)) * 100
+              )}
+              width={35}
+              success={{
+                percent: Math.round(
+                  (item.rate.total / (item.rate.amount * 5)) * 100
+                ),
+              }}
+              style={{
+                backgroundColor: "black",
+                borderRadius: "50%",
+              }}
+            />
+            <Tag
+              color="#0E0806"
+              icon={<LineChartOutlined />}
+              style={{ marginLeft: "10px" }}
+            >
+              1
+            </Tag>
+          </div>
+        )}
       </div>
       <div className="info_bottom">
         <div
           style={{
             display: "grid",
             textAlign: "start",
-            paddingTop: "10px",
+            paddingTop: isMobile ? "0" : "10px",
             paddingBottom: "10px",
-            marginLeft: "20px",
+            marginLeft: isMobile ? "5px" : "20px",
           }}
         >
           <Link href={"/"}>
@@ -188,7 +199,7 @@ export default function SwiperSearch({ item }) {
                 style={{
                   color: "#0D8B08",
                   fontWeight: "bold",
-                  fontSize: "13px",
+                  fontSize: isMobile ? "7px" : "13px",
                   marginRight: "5px",
                 }}
               >
@@ -198,7 +209,7 @@ export default function SwiperSearch({ item }) {
                 style={{
                   color: "#818182",
                   fontWeight: "bold",
-                  fontSize: "12px",
+                  fontSize: isMobile ? "6px" : "12px",
                 }}
               >
                 - {moment(item?.createdAt).fromNow()}
@@ -209,9 +220,9 @@ export default function SwiperSearch({ item }) {
             <a
               style={{
                 color: "white",
-                fontSize: "1.1rem",
+                fontSize: isMobile ? "10px" : "1.1rem",
                 fontWeight: "bold",
-                maxHeight: "52px",
+                maxHeight: isMobile ? "32px" : "52px",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
               }}
@@ -220,75 +231,79 @@ export default function SwiperSearch({ item }) {
             </a>
           </Link>
         </div>
-        <div className="description_playlist">
-          <p
-            style={{
-              color: "white",
-              fontSize: "14px",
-              display: "block",
-              marginLeft: "20px",
-              textAlign: "start",
-            }}
-          >
-            {item.description}
-          </p>
-        </div>
+        {!isMobile && (
+          <div className="description_playlist">
+            <p
+              style={{
+                color: "white",
+                fontSize: "14px",
+                display: "block",
+                marginLeft: "20px",
+                textAlign: "start",
+              }}
+            >
+              {item.description}
+            </p>
+          </div>
+        )}
 
-        <div
-          className="icon_info_bottom"
-          style={{
-            display: "flex",
-            justifyContent: "start",
-            marginTop: "10px",
-            padding: "0 20px",
-          }}
-        >
+        {!isMobile && (
           <div
-            className="icon_heart"
+            className="icon_info_bottom"
             style={{
               display: "flex",
-              marginRight: "20px",
+              justifyContent: "start",
+              marginTop: "10px",
+              padding: "0 20px",
             }}
           >
-            {/* <HeartIcon /> */}
-            <AiFillHeart
-              size={25}
+            <div
+              className="icon_heart"
               style={{
-                color: "#FF375F",
-                marginRight: "5px",
-              }}
-            />
-            <span
-              style={{
-                color: "white",
-                fontSize: "15px",
-                alignItems: "center",
                 display: "flex",
+                marginRight: "20px",
               }}
             >
-              {item.reactions}
-            </span>
+              {/* <HeartIcon /> */}
+              <AiFillHeart
+                size={25}
+                style={{
+                  color: "#FF375F",
+                  marginRight: "5px",
+                }}
+              />
+              <span
+                style={{
+                  color: "white",
+                  fontSize: "15px",
+                  alignItems: "center",
+                  display: "flex",
+                }}
+              >
+                {item.reactions}
+              </span>
+            </div>
+            <div className="icon_view" style={{ display: "flex" }}>
+              <AiFillEye
+                size={25}
+                style={{
+                  marginRight: "5px",
+                  color: "white",
+                }}
+              />
+              <span
+                style={{
+                  color: "white",
+                  fontSize: "15px",
+                  alignItems: "center",
+                  display: "flex",
+                }}
+              >
+                {item.views}
+              </span>
+            </div>
           </div>
-          <div className="icon_view" style={{ display: "flex" }}>
-            <AiFillEye
-              size={25}
-              style={{
-                marginRight: "5px",
-                color: "white",
-              }}
-            />
-            <span
-              style={{
-                color: "white",
-                fontSize: "15px",
-                alignItems: "center",
-                display: "flex",
-              }}
-            >
-              {item.views}
-            </span>
-          </div>
-        </div>
+        )}
       </div>
     </SwiperSlide>
   );

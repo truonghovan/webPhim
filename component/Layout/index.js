@@ -94,80 +94,85 @@ export default function LayoutPage({ children }) {
   }
   return (
     <Layout hasSider>
-      <Sider
-        breakpoint={"lg"}
-        onBreakpoint={(check) =>
-          check === true ? setCollapsed(true) : setCollapsed(false)
-        }
-        trigger={null}
-        collapsible
-        collapsed={collapsed}
-        collapsedWidth={50}
-        style={{
-          backgroundColor: "rgb(25,26,29)",
-          borderRight: "1px solid #383838",
-          overflow: "auto",
-          position: "fixed",
-          left: 0,
-          top: 0,
-          bottom: 0,
-        }}
-      >
-        <Link href={"/"}>
-          <div className="logo">
-            {!collapsed && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <Image
-                src={logo}
-                alt="logo"
-                style={{
-                  display: "block",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  width: "50%",
-                }}
-              />
-            )}
-          </div>
-        </Link>
-        <Menu
-          style={{ backgroundColor: "rgb(25,26,29)", fontWeight: "bold" }}
-          theme="dark"
-          selectedKeys={[path]}
-          mode="inline"
-          defaultSelectedKeys={[""]}
-          onClick={({ item, key, keyPath, domEvent }) => {
-            router.push(`/${key}`);
+      {!isMobile && (
+        <Sider
+          breakpoint={"lg"}
+          onBreakpoint={(check) =>
+            check === true ? setCollapsed(true) : setCollapsed(false)
+          }
+          trigger={null}
+          collapsible
+          collapsed={collapsed}
+          collapsedWidth={50}
+          width={"150px"}
+          style={{
+            backgroundColor: "rgb(25,26,29)",
+            borderRight: "1px solid #383838",
+            overflow: "auto",
+            position: "fixed",
+            left: 0,
+            top: 0,
+            bottom: 0,
+            zIndex: "9999",
           }}
-          items={[
-            {
-              key: "",
-              icon: <UserOutlined />,
-              label: "Home",
-            },
-            {
-              key: "trending",
-              icon: <ThunderboltOutlined />,
-              label: "Trending",
-            },
-            // {
-            //   key: "history",
-            //   icon: <HistoryOutlined />,
-            //   label: "History",
-            // },
-            // {
-            //   key: "notifications",
-            //   icon: <NotificationOutlined />,
-            //   label: "Notifications",
-            // },
-          ]}
-        />
-      </Sider>
+        >
+          <Link href={"/"}>
+            <div className="logo">
+              {!collapsed && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <Image
+                  src={logo}
+                  alt="logo"
+                  style={{
+                    display: "block",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    width: "50%",
+                  }}
+                />
+              )}
+            </div>
+          </Link>
+          <Menu
+            style={{ backgroundColor: "rgb(25,26,29)", fontWeight: "bold" }}
+            theme="dark"
+            selectedKeys={[path]}
+            mode="inline"
+            defaultSelectedKeys={[""]}
+            onClick={({ item, key, keyPath, domEvent }) => {
+              router.push(`/${key}`);
+            }}
+            items={[
+              {
+                key: "",
+                icon: <UserOutlined />,
+                label: "Home",
+              },
+              {
+                key: "trending",
+                icon: <ThunderboltOutlined />,
+                label: "Trending",
+              },
+              // {
+              //   key: "history",
+              //   icon: <HistoryOutlined />,
+              //   label: "History",
+              // },
+              // {
+              //   key: "notifications",
+              //   icon: <NotificationOutlined />,
+              //   label: "Notifications",
+              // },
+            ]}
+          />
+        </Sider>
+      )}
+
       <Layout
         className="site-layout"
-        style={{
-          marginLeft: !collapsed ? 200 : 50,
-        }}
+        // style={{
+        //   marginLeft: !collapsed ? 200 : 50,
+        // }}
       >
         <Row>
           <Col
@@ -243,7 +248,7 @@ export default function LayoutPage({ children }) {
                           className="input_search"
                           allowClear
                           style={{
-                            width: "80%",
+                            width: isMobile ? "100%" : "80%",
                             alignItems: "center",
                             borderRadius: "20px",
                             backgroundColor: "#010001",

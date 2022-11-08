@@ -184,7 +184,7 @@ export default function VideosChannel({ data, id, sortBy }) {
               </SwiperSlide>
             </Col>
           ))}
-        <Col md={24}>
+        <Col md={24} style={{ width: "100%" }}>
           <ButtonLoadMore
             hasMore={hasMore}
             loading={loadingButton}

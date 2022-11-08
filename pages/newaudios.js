@@ -1,8 +1,8 @@
 import { Col } from "antd";
 import { Row } from "antd";
 import React, { useEffect, useState } from "react";
-import EmblaCarousel from "../../component/EmblaCarouselCategory";
-import styles from "../../styles/category.module.scss";
+import EmblaCarousel from "../component/EmblaCarouselCategory";
+import styles from "../styles/category.module.scss";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -17,18 +17,20 @@ import {
   HeartOutlined,
   EyeOutlined,
   PoweroffOutlined,
+  VideoCameraAddOutlined,
 } from "@ant-design/icons";
 import { Progress } from "antd";
 import Link from "next/link";
 import { AiFillCheckCircle, AiFillEye, AiFillHeart } from "react-icons/ai";
 import { Button } from "antd";
-import { convertToMinutes } from "../../common/functions";
-import { getVideoByCateSlug } from "../api/video";
+import { convertToMinutes } from "../common/functions";
+import { getVideoByCateSlug } from "./api/video";
 import moment from "moment";
 import "moment/locale/vi";
 import Head from "next/head";
-import { getCategoryBySlug } from "../api/category";
+import { getCategoryBySlug } from "./api/category";
 import { isMobile } from "react-device-detect";
+import { getVideoPagingByClass } from "./api/video";
 export default function CategoryPage({ videoByCate, slug, categoryInfo }) {
   const [videoByCateData, setVideoByCateData] = useState(videoByCate);
   const [pageSize, setPageSize] = useState(6);
@@ -53,7 +55,7 @@ export default function CategoryPage({ videoByCate, slug, categoryInfo }) {
   const handleLoadMoreData = () => {
     setLoadings(true);
     setPageIndex(pageIndex + 1);
-    getVideoByCateSlug(slug, pageSize, pageIndex + 1).then((dataMore) => {
+    getVideoPagingByClass("audio", pageSize, pageIndex + 1).then((dataMore) => {
       setVideoByCateData((data) => [...data, ...dataMore]);
       setHasMore(dataMore.length < pageSize ? false : true);
       setLoadings(false);
@@ -62,22 +64,55 @@ export default function CategoryPage({ videoByCate, slug, categoryInfo }) {
   return (
     <>
       <Head>
-        <title>{categoryInfo?.cateName}</title>
+        <title>Audios mới nhất</title>
       </Head>
-      <div className="container_detailPost">
-        {!isMobile && (
-          <div className={styles["container_banner"]}>
-            {videoByCateData.length !== 0 && (
-              <EmblaCarousel slides={videoByCateData || []} />
-            )}
+
+      <div
+        className="container_detailPost_2"
+        style={{ padding: isMobile && "80px 10px" }}
+      >
+        <div
+          className="top_title"
+          style={{
+            display: "flex",
+            padding: !isMobile ? "20px 10%" : "",
+            paddingTop: isMobile ? "0px" : "30px",
+            paddingBottom: isMobile ? "0px" : "30px",
+          }}
+        >
+          <div
+            className="icon_top_title"
+            style={{
+              marginRight: "20px",
+              width: "50px",
+              display: "flex",
+              height: "50px",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "red",
+              borderRadius: "15px",
+            }}
+          >
+            <VideoCameraAddOutlined
+              style={{ color: "white", fontSize: "20px" }}
+            />
           </div>
-        )}
+
+          <div style={{ display: "grid" }}>
+            <span style={{ color: "white" }}>All Audios</span>
+            <span
+              style={{ fontSize: "22px", fontWeight: "bold", color: "white" }}
+            >
+              New Audios
+            </span>
+          </div>
+        </div>
 
         <div
           className={styles["container_listitem"]}
           style={{
             backgroundColor: "#010001",
-            padding: isMobile ? "20px 10px" : "20px 10%",
+            padding: isMobile ? "20px 5%" : "20px 10%",
           }}
         >
           <Row gutter={[12, 24]}>
@@ -374,15 +409,15 @@ export default function CategoryPage({ videoByCate, slug, categoryInfo }) {
   );
 }
 export async function getServerSideProps({ params }) {
-  const [videoByCate, categoryInfo] = await Promise.all([
-    getVideoByCateSlug(params.category, 6, 1),
-    getCategoryBySlug(params.category),
+  const [videoByCate] = await Promise.all([
+    getVideoPagingByClass("audio", 6, 1),
+    // getCategoryBySlug(params.category),
   ]);
   return {
     props: {
       videoByCate: videoByCate || [],
-      slug: params.category || "",
-      categoryInfo: categoryInfo || {},
+      slug: "audio" || "",
+      categoryInfo: {},
     }, // will be passed to the page component as props
   };
 }

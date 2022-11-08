@@ -52,6 +52,7 @@ import VideoMostLike from "../component/VIdeoMostLike";
 import NewPlayList from "../component/NewPlayList";
 import ButtonLoadMore from "../component/ButtonLoadMore";
 import SwiperSearch from "../component/SwiperSearch";
+import { isMobile } from "react-device-detect";
 export default function SearchPage() {
   const router = useRouter();
   const [videoData, setVideoData] = useState([]);
@@ -144,7 +145,7 @@ export default function SearchPage() {
           <title>{videoData?.name}</title>
         </Head>
         <Row>
-          <Col md={14} style={{ marginRight: "20px" }}>
+          <Col md={14} style={{ marginRight: isMobile ? "0" : "20px" }}>
             <Row>
               <Col md={24}>
                 <div
@@ -264,10 +265,10 @@ export default function SearchPage() {
                   className="containerListVideo"
                   style={{ paddingTop: "20px" }}
                 >
-                  <Row gutter={[24, 24]}>
+                  <Row gutter={[12, 24]}>
                     {videoData &&
                       videoData?.map((item, index) => (
-                        <Col key={index} md={12} sm={24} xs={24}>
+                        <Col key={index} md={8} sm={8} xs={8}>
                           <Link href={`/${item?.class}/${item?.slug}`}>
                             <a>
                               <SwiperSearch item={item} />
@@ -275,7 +276,10 @@ export default function SearchPage() {
                           </Link>
                         </Col>
                       ))}
-                    <Col md={24}>
+                    <Col
+                      md={24}
+                      style={{ width: "100%", paddingBottom: "20px" }}
+                    >
                       <ButtonLoadMore
                         hasMore={hasMoreSearch}
                         loading={loadingButtonSearch}
@@ -290,31 +294,33 @@ export default function SearchPage() {
           <Col md={8}>
             {/* <HighestUser listUserScore={listUserScore} /> */}
 
-            <div className={styles["container_most_like_video"]}>
-              <div className={styles["highest_title"]}>
-                <AiFillLike
-                  color="red"
-                  size={30}
-                  style={{ marginRight: "20px" }}
+            {!isMobile && (
+              <div className={styles["container_most_like_video"]}>
+                <div className={styles["highest_title"]}>
+                  <AiFillLike
+                    color="red"
+                    size={30}
+                    style={{ marginRight: "20px" }}
+                  />
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: "1.5rem",
+                      marginRight: "5px",
+                      color: "white",
+                    }}
+                  >
+                    Most Liked Videos
+                  </span>
+                </div>
+                <VideoMostLike
+                  hasMoreMostLike={hasMoreMostLike}
+                  videoMostLike={videoMostLike}
+                  loadingButtonMostLike={loadingButtonMostLike}
+                  handleLoadMoreVideoLike={handleLoadMoreVideoLike}
                 />
-                <span
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "1.5rem",
-                    marginRight: "5px",
-                    color: "white",
-                  }}
-                >
-                  Most Liked Videos
-                </span>
               </div>
-              <VideoMostLike
-                hasMoreMostLike={hasMoreMostLike}
-                videoMostLike={videoMostLike}
-                loadingButtonMostLike={loadingButtonMostLike}
-                handleLoadMoreVideoLike={handleLoadMoreVideoLike}
-              />
-            </div>
+            )}
             {/* <div className={styles["container_new_playlist"]}>
               <div className={styles["highest_title"]}>
                 <FaHeadphonesAlt

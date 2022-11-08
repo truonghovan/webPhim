@@ -15,12 +15,13 @@ import { convertToMinutes } from "../../common/functions";
 import styles from "../../styles/detailsPost.module.scss";
 import "moment/locale/vi";
 import moment from "moment";
+import { isMobile } from "react-device-detect";
 export default function RelativePost({ videoRelative }) {
   return (
     <div className={styles["list_post"]}>
-      <Row gutter={[12, 24]}>
+      <Row gutter={[8, 24]}>
         {videoRelative?.map((item) => (
-          <Col lg={8} md={12} sm={24} xs={24} key={item?._id}>
+          <Col lg={8} md={8} sm={8} xs={8} key={item?._id}>
             <Link href={`/${item?.class}/${item?.slug}`}>
               <a>
                 <SwiperSlide
@@ -28,8 +29,8 @@ export default function RelativePost({ videoRelative }) {
                   style={{
                     maxHeight: "400px",
                     borderRadius: "10px",
-                    height: "40vh",
-                    minHeight: "370px",
+                    height: isMobile ? "22vh" : "40vh",
+                    minHeight: isMobile ? "200px" : "370px",
                     display: "block",
                     backgroundColor: "#191A1D",
                   }}
@@ -55,11 +56,13 @@ export default function RelativePost({ videoRelative }) {
                       }}
                     >
                       <Row>
-                        <Col>
-                          <Tag color="#108ee9" icon={<ThunderboltOutlined />}>
-                            #1
-                          </Tag>
-                        </Col>
+                        {!isMobile && (
+                          <Col>
+                            <Tag color="#108ee9" icon={<ThunderboltOutlined />}>
+                              #1
+                            </Tag>
+                          </Col>
+                        )}
                         <Col>
                           <Tag color="#FEDC56">
                             <span style={{ color: "black" }}>
@@ -67,50 +70,56 @@ export default function RelativePost({ videoRelative }) {
                             </span>
                           </Tag>
                         </Col>
-                        <Col>
-                          <Tag color="#FEDC56">
-                            <span style={{ color: "black" }}>HD</span>
-                          </Tag>
-                        </Col>
-                        <Col>
-                          <Tag color="#8C36E0" icon={<CrownOutlined />}>
-                            Platinum Elite
-                          </Tag>
-                        </Col>
+                        {!isMobile && (
+                          <Col>
+                            <Tag color="#FEDC56">
+                              <span style={{ color: "black" }}>HD</span>
+                            </Tag>
+                          </Col>
+                        )}
+                        {!isMobile && (
+                          <Col>
+                            <Tag color="#8C36E0" icon={<CrownOutlined />}>
+                              Platinum Elite
+                            </Tag>
+                          </Col>
+                        )}
                       </Row>
                     </div>
-                    <div
-                      className="icon_center"
-                      style={{
-                        position: "absolute",
-                        bottom: "40px",
-                        left: "20px",
-                      }}
-                    >
-                      <Progress
-                        type="circle"
-                        percent={Math.round(
-                          (item?.rate.total / (item?.rate.amount * 5)) * 100
-                        )}
-                        width={35}
-                        success={{
-                          percent: Math.round(
-                            (item?.rate.total / (item?.rate.amount * 5)) * 100
-                          ),
-                        }}
+                    {!isMobile && (
+                      <div
+                        className="icon_center"
                         style={{
-                          backgroundColor: "black",
-                          borderRadius: "100%",
+                          position: "absolute",
+                          bottom: "40px",
+                          left: "20px",
                         }}
-                      />
-                      <Tag
-                        color="#0E0806"
-                        icon={<LineChartOutlined />}
-                        style={{ marginLeft: "10px" }}
                       >
-                        1
-                      </Tag>
-                    </div>
+                        <Progress
+                          type="circle"
+                          percent={Math.round(
+                            (item?.rate.total / (item?.rate.amount * 5)) * 100
+                          )}
+                          width={35}
+                          success={{
+                            percent: Math.round(
+                              (item?.rate.total / (item?.rate.amount * 5)) * 100
+                            ),
+                          }}
+                          style={{
+                            backgroundColor: "black",
+                            borderRadius: "100%",
+                          }}
+                        />
+                        <Tag
+                          color="#0E0806"
+                          icon={<LineChartOutlined />}
+                          style={{ marginLeft: "10px" }}
+                        >
+                          1
+                        </Tag>
+                      </div>
+                    )}
                   </div>
                   <div className="info_bottom">
                     <div
@@ -118,7 +127,7 @@ export default function RelativePost({ videoRelative }) {
                         display: "grid",
                         textAlign: "center",
                         paddingTop: "10px",
-                        paddingBottom: "10px",
+                        paddingBottom: isMobile ? "0" : "10px",
                       }}
                     >
                       <Link href={`/${item?.category?.cateSlug}`}>
@@ -126,7 +135,7 @@ export default function RelativePost({ videoRelative }) {
                           style={{
                             color: "#0D8B08",
                             fontWeight: "bold",
-                            fontSize: "13px",
+                            fontSize: isMobile ? "10px" : "13px",
                           }}
                         >
                           {item?.category?.cateName}
@@ -136,9 +145,9 @@ export default function RelativePost({ videoRelative }) {
                         <a
                           style={{
                             color: "white",
-                            fontSize: "16px",
+                            fontSize: isMobile ? "11px" : "16px",
                             fontWeight: "bold",
-                            height: "30px",
+                            height: isMobile ? "33px" : "30px",
                             overflow: "hidden",
                           }}
                         >
@@ -146,92 +155,96 @@ export default function RelativePost({ videoRelative }) {
                         </a>
                       </Link>
                     </div>
-                    <div className="author">
+                    {!isMobile && (
+                      <div className="author">
+                        <div
+                          className="name_author"
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <AiFillCheckCircle color="#6AC46D" />
+                          <span
+                            style={{
+                              color: "white",
+                              fontWeight: "bold",
+                              fontSize: "12px",
+                              marginRight: "5px",
+                            }}
+                          >
+                            {item?.user?.fullName}
+                          </span>{" "}
+                          <span
+                            style={{
+                              color: "#818182",
+                              fontWeight: "bold",
+                              fontSize: "12px",
+                            }}
+                          >
+                            - {moment(item?.createdAt).fromNow()}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                    {!isMobile && (
                       <div
-                        className="name_author"
+                        className="icon_info_bottom"
                         style={{
                           display: "flex",
-                          alignItems: "center",
                           justifyContent: "center",
+                          marginTop: isMobile ? "0" : "10px",
+                          padding: "0 20px",
                         }}
                       >
-                        <AiFillCheckCircle color="#6AC46D" />
-                        <span
+                        <div
+                          className="icon_heart"
                           style={{
-                            color: "white",
-                            fontWeight: "bold",
-                            fontSize: "12px",
-                            marginRight: "5px",
-                          }}
-                        >
-                          {item?.user?.fullName}
-                        </span>{" "}
-                        <span
-                          style={{
-                            color: "#818182",
-                            fontWeight: "bold",
-                            fontSize: "12px",
-                          }}
-                        >
-                          - {moment(item?.createdAt).fromNow()}
-                        </span>
-                      </div>
-                    </div>
-                    <div
-                      className="icon_info_bottom"
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        marginTop: "10px",
-                        padding: "0 20px",
-                      }}
-                    >
-                      <div
-                        className="icon_heart"
-                        style={{
-                          display: "flex",
-                          marginRight: "20px",
-                        }}
-                      >
-                        {/* <HeartIcon /> */}
-                        <AiFillHeart
-                          size={25}
-                          style={{
-                            color: "#FF375F",
-                            marginRight: "5px",
-                          }}
-                        />
-                        <span
-                          style={{
-                            color: "white",
-                            fontSize: "15px",
-                            alignItems: "center",
                             display: "flex",
+                            marginRight: "20px",
                           }}
                         >
-                          {item?.reactions}
-                        </span>
+                          {/* <HeartIcon /> */}
+                          <AiFillHeart
+                            size={25}
+                            style={{
+                              color: "#FF375F",
+                              marginRight: "5px",
+                            }}
+                          />
+                          <span
+                            style={{
+                              color: "white",
+                              fontSize: "15px",
+                              alignItems: "center",
+                              display: "flex",
+                            }}
+                          >
+                            {item?.reactions}
+                          </span>
+                        </div>
+                        <div className="icon_view" style={{ display: "flex" }}>
+                          <AiFillEye
+                            size={25}
+                            style={{
+                              marginRight: "5px",
+                              color: "white",
+                            }}
+                          />
+                          <span
+                            style={{
+                              color: "white",
+                              fontSize: "15px",
+                              alignItems: "center",
+                              display: "flex",
+                            }}
+                          >
+                            {item?.views}
+                          </span>
+                        </div>
                       </div>
-                      <div className="icon_view" style={{ display: "flex" }}>
-                        <AiFillEye
-                          size={25}
-                          style={{
-                            marginRight: "5px",
-                            color: "white",
-                          }}
-                        />
-                        <span
-                          style={{
-                            color: "white",
-                            fontSize: "15px",
-                            alignItems: "center",
-                            display: "flex",
-                          }}
-                        >
-                          {item?.views}
-                        </span>
-                      </div>
-                    </div>
+                    )}
                   </div>
                 </SwiperSlide>
               </a>

@@ -35,7 +35,10 @@ const HomePage = ({ videoNew, audioList, videoRating, premiumVideo }) => {
     <>
       <div
         className="body"
-        style={{ backgroundColor: "#010001", marginBottom: "20px" }}
+        style={{
+          backgroundColor: "#010001",
+          marginBottom: "20px",
+        }}
       >
         <Head>
           <title>Phim gì cũng có</title>
